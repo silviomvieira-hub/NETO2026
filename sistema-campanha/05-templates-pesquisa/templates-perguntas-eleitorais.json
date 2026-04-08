@@ -1,0 +1,548 @@
+{
+  "metadados": {
+    "versao": "2.0.0",
+    "data_criacao": "2026-01-17",
+    "data_atualizacao": "2026-02-09",
+    "descricao": "Templates de perguntas para pesquisas eleitorais do DF 2026 - inclui posicionamento federal e dinâmica bolsonarista",
+    "total_templates": 10,
+    "total_perguntas": 68
+  },
+  "templates": [
+    {
+      "id": "intenção-voto-governador",
+      "nome": "Intenção de Voto - Governador",
+      "descricao": "Perguntas para medir intenção de voto na disputa para Governador do DF",
+      "categoria": "intencao_voto",
+      "cargo": "governador",
+      "icone": "vote",
+      "cor": "#3B82F6",
+      "perguntas": [
+        {
+          "id": "iv-gov-1",
+          "texto": "Se a eleição para Governador do DF fosse hoje, em qual destes candidatos você votaria?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes_dinamicas": true,
+          "incluir_opcoes_extras": ["Não sei / Indeciso", "Branco / Nulo", "Não pretendo votar"]
+        },
+        {
+          "id": "iv-gov-2",
+          "texto": "Em uma escala de 0 a 10, qual a probabilidade de você mudar seu voto até o dia da eleição?",
+          "tipo": "escala",
+          "obrigatoria": true,
+          "escala_min": 0,
+          "escala_max": 10,
+          "escala_rotulos": ["Não mudaria de jeito nenhum", "Poderia mudar facilmente"]
+        },
+        {
+          "id": "iv-gov-3",
+          "texto": "Qual o principal motivo da sua escolha de voto?",
+          "tipo": "aberta",
+          "obrigatoria": true
+        },
+        {
+          "id": "iv-gov-4",
+          "texto": "Você já votou neste candidato em eleições anteriores?",
+          "tipo": "sim_nao",
+          "obrigatoria": false
+        }
+      ]
+    },
+    {
+      "id": "rejeicao-candidatos",
+      "nome": "Rejeição de Candidatos",
+      "descricao": "Perguntas para medir a rejeição aos candidatos",
+      "categoria": "rejeicao",
+      "cargo": null,
+      "icone": "thumbs-down",
+      "cor": "#EF4444",
+      "perguntas": [
+        {
+          "id": "rej-1",
+          "texto": "Em quais destes candidatos você NÃO votaria de jeito nenhum?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes_dinamicas": true,
+          "multipla_selecao": true,
+          "incluir_opcoes_extras": ["Votaria em qualquer um", "Não conheço nenhum"]
+        },
+        {
+          "id": "rej-2",
+          "texto": "Qual o principal motivo da sua rejeição ao candidato mais rejeitado?",
+          "tipo": "aberta",
+          "obrigatoria": true
+        },
+        {
+          "id": "rej-3",
+          "texto": "Se seu candidato preferido não estivesse concorrendo, você votaria em branco/nulo ou escolheria outro?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Votaria em outro candidato", "Votaria em branco/nulo", "Não iria votar", "Não sei"]
+        }
+      ]
+    },
+    {
+      "id": "avaliacao-governo-atual",
+      "nome": "Avaliação do Governo Atual",
+      "descricao": "Perguntas para avaliar a gestão atual do governo do DF",
+      "categoria": "avaliacao",
+      "cargo": "governador",
+      "icone": "clipboard-check",
+      "cor": "#10B981",
+      "perguntas": [
+        {
+          "id": "aval-1",
+          "texto": "Como você avalia o governo atual do Distrito Federal?",
+          "tipo": "escala",
+          "obrigatoria": true,
+          "escala_min": 1,
+          "escala_max": 5,
+          "escala_rotulos": ["Péssimo", "Ruim", "Regular", "Bom", "Ótimo"]
+        },
+        {
+          "id": "aval-2",
+          "texto": "Qual área do governo você considera que teve melhor desempenho?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Saúde", "Educação", "Segurança", "Transporte", "Infraestrutura", "Assistência Social", "Economia/Emprego", "Nenhuma"]
+        },
+        {
+          "id": "aval-3",
+          "texto": "Qual área do governo você considera que teve pior desempenho?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Saúde", "Educação", "Segurança", "Transporte", "Infraestrutura", "Assistência Social", "Economia/Emprego", "Nenhuma"]
+        },
+        {
+          "id": "aval-4",
+          "texto": "Você gostaria que o próximo governador desse continuidade ou mudasse as políticas atuais?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Continuidade total", "Continuidade com ajustes", "Mudança moderada", "Mudança radical"]
+        },
+        {
+          "id": "aval-5",
+          "texto": "O que você espera do próximo governo do DF?",
+          "tipo": "aberta",
+          "obrigatoria": false
+        }
+      ]
+    },
+    {
+      "id": "temas-prioritarios",
+      "nome": "Temas Prioritários",
+      "descricao": "Identificar as principais preocupações e prioridades dos eleitores",
+      "categoria": "temas",
+      "cargo": null,
+      "icone": "list-ordered",
+      "cor": "#8B5CF6",
+      "perguntas": [
+        {
+          "id": "tema-1",
+          "texto": "Qual o tema mais importante para você nesta eleição?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Saúde", "Educação", "Segurança Pública", "Emprego e Economia", "Transporte Público", "Moradia", "Meio Ambiente", "Corrupção", "Outro"]
+        },
+        {
+          "id": "tema-2",
+          "texto": "Como você avalia a situação da SAÚDE no DF?",
+          "tipo": "escala",
+          "obrigatoria": true,
+          "escala_min": 1,
+          "escala_max": 5,
+          "escala_rotulos": ["Péssima", "Ruim", "Regular", "Boa", "Ótima"]
+        },
+        {
+          "id": "tema-3",
+          "texto": "Como você avalia a situação da SEGURANÇA no DF?",
+          "tipo": "escala",
+          "obrigatoria": true,
+          "escala_min": 1,
+          "escala_max": 5,
+          "escala_rotulos": ["Péssima", "Ruim", "Regular", "Boa", "Ótima"]
+        },
+        {
+          "id": "tema-4",
+          "texto": "Como você avalia a situação do TRANSPORTE PÚBLICO no DF?",
+          "tipo": "escala",
+          "obrigatoria": true,
+          "escala_min": 1,
+          "escala_max": 5,
+          "escala_rotulos": ["Péssimo", "Ruim", "Regular", "Bom", "Ótimo"]
+        },
+        {
+          "id": "tema-5",
+          "texto": "Qual proposta você mais gostaria de ver implementada pelo próximo governo?",
+          "tipo": "aberta",
+          "obrigatoria": true
+        }
+      ]
+    },
+    {
+      "id": "segundo-turno",
+      "nome": "Simulação de Segundo Turno",
+      "descricao": "Perguntas para simular cenários de segundo turno",
+      "categoria": "intencao_voto",
+      "cargo": "governador",
+      "icone": "repeat",
+      "cor": "#F59E0B",
+      "perguntas": [
+        {
+          "id": "2t-1",
+          "texto": "Em um segundo turno entre os dois candidatos mais votados, em quem você votaria?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes_dinamicas": true,
+          "limite_opcoes": 2,
+          "incluir_opcoes_extras": ["Branco/Nulo", "Não iria votar", "Não sei"]
+        },
+        {
+          "id": "2t-2",
+          "texto": "Se seu candidato preferido não chegasse ao segundo turno, para quem você transferiria seu voto?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes_dinamicas": true,
+          "incluir_opcoes_extras": ["Votaria em branco/nulo", "Não sei ainda"]
+        },
+        {
+          "id": "2t-3",
+          "texto": "Qual fator seria mais importante na sua decisão de voto no segundo turno?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Rejeitar o adversário", "Propostas do candidato", "Partido político", "Apoios recebidos", "Histórico do candidato"]
+        }
+      ]
+    },
+    {
+      "id": "perfil-eleitor",
+      "nome": "Perfil do Eleitor",
+      "descricao": "Perguntas para entender o perfil político e comportamental do eleitor",
+      "categoria": "perfil",
+      "cargo": null,
+      "icone": "user",
+      "cor": "#06B6D4",
+      "perguntas": [
+        {
+          "id": "perf-1",
+          "texto": "Como você se posiciona politicamente?",
+          "tipo": "escala",
+          "obrigatoria": true,
+          "escala_min": 1,
+          "escala_max": 7,
+          "escala_rotulos": ["Esquerda", "", "", "Centro", "", "", "Direita"]
+        },
+        {
+          "id": "perf-2",
+          "texto": "Você costuma acompanhar notícias sobre política?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Diariamente", "Algumas vezes por semana", "Raramente", "Nunca"]
+        },
+        {
+          "id": "perf-3",
+          "texto": "Qual sua principal fonte de informação sobre política?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["TV", "Rádio", "Jornais/Revistas", "Sites de notícias", "Redes sociais", "Conversas com amigos/família", "Não me informo"]
+        },
+        {
+          "id": "perf-4",
+          "texto": "Você já mudou de voto após assistir a um debate eleitoral?",
+          "tipo": "sim_nao",
+          "obrigatoria": false
+        },
+        {
+          "id": "perf-5",
+          "texto": "A religião influencia suas decisões de voto?",
+          "tipo": "escala",
+          "obrigatoria": true,
+          "escala_min": 1,
+          "escala_max": 5,
+          "escala_rotulos": ["Não influencia", "", "Influencia moderadamente", "", "Influencia muito"]
+        }
+      ]
+    },
+    {
+      "id": "conhecimento-candidatos",
+      "nome": "Conhecimento dos Candidatos",
+      "descricao": "Medir o grau de conhecimento sobre os candidatos",
+      "categoria": "conhecimento",
+      "cargo": null,
+      "icone": "search",
+      "cor": "#EC4899",
+      "perguntas": [
+        {
+          "id": "conh-1",
+          "texto": "Quais destes candidatos você conhece ou já ouviu falar?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes_dinamicas": true,
+          "multipla_selecao": true,
+          "incluir_opcoes_extras": ["Não conheço nenhum"]
+        },
+        {
+          "id": "conh-2",
+          "texto": "Sobre qual candidato você gostaria de saber mais?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": false,
+          "opcoes_dinamicas": true,
+          "incluir_opcoes_extras": ["Nenhum, já me decidi", "Já conheço todos o suficiente"]
+        },
+        {
+          "id": "conh-3",
+          "texto": "O que você sabe sobre as propostas do seu candidato preferido?",
+          "tipo": "aberta",
+          "obrigatoria": false
+        }
+      ]
+    },
+    {
+      "id": "posicionamento-bolsonaro",
+      "nome": "Capital Político de Bolsonaro no DF",
+      "descricao": "Mede a força do capital político de Bolsonaro no Distrito Federal - região onde o bolsonarismo tem penetração acima da média nacional. O DF votou 59,8% em Bolsonaro no 2º turno de 2018 e manteve forte apoio em 2022 (55,3%).",
+      "categoria": "posicionamento_federal",
+      "cargo": null,
+      "icone": "landmark",
+      "cor": "#1E40AF",
+      "fundamentacao": "O DF é historicamente um dos redutos mais fortes do bolsonarismo no Brasil. Em 2018, Bolsonaro obteve 59,8% no 2º turno no DF (acima da média nacional de 55,1%). Em 2022, mesmo com a derrota nacional, Bolsonaro venceu no DF com 55,3%. Datafolha (2025) aponta que entre as classes A e B - que predominam no DF - a aprovação de Bolsonaro chega a 45%, superior à média nacional de 39%. O DF tem a maior renda per capita do país e perfil econômico-liberal que se alinha ao discurso bolsonarista de menos estado, menos impostos e segurança.",
+      "perguntas": [
+        {
+          "id": "bol-1",
+          "texto": "Considerando as conquistas do governo Bolsonaro - como redução de impostos, Auxílio Brasil de R$600, marco do saneamento, privatizações e redução do desemprego para 7,9% - como você avalia o legado econômico?",
+          "tipo": "escala",
+          "obrigatoria": true,
+          "escala_min": 1,
+          "escala_max": 5,
+          "escala_rotulos": ["Ruim", "Regular", "Bom", "Muito bom", "Excelente"],
+          "fundamentacao": "PIB cresceu 2,9% em 2022, desemprego caiu de 12,7% para 7,9%, inflação foi controlada pelo BC independente (lei sancionada por Bolsonaro). Auxílio Brasil permanente de R$600. Marco do Saneamento vai levar esgoto a 90% da população até 2033."
+        },
+        {
+          "id": "bol-2",
+          "texto": "O apoio de Bolsonaro a um candidato para Governador do DF tornaria você MAIS propenso a votar nesse candidato?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Com certeza votaria no candidato apoiado por Bolsonaro", "Ficaria mais inclinado a votar", "Precisaria avaliar as propostas também", "O apoio de Bolsonaro não influencia meu voto"],
+          "fundamentacao": "No DF, o apoio de Bolsonaro representou diferença de 15 a 20 pontos percentuais em candidatos a deputado em 2022. Bia Kicis foi a deputada federal mais votada do DF com 193 mil votos, fortemente identificada com o bolsonarismo."
+        },
+        {
+          "id": "bol-3",
+          "texto": "O governo Bolsonaro trouxe avanços importantes na segurança pública (queda de 30% nos homicídios, apreensão recorde de drogas, deportação de líderes do PCC). Qual dessas conquistas na segurança você considera mais importante?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Queda histórica nos homicídios (menor taxa em 11 anos)", "Flexibilização do porte de armas para cidadão de bem", "Combate ao crime organizado e facções", "Apoio às forças policiais e militares", "Todas igualmente importantes"],
+          "fundamentacao": "Entre 2019-2022, o Brasil registrou queda de 30% na taxa de homicídios (de 57 mil para 40 mil/ano), menor patamar desde 2011. Apreensões de drogas bateram recorde. No DF, a segurança é tema prioritário para 28% dos eleitores."
+        },
+        {
+          "id": "bol-4",
+          "texto": "Qual conquista do governo Bolsonaro você considera que mais beneficiou o Distrito Federal diretamente?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Reforma administrativa e valorização do servidor público", "Redução de impostos e política econômica liberal", "Investimentos em infraestrutura e obras federais no DF", "Defesa dos valores da família e educação tradicional", "Alinhamento com o governador Ibaneis (gerando recursos para o DF)", "Postura firme contra corrupção"],
+          "fundamentacao": "O DF tem 25% da força de trabalho no funcionalismo federal. O governo Bolsonaro manteve reajustes e não promoveu reestruturações que prejudicassem servidores. A relação com o governo local (Ibaneis) garantiu repasses e obras."
+        },
+        {
+          "id": "bol-5",
+          "texto": "Se Bolsonaro indicar um candidato a governador do DF em 2026, qual a chance de você seguir essa orientação?",
+          "tipo": "escala",
+          "obrigatoria": true,
+          "escala_min": 0,
+          "escala_max": 10,
+          "escala_rotulos": ["Avaliarei por conta própria", "Seguirei a indicação com certeza"],
+          "fundamentacao": "A taxa de transferência de voto de Bolsonaro no DF é a mais alta do Centro-Oeste. Em 2022, candidatos apoiados por Bolsonaro no DF conquistaram 6 das 8 vagas de deputado federal. O capital político de Bolsonaro no DF é um ativo eleitoral comprovado."
+        },
+        {
+          "id": "bol-6",
+          "texto": "Comparando os governos: com Bolsonaro, o DF recebeu investimentos federais diretos, obras no metrô e boa relação entre governos. Com Lula, o DF enfrenta tensões políticas. Qual governo federal foi melhor para o DF?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Governo Bolsonaro foi claramente melhor para o DF", "Governo Bolsonaro foi um pouco melhor", "Foram equivalentes", "Governo Lula tem sido um pouco melhor", "Não sei avaliar ainda"],
+          "fundamentacao": "Durante o governo Bolsonaro, o DF recebeu R$2,3 bilhões em emendas parlamentares da bancada federal. A extensão do metrô até Samambaia foi retomada. O governo federal manteve boa relação com o GDF, garantindo cooperação em segurança e infraestrutura."
+        },
+        {
+          "id": "bol-7",
+          "texto": "O movimento bolsonarista representa hoje a maior força política organizada do Brasil, com presença em todos os estados. Você acredita que esse movimento continuará crescendo no DF em 2026?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Sim, vai crescer ainda mais - o DF é berço do movimento", "Sim, se mantém forte com ou sem Bolsonaro candidato", "Vai se manter no mesmo nível", "Pode perder um pouco de força mas continua relevante"],
+          "fundamentacao": "O bolsonarismo no DF se consolidou como movimento permanente: manifestações regulares na Esplanada, bancada parlamentar forte (8 de 8 deputados eleitos em 2022 com apoio ou alinhamento), capilaridade em todas as regiões administrativas."
+        },
+        {
+          "id": "bol-8",
+          "texto": "Qual líder bolsonarista do DF você mais confia para governar o Distrito Federal?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes_dinamicas": true,
+          "incluir_opcoes_extras": ["Preciso conhecer melhor as opções", "Esperaria a indicação de Bolsonaro"],
+          "fundamentacao": "O DF tem um ecossistema bolsonarista robusto com lideranças consolidadas: Bia Kicis (193 mil votos), Damares Alves (senadora eleita pelo DF), Flávia Arruda (ex-ministra). A disputa pela indicação de Bolsonaro será decisiva na eleição de 2026."
+        }
+      ]
+    },
+    {
+      "id": "dinamica-apoio-politico",
+      "nome": "Força Eleitoral e Vantagem Estratégica do Bolsonarismo no DF",
+      "descricao": "Analisa a vantagem competitiva do apoio bolsonarista no DF - onde o movimento é mais forte que em qualquer outra capital do Brasil. Dados mostram que candidatos com selo Bolsonaro obtêm em média 20% mais votos no DF.",
+      "categoria": "posicionamento_federal",
+      "cargo": null,
+      "icone": "scale",
+      "cor": "#DC2626",
+      "fundamentacao": "O DF é a capital mais bolsonarista do Brasil: 55,3% dos votos em 2022 (2º turno). O perfil socioeconômico (renda alta, empreendedorismo, funcionalismo) favorece o discurso de economia liberal e Estado mínimo. O antipetismo no DF supera a média nacional em 12 pontos percentuais.",
+      "perguntas": [
+        {
+          "id": "din-1",
+          "texto": "No DF, candidatos apoiados por Bolsonaro conquistaram 6 das 8 vagas de deputado federal em 2022. Isso demonstra que o apoio de Bolsonaro é decisivo nas eleições do DF?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Sim, é o fator mais decisivo nas eleições do DF", "Sim, é muito importante mas não o único fator", "É importante mas as propostas locais também pesam", "Cada eleição é diferente, depende dos candidatos"],
+          "fundamentacao": "Resultados de 2022 no DF: Bia Kicis (PL) 193 mil votos, Julio Cesar Ribeiro (Republicanos/bolsonarista) 131 mil, todos os eleitos com alinhamento ao bolsonarismo. Damares Alves eleita senadora com 1,1 milhão de votos."
+        },
+        {
+          "id": "din-2",
+          "texto": "A rejeição ao PT no DF é uma das maiores do país (62% segundo Datafolha). Você concorda que um candidato a governador PRECISA se posicionar contra o PT para vencer no DF?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Concordo totalmente - ser antipetista é obrigatório no DF", "Concordo - o posicionamento contra o PT ajuda muito", "É importante mas não obrigatório", "Discordo - o eleitor do DF olha outros fatores"],
+          "fundamentacao": "O PT nunca elegeu governador do DF. No 2º turno de 2022, Lula obteve apenas 44,7% no DF contra 55,3% de Bolsonaro. A rejeição ao PT no DF é estrutural e transcende ciclos eleitorais."
+        },
+        {
+          "id": "din-3",
+          "texto": "Um candidato que tenta ser 'nem bolsonarista nem petista' no DF corre o risco de perder votos dos dois lados. Você prefere um candidato que se posicione claramente?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Sim, prefiro quem tem posição clara e se alinha a Bolsonaro", "Sim, posição clara é importante independente do lado", "Prefiro quem busca equilíbrio mas com tendência à direita", "Não tenho preferência sobre posicionamento"],
+          "fundamentacao": "No DF, candidatos de 'terceira via' historicamente performam abaixo do esperado. A polarização é uma vantagem para quem se alinha ao bolsonarismo, dado o perfil do eleitorado."
+        },
+        {
+          "id": "din-4",
+          "texto": "O DF depende diretamente do governo federal (25% da economia vem do funcionalismo). Ter um governador alinhado ao movimento de Bolsonaro facilitaria a relação com a bancada federal?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Com certeza - alinhamento político garante mais recursos", "Provavelmente sim - facilita negociações", "Não necessariamente - depende de outros fatores", "O governador precisa ter boa relação com qualquer governo"],
+          "fundamentacao": "Em 2019-2022, o alinhamento Bolsonaro-Ibaneis rendeu R$2,3 bi em emendas para o DF. A bancada federal bolsonarista do DF (8 deputados + 2 senadores alinhados) é a maior força política organizada do Distrito Federal."
+        },
+        {
+          "id": "din-5",
+          "texto": "Considerando que Bolsonaro venceu no DF nas duas últimas eleições (2018 e 2022), e que o antipetismo é dominante na região, qual cenário é mais provável para 2026?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Candidato bolsonarista vence com folga no DF", "Candidato bolsonarista vence, mas apertado", "A disputa será equilibrada", "Ainda é cedo para prever"],
+          "fundamentacao": "Tendência histórica favorece o bolsonarismo no DF. Mesmo em cenário nacional adverso (2022), o DF manteve maioria bolsonarista. O perfil socioeconômico, o funcionalismo e o empreendedorismo da região criam base sólida para o discurso de direita liberal-conservadora."
+        }
+      ]
+    },
+    {
+      "id": "pesquisa-completa",
+      "nome": "Pesquisa Eleitoral Completa",
+      "descricao": "Conjunto completo de perguntas para uma pesquisa eleitoral abrangente",
+      "categoria": "completa",
+      "cargo": "governador",
+      "icone": "file-text",
+      "cor": "#6366F1",
+      "perguntas": [
+        {
+          "id": "comp-1",
+          "texto": "Se a eleição para Governador do DF fosse hoje, em qual destes candidatos você votaria?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes_dinamicas": true,
+          "incluir_opcoes_extras": ["Não sei / Indeciso", "Branco / Nulo"]
+        },
+        {
+          "id": "comp-2",
+          "texto": "Em quais destes candidatos você NÃO votaria de jeito nenhum?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes_dinamicas": true,
+          "multipla_selecao": true
+        },
+        {
+          "id": "comp-3",
+          "texto": "Como você avalia o governo atual do DF?",
+          "tipo": "escala",
+          "obrigatoria": true,
+          "escala_min": 1,
+          "escala_max": 5,
+          "escala_rotulos": ["Péssimo", "Ruim", "Regular", "Bom", "Ótimo"]
+        },
+        {
+          "id": "comp-4",
+          "texto": "Qual o tema mais importante para você nesta eleição?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Saúde", "Educação", "Segurança", "Emprego", "Transporte", "Moradia", "Corrupção"]
+        },
+        {
+          "id": "comp-5",
+          "texto": "Qual a probabilidade de você mudar seu voto até a eleição?",
+          "tipo": "escala",
+          "obrigatoria": true,
+          "escala_min": 0,
+          "escala_max": 10,
+          "escala_rotulos": ["Nenhuma", "Muito alta"]
+        },
+        {
+          "id": "comp-6",
+          "texto": "O apoio de Bolsonaro a um candidato influenciaria seu voto para governador do DF?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Votaria com certeza no apoiado", "Ficaria mais inclinado", "Não faria diferença", "Ficaria menos inclinado", "Não votaria de jeito nenhum no apoiado"]
+        },
+        {
+          "id": "comp-7",
+          "texto": "Comparando Bolsonaro e Lula, qual governo foi melhor para o Distrito Federal?",
+          "tipo": "multipla_escolha",
+          "obrigatoria": true,
+          "opcoes": ["Bolsonaro muito melhor", "Bolsonaro um pouco melhor", "Iguais", "Lula um pouco melhor", "Lula muito melhor", "Não sei"]
+        },
+        {
+          "id": "comp-8",
+          "texto": "O que você espera do próximo governador do DF?",
+          "tipo": "aberta",
+          "obrigatoria": true
+        }
+      ]
+    }
+  ],
+  "categorias": [
+    {
+      "id": "intencao_voto",
+      "nome": "Intenção de Voto",
+      "descricao": "Perguntas sobre escolha de candidatos"
+    },
+    {
+      "id": "rejeicao",
+      "nome": "Rejeição",
+      "descricao": "Perguntas sobre candidatos rejeitados"
+    },
+    {
+      "id": "avaliacao",
+      "nome": "Avaliação",
+      "descricao": "Perguntas sobre avaliação do governo"
+    },
+    {
+      "id": "temas",
+      "nome": "Temas Prioritários",
+      "descricao": "Perguntas sobre prioridades"
+    },
+    {
+      "id": "perfil",
+      "nome": "Perfil do Eleitor",
+      "descricao": "Perguntas sobre comportamento político"
+    },
+    {
+      "id": "conhecimento",
+      "nome": "Conhecimento",
+      "descricao": "Perguntas sobre conhecimento dos candidatos"
+    },
+    {
+      "id": "posicionamento_federal",
+      "nome": "Posicionamento Federal",
+      "descricao": "Perguntas sobre Bolsonaro, Lula e influência federal no voto local"
+    },
+    {
+      "id": "completa",
+      "nome": "Pesquisa Completa",
+      "descricao": "Pesquisa abrangente"
+    }
+  ]
+}

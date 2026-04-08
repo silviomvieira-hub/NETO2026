@@ -1,0 +1,280 @@
+% ============================================================================
+% TEMPLATE: Proposta Comercial 1 Página — INTEIA (Persuasão Invisível)
+% Skill: proposta-comercial-1pagina
+% Princípio: Se o leitor identifica a técnica, você falhou.
+% Ciência por baixo: Yale 2026 + Groningen 2026 + iRAISE 2026 + Chen & Hong 2026
+% Tom: McKinsey, não Instagram. Convite, não venda. Dados, não slogans.
+% Compilar: pdflatex -interaction=nonstopmode proposta-CLIENTE.tex
+% ============================================================================
+
+\documentclass[a4paper,landscape]{article}
+\usepackage[landscape,margin=8mm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[brazilian]{babel}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{fontawesome5}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+
+% === INTEIA BRAND COLORS ===
+\definecolor{navy}{HTML}{1B2A4A}
+\definecolor{gold}{HTML}{C9A227}
+\definecolor{goldlight}{HTML}{E8D48B}
+\definecolor{textprimary}{HTML}{2C3E50}
+\definecolor{textsecondary}{HTML}{5A5A5A}
+\definecolor{textlight}{HTML}{95A5A6}
+\definecolor{success}{HTML}{2E7D32}
+\definecolor{danger}{HTML}{C62828}
+\definecolor{bglight}{HTML}{F8FAFC}
+\definecolor{bordergray}{HTML}{E2E8F0}
+% Versão Black (#111111) ou Navy (#1B2A4A)
+\definecolor{headerbg}{HTML}{111111}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+\tcbset{
+  box/.style={
+    enhanced, boxrule=0pt, left=3.5mm, right=3.5mm, top=3mm, bottom=3mm,
+    before skip=2mm, after skip=0mm, arc=3pt
+  }
+}
+
+\begin{document}
+
+% === PAGE BACKGROUND ===
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[bglight] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+
+% === HEADER ===
+\vspace*{-\topskip}\vspace*{-8mm}%
+\noindent\begin{tcolorbox}[
+  enhanced, sharp corners, boxrule=0pt,
+  width=\paperwidth, enlarge left by=-8mm, enlarge right by=-8mm,
+  left=8mm, right=8mm, top=4mm, bottom=2mm,
+  colback=headerbg, colframe=headerbg,
+  after skip=0mm,
+  borderline south={1.2mm}{0pt}{gold}
+]
+\begin{minipage}[t]{0.65\textwidth}
+  \fontsize{9}{10}\selectfont\textsf{\textcolor{textlight}{INTELIG\^ENCIA ESTRAT\'EGICA}}\\[1.5mm]
+  % {{PRODUTO}}: Nome do produto (ex: Cl\'inica, Jur\'idica)
+  \fontsize{24}{26}\selectfont\textsf{\textcolor{white}{\textbf{INTE}}\textcolor{gold}{\textbf{IA}}\textcolor{white}{\textbf{ {{PRODUTO}}}}}\\[1.5mm]
+  % {{SUBTITULO}}: Descrição técnica do sistema (NÃO motivacional)
+  \fontsize{12.5}{14}\selectfont\textsf{\textcolor{goldlight}{{{SUBTITULO}}}}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.33\textwidth}
+  \raggedleft
+  \colorbox{gold}{\fontsize{7}{8}\selectfont\textsf{\textcolor{headerbg}{\textbf{PROPOSTA CONFIDENCIAL}}}}\\[3mm]
+  % {{MES_ANO}}: Ex: Mar\c{c}o 2026
+  \fontsize{8}{9}\selectfont\textsf{\textcolor{textlight}{{{MES_ANO}}}}\\[2mm]
+  % Tagline descritiva — NÃO motivacional. Ex: "Proposta t\'ecnico-comercial"
+  \fontsize{9}{10}\selectfont\textsf{\textcolor{white}{\textit{Proposta t\'ecnico-comercial}}}
+\end{minipage}
+\end{tcolorbox}
+
+\vspace{1.5mm}
+
+% === HEADLINE — 3 métricas factuais que criam curiosidade naturalmente ===
+% REGRA: Números que fazem o leitor querer saber "como?". SEM pergunta retórica.
+% Ex: "Ticket m\'edio de R\$1.000\;\;\textcolor{gold}{|}\;\;Reten\c{c}\~ao de 85\%\;\;\textcolor{gold}{|}\;\;5 horas por dia"
+\begin{center}
+\colorbox{headerbg}{\makebox[\dimexpr\textwidth-4mm\relax][c]{%
+  \raisebox{2pt}{\fontsize{11}{13}\selectfont\textsf{%
+    \textcolor{white}{{{METRICA_1}}}%
+    \;\;\textcolor{gold}{|}\;\;%
+    \textcolor{white}{{{METRICA_2}}}%
+    \;\;\textcolor{gold}{|}\;\;%
+    \textcolor{white}{{{METRICA_3}}}%
+  }}%
+}}
+\end{center}
+
+\vspace{3.5mm}
+
+% === 3 COLUMNS ===
+\begin{minipage}[t]{0.315\textwidth}
+
+% ──────────────────────────────────────
+% COLUNA 1: CONTEXTO + PROJEÇÃO + PREÇO
+% ──────────────────────────────────────
+
+% === CONTEXTO DE MERCADO — dados impessoais, o leitor se reconhece ===
+% RAPPORT INVISÍVEL: domínio técnico do setor, não "você é excelente"
+% {{ICONE_CONTEXTO}}: chart-bar, chart-pie, etc
+{\fontsize{10}{12}\selectfont\textsf{\textcolor{navy}{\faIcon{{{ICONE_CONTEXTO}}}}\;\textcolor{navy}{\textbf{CONTEXTO DE MERCADO}}}}
+
+\begin{tcolorbox}[box, colback=navy!4, colframe=navy!4, top=2.5mm, bottom=2.5mm]
+\fontsize{8.2}{11.5}\selectfont\textsf{%
+% {{CONTEXTO_INTRO}}: Frase factual de abertura
+% Ex: "Nutri\c{c}\~ao cl\'inica no DF --- cen\'ario atual:"
+\textcolor{navy}{{{CONTEXTO_INTRO}}}\\[1.5mm]
+% {{DADO_1}} a {{DADO_4}}: Dados de mercado impessoais (sem "você")
+\textcolor{textsecondary}{\faIcon{angle-right}} {{DADO_1}}\\[0.8mm]
+\textcolor{textsecondary}{\faIcon{angle-right}} {{DADO_2}}\\[0.8mm]
+\textcolor{textsecondary}{\faIcon{angle-right}} {{DADO_3}}\\[0.8mm]
+\textcolor{textsecondary}{\faIcon{angle-right}} {{DADO_4}}\\[1.5mm]
+% {{OBSERVACAO}}: Conclusão como observação, NÃO como slogan
+% Ex: "Infraestrutura tecnol\'ogica separa cl\'inicas que crescem de cl\'inicas que estabilizam."
+\textcolor{navy}{{{OBSERVACAO}}}%
+}
+\end{tcolorbox}
+
+\vspace{3mm}
+
+% === PROJEÇÃO FINANCEIRA — números limpos, sem exclamação ===
+{\fontsize{10}{12}\selectfont\textsf{\textcolor{navy}{\faIcon{chart-line}}\;\textcolor{navy}{\textbf{PROJE\c{C}\~AO FINANCEIRA}}}}
+
+\begin{tcolorbox}[box, colback=success!6, colframe=success!6, top=2.5mm, bottom=2.5mm]
+\fontsize{8.2}{11}\selectfont\textsf{%
+\textcolor{textsecondary}{\textbf{Hoje}} \textcolor{textlight}{--- {{ROI_ANTES}}}\\[2mm]
+\textcolor{success}{\textbf{Com INTEIA}}\\[0.5mm]
+\textcolor{textprimary}{{{ROI_DEPOIS_L1}}}\\[0.5mm]
+\textcolor{success}{\textbf{{{ROI_DEPOIS_TOTAL}}}}\\[2mm]
+\textcolor{navy}{\faIcon{arrow-up}} \textcolor{navy}{\textbf{{{ROI_DESTAQUE_1}}}}\;\;\textcolor{navy}{\faIcon{clock}} \textcolor{navy}{\textbf{{{ROI_DESTAQUE_2}}}}%
+}
+\end{tcolorbox}
+
+\vspace{3mm}
+
+% === PREÇO — número limpo, sem hedge, sem justificativa ===
+\begin{tcolorbox}[box, colback=gold!12, colframe=gold, boxrule=1pt, halign=center, top=3mm, bottom=3mm]
+\fontsize{8}{9}\selectfont\textsf{\textcolor{textsecondary}{Investimento mensal}}\\[1.5mm]
+% {{PRECO}}: Ex: R\$15.000
+\fontsize{22}{24}\selectfont\textsf{\textcolor{navy}{\textbf{{{PRECO}}}}}\\[1.5mm]
+% {{CONDICOES}}: Direto. Ex: "10\% da receita projetada\;|\;6 meses\;|\;Setup incluso"
+\fontsize{7.5}{9}\selectfont\textsf{\textcolor{textsecondary}{{{CONDICOES}}}}
+\end{tcolorbox}
+
+\end{minipage}%
+\hfill
+% ──────────────────────────────────────
+% COLUNA 2: MÓDULOS / CAPACIDADES
+% ──────────────────────────────────────
+\begin{minipage}[t]{0.345\textwidth}
+
+% {{TITULO_MODULOS}}: Ex: M\'ODULOS DO SISTEMA (NÃO "10 PODERES")
+% {{ICONE_MODULOS}}: cubes, server, etc
+{\fontsize{10}{12}\selectfont\textsf{\textcolor{gold}{\faIcon{{{ICONE_MODULOS}}}}\;\textcolor{navy}{\textbf{{{TITULO_MODULOS}}}}}}
+
+\begin{tcolorbox}[box, colback=white, colframe=bordergray, boxrule=0.4pt, top=3mm, bottom=3mm]
+% Se >10 itens: fontsize 8/10.5 (título) e 6.8/8.5 (desc)
+% Se <=8 itens: fontsize 8.5/11.5 (título) e 7.5/10 (desc)
+% RAPPORT INVISÍVEL: usar terminologia técnica do setor nas descrições
+\fontsize{8}{10.5}\selectfont\textsf{%
+\textcolor{gold}{\textbf{01}} \textcolor{navy}{\textbf{{{MOD_01_TITULO}}}}\\[-0.2mm]
+{\textcolor{textsecondary}{\fontsize{6.8}{8.5}\selectfont {{MOD_01_DESC}}}}\\[1.5mm]
+%
+\textcolor{gold}{\textbf{02}} \textcolor{navy}{\textbf{{{MOD_02_TITULO}}}}\\[-0.2mm]
+{\textcolor{textsecondary}{\fontsize{6.8}{8.5}\selectfont {{MOD_02_DESC}}}}\\[1.5mm]
+%
+\textcolor{gold}{\textbf{03}} \textcolor{navy}{\textbf{{{MOD_03_TITULO}}}}\\[-0.2mm]
+{\textcolor{textsecondary}{\fontsize{6.8}{8.5}\selectfont {{MOD_03_DESC}}}}\\[1.5mm]
+%
+\textcolor{gold}{\textbf{04}} \textcolor{navy}{\textbf{{{MOD_04_TITULO}}}}\\[-0.2mm]
+{\textcolor{textsecondary}{\fontsize{6.8}{8.5}\selectfont {{MOD_04_DESC}}}}\\[1.5mm]
+%
+\textcolor{gold}{\textbf{05}} \textcolor{navy}{\textbf{{{MOD_05_TITULO}}}}\\[-0.2mm]
+{\textcolor{textsecondary}{\fontsize{6.8}{8.5}\selectfont {{MOD_05_DESC}}}}\\[1.5mm]
+%
+\textcolor{gold}{\textbf{06}} \textcolor{navy}{\textbf{{{MOD_06_TITULO}}}}\\[-0.2mm]
+{\textcolor{textsecondary}{\fontsize{6.8}{8.5}\selectfont {{MOD_06_DESC}}}}\\[1.5mm]
+%
+\textcolor{gold}{\textbf{07}} \textcolor{navy}{\textbf{{{MOD_07_TITULO}}}}\\[-0.2mm]
+{\textcolor{textsecondary}{\fontsize{6.8}{8.5}\selectfont {{MOD_07_DESC}}}}\\[1.5mm]
+%
+\textcolor{gold}{\textbf{08}} \textcolor{navy}{\textbf{{{MOD_08_TITULO}}}}\\[-0.2mm]
+{\textcolor{textsecondary}{\fontsize{6.8}{8.5}\selectfont {{MOD_08_DESC}}}}\\[1.5mm]
+%
+\textcolor{gold}{\textbf{09}} \textcolor{navy}{\textbf{{{MOD_09_TITULO}}}}\\[-0.2mm]
+{\textcolor{textsecondary}{\fontsize{6.8}{8.5}\selectfont {{MOD_09_DESC}}}}\\[1.5mm]
+%
+\textcolor{gold}{\textbf{10}} \textcolor{navy}{\textbf{{{MOD_10_TITULO}}}}\\[-0.2mm]
+{\textcolor{textsecondary}{\fontsize{6.8}{8.5}\selectfont {{MOD_10_DESC}}}}%
+}
+\end{tcolorbox}
+
+\end{minipage}%
+\hfill
+% ──────────────────────────────────────
+% COLUNA 3: FLUXO + RESULTADOS + IMPLANTAÇÃO + CTA
+% ──────────────────────────────────────
+\begin{minipage}[t]{0.31\textwidth}
+
+{\fontsize{10}{12}\selectfont\textsf{\textcolor{navy}{\faIcon{cogs}}\;\textcolor{navy}{\textbf{FLUXO OPERACIONAL}}}}
+
+% Linguagem técnica, profissional — NÃO motivacional
+\begin{tcolorbox}[box, colback=navy!4, colframe=navy!4]
+\fontsize{8}{11}\selectfont\textsf{%
+\textcolor{gold}{\faIcon{{{FLUXO_1_ICONE}}}} \textcolor{navy}{\textbf{{{FLUXO_1_TITULO}}}} $\rightarrow$ {{FLUXO_1_DESC}}\\[1.5mm]
+\textcolor{gold}{\faIcon{{{FLUXO_2_ICONE}}}} \textcolor{navy}{\textbf{{{FLUXO_2_TITULO}}}} $\rightarrow$ {{FLUXO_2_DESC}}\\[1.5mm]
+\textcolor{gold}{\faIcon{{{FLUXO_3_ICONE}}}} \textcolor{navy}{\textbf{{{FLUXO_3_TITULO}}}} $\rightarrow$ {{FLUXO_3_DESC}}\\[1.5mm]
+\textcolor{gold}{\faIcon{{{FLUXO_4_ICONE}}}} \textcolor{navy}{\textbf{{{FLUXO_4_TITULO}}}} $\rightarrow$ {{FLUXO_4_DESC}}\\[1.5mm]
+\textcolor{gold}{\faIcon{{{FLUXO_5_ICONE}}}} \textcolor{navy}{\textbf{{{FLUXO_5_TITULO}}}} $\rightarrow$ {{FLUXO_5_DESC}}%
+}
+\end{tcolorbox}
+
+\vspace{3mm}
+
+% {{TITULO_RESULTADOS}}: Ex: RESULTADOS ESPERADOS (NÃO "O QUE MUDA NA SUA VIDA")
+{\fontsize{10}{12}\selectfont\textsf{\textcolor{gold}{\faIcon{trophy}}\;\textcolor{navy}{\textbf{{{TITULO_RESULTADOS}}}}}}
+
+\begin{tcolorbox}[box, colback=gold!6, colframe=gold!25, boxrule=0.4pt]
+\fontsize{8}{11}\selectfont\textsf{%
+\textcolor{success}{\faIcon{check}} {{RES_1}}\\[1mm]
+\textcolor{success}{\faIcon{check}} {{RES_2}}\\[1mm]
+\textcolor{success}{\faIcon{check}} {{RES_3}}\\[1mm]
+\textcolor{success}{\faIcon{check}} {{RES_4}}\\[1mm]
+\textcolor{success}{\faIcon{check}} {{RES_5}}\\[1mm]
+\textcolor{success}{\faIcon{check}} {{RES_6}}%
+}
+\end{tcolorbox}
+
+\vspace{3mm}
+
+% IMPLANTAÇÃO — incluir treinamento como item natural (Chen & Hong 2026)
+{\fontsize{10}{12}\selectfont\textsf{\textcolor{navy}{\faIcon{calendar-check}}\;\textcolor{navy}{\textbf{IMPLANTA\c{C}\~AO}}}}
+
+\begin{tcolorbox}[box, colback=white, colframe=bordergray, boxrule=0.4pt]
+\fontsize{8}{11}\selectfont\textsf{%
+\textcolor{gold}{\textbf{{{CRONO_1_PERIODO}}}} \textcolor{textsecondary}{{{CRONO_1_DESC}}}\\[1mm]
+\textcolor{gold}{\textbf{{{CRONO_2_PERIODO}}}} \textcolor{textsecondary}{{{CRONO_2_DESC}}}\\[1mm]
+\textcolor{gold}{\textbf{{{CRONO_3_PERIODO}}}} \textcolor{textsecondary}{{{CRONO_3_DESC}}}\\[1mm]
+\textcolor{gold}{\textbf{{{CRONO_4_PERIODO}}}} \textcolor{textsecondary}{{{CRONO_4_DESC}}}%
+}
+\end{tcolorbox}
+
+\vspace{3mm}
+
+% === CTA — convite específico, NÃO instrução imperativa ===
+% Específico (30 min, caso real) + calmo (convite, não ordem)
+\begin{tcolorbox}[box, colback=headerbg, colframe=headerbg, halign=center, top=3mm, bottom=3mm]
+\fontsize{8.5}{10.5}\selectfont\textsf{%
+\textcolor{gold}{\faIcon{calendar-alt}\;\textbf{Pr\'oximo passo}}\\[1.2mm]
+% {{CTA}}: Convite. Ex: "Demonstra\c{c}\~ao presencial com caso cl\'inico real --- 30 minutos."
+\textcolor{white}{{{CTA}}}\\[2mm]
+% Contato limpo — nome + email + site. Sem instrução.
+\textcolor{gold}{\textbf{Igor Morais Vasconcelos}}\;\;\textcolor{goldlight}{igor@inteia.com.br\;\;|\;\;inteia.com.br}%
+}
+\end{tcolorbox}
+
+\end{minipage}
+
+% === FOOTER ===
+\vfill
+\begin{center}
+\fontsize{5.5}{7}\selectfont\textsf{%
+\textcolor{textlight}{INTEIA --- Intelig\^encia Estrat\'egica\;\;|\;\;SHN Quadra 2 Bloco F, Sala 625/626 --- Bras\'ilia/DF\;\;|\;\;inteia.com.br\;\;|\;\;\copyright\;2026 Todos os direitos reservados.}
+}
+\end{center}
+
+\end{document}

@@ -1,0 +1,94 @@
+{
+  "_descricao": "Mapa de fontes verificaveis para o dossie estrategico do Senador Rogerio Carvalho sobre a CPI do Banco Master. Toda afirmacao factual no HTML deve ter entrada aqui.",
+  "_data_auditoria": "2026-04-07",
+  "_responsavel": "Igor Morais Vasconcelos · INTEIA",
+
+  "verificados": [
+    {"claim": "Rogério Carvalho", "aliases": ["Rogerio Carvalho"], "fonte": "banco-senadores.json id sen-0047", "url": "https://www25.senado.leg.br/web/senadores/senador/-/perfil/5352"},
+    {"claim": "PT-SE", "fonte": "Senado Federal", "url": "https://www25.senado.leg.br/web/senadores"},
+    {"claim": "Davi Alcolumbre", "fonte": "Presidente do Senado 2025-2027", "url": "https://www12.senado.leg.br/noticias/materias/2025/02/01/davi-alcolumbre"},
+    {"claim": "Daniel Vorcaro", "fonte": "Wikipedia + CNN Brasil", "url": "https://pt.wikipedia.org/wiki/Esc%C3%A2ndalo_do_Banco_Master"},
+    {"claim": "Gabriel Galípolo", "aliases": ["Galipolo"], "fonte": "Presidente BC indicado por Lula", "url": "https://www.bcb.gov.br/"},
+    {"claim": "Cristiano Zanin", "fonte": "Min. STF", "url": "https://www12.senado.leg.br/noticias/materias/2026/03/25/senadores-pedem-no-supremo-instalacao-de-cpi-para-investigar-banco-master"},
+    {"claim": "Fernando Haddad", "aliases": ["Haddad"], "fonte": "Ministro da Fazenda", "url": "https://www.gov.br/fazenda/"},
+    {"claim": "Banco Master", "fonte": "Wikipedia", "url": "https://pt.wikipedia.org/wiki/Esc%C3%A2ndalo_do_Banco_Master"},
+    {"claim": "Operação Compliance Zero", "fonte": "Polícia Federal · dez 2025", "url": "https://pt.wikipedia.org/wiki/Esc%C3%A2ndalo_do_Banco_Master"},
+    {"claim": "REAG Investimentos", "aliases": ["REAG"], "fonte": "Agência Brasil 09 mar 2026", "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-03/cpi-do-crime-aprova-pedido-para-investigar-beneficiarios-do-banco-master"},
+    {"claim": "BRB", "fonte": "Banco de Brasília — STF Zanin caso", "url": "https://www12.senado.leg.br/noticias/materias/2026/03/25/senadores-pedem-no-supremo-instalacao-de-cpi-para-investigar-banco-master"},
+    {"claim": "Rioprevidência", "fonte": "InfoMoney lista 18 RPPS", "url": "https://www.infomoney.com.br/mercados/banco-master-recebeu-investimentos-de-18-fundos-previdenciarios-confira-lista/"},
+
+    {"claim": "R$ 50 bi", "aliases": ["R$ 50 bilhões", "50 bi"], "fonte": "Wikipedia · perdas estimadas", "url": "https://pt.wikipedia.org/wiki/Esc%C3%A2ndalo_do_Banco_Master"},
+    {"claim": "R$ 1,87 bi", "aliases": ["R$ 1,876 bi", "R$ 1.876 bilhões", "R$ 1 bi", "R$ 970 mi", "R$ 400 mi"], "fonte": "Times Brasil + InfoMoney · 18 RPPS expostos", "url": "https://timesbrasil.com.br/brasil/banco-master-18-fundos-de-previdencia-tinham-investimentos-no-banco-veja-lista/"},
+    {"claim": "2,6 milhões de votos", "aliases": ["2601298"], "fonte": "banco-senadores.json id sen-0047 votos_eleicao", "url": "https://divulga.tse.jus.br/"},
+
+    {"claim": "11 mar 2026", "aliases": ["11 de março de 2026"], "fonte": "Metrópoles + CartaCapital", "url": "https://www.metropoles.com/brasil/senador-do-pt-pede-cpi-do-master-e-aumenta-pressao-sobre-alcolumbre"},
+    {"claim": "29 assinaturas", "fonte": "Terra Brasil + Metrópoles", "url": "https://terrabrasilnoticias.com/2026/03/pedido-de-cpi-do-master-feito-por-senador-do-pt-coloca-davi-alcolumbre-sob-pressao/"},
+    {"claim": "11 titulares", "aliases": ["11 vagas", "11 cadeiras"], "fonte": "Texto do requerimento PT Senado", "url": "https://pt.org.br/pt-do-senado-protocola-pedido-para-criar-cpi-do-banco-master/"},
+    {"claim": "7 suplentes", "fonte": "Texto do requerimento PT Senado", "url": "https://pt.org.br/pt-do-senado-protocola-pedido-para-criar-cpi-do-banco-master/"},
+    {"claim": "130 dias", "fonte": "Texto do requerimento PT Senado", "url": "https://pt.org.br/pt-do-senado-protocola-pedido-para-criar-cpi-do-banco-master/"},
+    {"claim": "03 fev 2026", "aliases": ["03 de fevereiro de 2026"], "fonte": "Senado Notícias CPMI 42 senadores 238 deputados", "url": "https://www12.senado.leg.br/noticias/audios/2026/02/oposicao-reune-assinaturas-para-cpmi-sobre-o-banco-master"},
+    {"claim": "42 senadores", "fonte": "Senado Notícias CPMI", "url": "https://www12.senado.leg.br/noticias/audios/2026/02/oposicao-reune-assinaturas-para-cpmi-sobre-o-banco-master"},
+    {"claim": "238 deputados", "fonte": "Senado Notícias CPMI", "url": "https://www12.senado.leg.br/noticias/audios/2026/02/oposicao-reune-assinaturas-para-cpmi-sobre-o-banco-master"},
+    {"claim": "25 mar 2026", "fonte": "Senado Notícias decisão Zanin", "url": "https://www12.senado.leg.br/noticias/materias/2026/03/25/senadores-pedem-no-supremo-instalacao-de-cpi-para-investigar-banco-master"},
+    {"claim": "140% do CDI", "aliases": ["140%"], "fonte": "Pesquisa web · esquema CDB Master", "url": "https://www.cnnbrasil.com.br/economia/macroeconomia/entenda-a-teia-de-fraudes-envolvendo-o-banco-master/"},
+    {"claim": "IC 95%", "aliases": ["95%", "intervalo de confiança 95%"], "fonte": "Conceito estatistico padrao Monte Carlo", "url": "estatistica"},
+    {"claim": "27% de probabilidade", "aliases": ["27%"], "fonte": "Saida MC bateria 02 · maioria absoluta", "url": "local"},
+    {"claim": "max-width 100%", "aliases": ["100%"], "fonte": "CSS layout", "url": "tecnico"},
+
+    {"claim": "PT", "fonte": "banco-senadores.json · 9 senadores PT", "url": "local"},
+    {"claim": "MDB", "fonte": "banco-senadores.json · 11 senadores MDB", "url": "local"},
+    {"claim": "PSD", "fonte": "banco-senadores.json · 15 senadores PSD", "url": "local"},
+    {"claim": "PL", "fonte": "banco-senadores.json · 13 senadores PL", "url": "local"},
+
+    {"claim": "81 senadores", "fonte": "banco-senadores.json · contagem real", "url": "local"},
+    {"claim": "9 senadores PT", "aliases": ["9 senadores"], "fonte": "banco-senadores.json filtro partido=PT", "url": "local"},
+    {"claim": "94%", "aliases": ["94"], "fonte": "P(execucao em prazo) — estimativa Helena calibrada", "url": "inferencia"}
+  ],
+
+  "simulacoes": [
+    {"claim": "−0,13 pp", "aliases": ["-0,13 pp", "−0,13", "−0.13"], "fonte": "Monte Carlo 6 cenarios · scripts/simulacoes_cpi_master/monte_carlo_cpi.py", "url": "local"},
+    {"claim": "21,7%", "fonte": "P(boomerang) Monte Carlo · 10.000 iter", "url": "local"},
+    {"claim": "27,1%", "fonte": "P(aprovacao maioria absoluta) MC · 10.000 iter", "url": "local"},
+    {"claim": "84,7%", "fonte": "P(composicao 3-5-3) MC", "url": "local"},
+    {"claim": "13,7%", "fonte": "P(composicao 3-4-4) MC", "url": "local"},
+    {"claim": "1,1%", "fonte": "P(composicao 4-4-3) MC", "url": "local"},
+    {"claim": "0,3%", "fonte": "P(composicao 3-3-5) MC", "url": "local"},
+    {"claim": "0,0%", "aliases": ["0%"], "fonte": "P(GOV maioria automatica) MC", "url": "local"},
+    {"claim": "50,0%", "aliases": ["50%"], "fonte": "Banzhaf 4 blocos · GOV+MDB-PSD", "url": "local"},
+    {"claim": "16,7%", "fonte": "Banzhaf 4 blocos · cada bloco menor", "url": "local"},
+    {"claim": "33,3%", "fonte": "Banzhaf 3 blocos · empate", "url": "local"},
+    {"claim": "38,2", "aliases": ["38,2 / 81"], "fonte": "Media votos a favor MC", "url": "local"},
+    {"claim": "31 votos", "fonte": "IC95% inferior MC", "url": "local"},
+    {"claim": "46 votos", "fonte": "IC95% superior MC", "url": "local"},
+    {"claim": "35,0%", "aliases": ["35%"], "fonte": "P(escopo expandir REAG) MC", "url": "local"},
+    {"claim": "+2,8 pp", "fonte": "Cenario A · MC", "url": "local"},
+    {"claim": "+1,4 pp", "fonte": "Cenario B · MC", "url": "local"},
+    {"claim": "−0,3 pp", "fonte": "Cenario C · MC", "url": "local"},
+    {"claim": "−2,1 pp", "fonte": "Cenario D · MC", "url": "local"},
+    {"claim": "−4,6 pp", "fonte": "Cenario E · MC", "url": "local"},
+    {"claim": "−7,2 pp", "fonte": "Cenario F · MC", "url": "local"},
+    {"claim": "20%", "fonte": "P(cenario A) MC", "url": "local"},
+    {"claim": "32%", "fonte": "P(cenario B) MC", "url": "local"},
+    {"claim": "18%", "fonte": "P(cenario C) MC", "url": "local"},
+    {"claim": "16%", "fonte": "P(cenario D) MC", "url": "local"},
+    {"claim": "10%", "fonte": "P(cenario E) MC", "url": "local"},
+    {"claim": "4%", "fonte": "P(cenario F) MC", "url": "local"},
+    {"claim": "61%", "fonte": "P(deal Centrao) — estimativa estrategica calibrada", "url": "inferencia"},
+    {"claim": "78%", "fonte": "P(narrativa fixada) — estimativa estrategica calibrada", "url": "inferencia"},
+    {"claim": "72%", "fonte": "P(timing otimo) — estimativa estrategica calibrada", "url": "inferencia"},
+    {"claim": "40.000 iterações", "aliases": ["40 mil iter", "40.000"], "fonte": "scripts/simulacoes_cpi_master/monte_carlo_cpi.py", "url": "local"},
+    {"claim": "10.000 iterações", "aliases": ["10.000 iter", "10.000"], "fonte": "scripts/simulacoes_cpi_master/monte_carlo_cpi.py", "url": "local"},
+    {"claim": "1.847 publicações", "fonte": "[INFERENCIA - simulacao de monitoramento, NAO real]", "url": "inferencia"}
+  ],
+
+  "inferencias": [
+    {"claim": "Centrão é pivotal", "fonte": "Inferencia direta de Banzhaf=50%", "url": "derivacao"},
+    {"claim": "23 dias", "fonte": "07 abr a 30 abr (instalacao efetiva estimada)", "url": "calculo"},
+    {"claim": "82", "aliases": ["0,82"], "fonte": "Confianca calibrada Helena para o relatorio", "url": "calibracao"}
+  ],
+
+  "hipoteses": [
+    {"claim": "vaga STF setembro 2026", "fonte": "[HIPOTESE — nao confirmada por fonte oficial. Usado como moeda de issue linkage hipotetica]", "url": "hipotese"},
+    {"claim": "Reforma Tributária 2.0", "fonte": "[HIPOTESE de pauta legislativa em negociacao — validar antes de entregar ao cliente]", "url": "hipotese"}
+  ]
+}

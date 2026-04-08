@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Campanha - Celina Leao 2026</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 50%, #0d1f3c 100%);
+      min-height: 100vh;
+      color: #c8d0e0;
+      line-height: 1.6;
+    }
+    /* HEADER */
+    .header {
+      background: rgba(0,0,0,0.4);
+      border-bottom: 2px solid #f0c040;
+      padding: 18px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .logo-icon {
+      height: 46px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .logo-icon img {
+      height: 100%;
+      width: auto;
+      object-fit: contain;
+    }
+    .header h1 { font-size: 20px; font-weight: 700; color: #f0c040; letter-spacing: 1px; }
+    .header p { font-size: 12px; color: #8899bb; margin-top: 2px; }
+    .header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .countdown {
+      background: rgba(240, 192, 64, 0.1);
+      border: 1px solid rgba(240, 192, 64, 0.3);
+      border-radius: 10px;
+      padding: 8px 16px;
+      text-align: center;
+    }
+    .countdown .dias { font-size: 24px; font-weight: 800; color: #f0c040; }
+    .countdown .label { font-size: 10px; color: #8899bb; text-transform: uppercase; letter-spacing: 1px; }
+    /* BOTAO FECHAR TUDO */
+    .btn-fechar-tudo {
+      background: rgba(231, 76, 60, 0.15);
+      border: 1px solid rgba(231, 76, 60, 0.4);
+      color: #e74c3c;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .btn-fechar-tudo:hover {
+      background: rgba(231, 76, 60, 0.25);
+      border-color: #e74c3c;
+    }
+    .btn-abrir-tudo {
+      background: rgba(46, 204, 113, 0.15);
+      border: 1px solid rgba(46, 204, 113, 0.4);
+      color: #2ecc71;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .btn-abrir-tudo:hover {
+      background: rgba(46, 204, 113, 0.25);
+      border-color: #2ecc71;
+    }
+    /* CONTAINER */
+    .container { max-width: 1100px; margin: 0 auto; padding: 25px 20px 40px; }
+    /* RESUMO CARDS */
+    .resumo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+    .resumo-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .resumo-card .valor { font-size: 24px; font-weight: 800; color: #f0c040; }
+    .resumo-card .desc { font-size: 11px; color: #8899bb; margin-top: 3px; }
+    .resumo-card.destaque { border-color: #f0c040; background: rgba(240, 192, 64, 0.08); }
+    .resumo-card.alerta { border-color: #e74c3c; background: rgba(231, 76, 60, 0.08); }
+    .resumo-card.alerta .valor { color: #e74c3c; }
+    .resumo-card.verde { border-color: #2ecc71; background: rgba(46, 204, 113, 0.08); }
+    .resumo-card.verde .valor { color: #2ecc71; }
+    /* ACCORDION PRINCIPAL */
+    .accordion { margin-bottom: 12px; }
+    .accordion-header {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.3s;
+      user-select: none;
+    }
+    .accordion-header:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(240, 192, 64, 0.3);
+    }
+    .accordion-header.active {
+      border-color: rgba(240, 192, 64, 0.5);
+      background: rgba(240, 192, 64, 0.06);
+      border-radius: 12px 12px 0 0;
+    }
+    .acc-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .acc-title { font-size: 15px; font-weight: 700; color: #fff; flex: 1; }
+    .acc-desc { font-size: 12px; color: #8899bb; margin-top: 2px; }
+    .acc-arrow {
+      font-size: 14px;
+      color: #8899bb;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    .accordion-header.active .acc-arrow { transform: rotate(180deg); color: #f0c040; }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+    }
+    .accordion-body.open { max-height: 100000px; }
+    .accordion-content { padding: 20px 24px; }
+    /* CORES DOS ACORDIONS */
+    .acc-perfil .acc-icon { background: rgba(52, 152, 219, 0.15); color: #3498db; }
+    .acc-pesquisa .acc-icon { background: rgba(46, 204, 113, 0.15); color: #2ecc71; }
+    .acc-adversarios .acc-icon { background: rgba(231, 76, 60, 0.15); color: #e74c3c; }
+    .acc-apoio .acc-icon { background: rgba(240, 192, 64, 0.15); color: #f0c040; }
+    .acc-crise .acc-icon { background: rgba(230, 126, 34, 0.15); color: #e67e22; }
+    .acc-redes .acc-icon { background: rgba(155, 89, 182, 0.15); color: #9b59b6; }
+    .acc-contexto .acc-icon { background: rgba(26, 188, 156, 0.15); color: #1abc9c; }
+    .acc-controle .acc-icon { background: rgba(192, 57, 43, 0.15); color: #c0392b; }
+    /* CITACAO */
+    .citacao {
+      background: rgba(255,255,255,0.03);
+      border-left: 3px solid #9b59b6;
+      padding: 10px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 8px 0;
+      font-size: 13px;
+      font-style: italic;
+      color: #d0d8e8;
+    }
+    .citacao-autor { font-style: normal; font-weight: 600; color: #9b59b6; font-size: 12px; margin-top: 4px; }
+    .timeline-item {
+      display: flex; gap: 12px; margin-bottom: 10px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 8px;
+    }
+    .timeline-data { font-size: 11px; font-weight: 700; color: #f0c040; min-width: 90px; flex-shrink: 0; }
+    .timeline-texto { font-size: 13px; color: #c0c8d8; }
+    .protocolo-box {
+      background: rgba(192, 57, 43, 0.08);
+      border: 1px solid rgba(192, 57, 43, 0.25);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 10px 0;
+    }
+    .protocolo-titulo { font-size: 13px; font-weight: 700; color: #c0392b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .protocolo-box ul { margin: 4px 0; }
+    .protocolo-box li { font-size: 13px; margin-bottom: 3px; }
+    /* SUB-ACCORDION */
+    .sub-accordion { margin-bottom: 8px; }
+    .sub-header {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+      font-size: 14px;
+      font-weight: 600;
+      color: #e0e6f0;
+    }
+    .sub-header:hover { background: rgba(255,255,255,0.06); }
+    .sub-header.active { background: rgba(255,255,255,0.05); border-radius: 8px 8px 0 0; }
+    .sub-header .sub-arrow {
+      font-size: 11px; color: #8899bb;
+      transition: transform 0.3s; margin-left: auto;
+    }
+    .sub-header.active .sub-arrow { transform: rotate(180deg); color: #f0c040; }
+    .sub-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.3s ease;
+      background: rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+    }
+    .sub-body.open { max-height: 100000px; }
+    .sub-content { padding: 14px 18px; }
+    /* TABELAS */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+    th {
+      background: rgba(240, 192, 64, 0.1);
+      color: #f0c040;
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(240, 192, 64, 0.2);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    td {
+      padding: 7px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: #c0c8d8;
+    }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    /* DESTAQUES */
+    .destaque-box {
+      background: rgba(240, 192, 64, 0.08);
+      border-left: 3px solid #f0c040;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+    .alerta-box {
+      background: rgba(231, 76, 60, 0.08);
+      border-left: 3px solid #e74c3c;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+    .info-box {
+      background: rgba(52, 152, 219, 0.08);
+      border-left: 3px solid #3498db;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+    .verde-box {
+      background: rgba(46, 204, 113, 0.08);
+      border-left: 3px solid #2ecc71;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+    h3 { color: #f0c040; font-size: 15px; margin: 16px 0 8px; }
+    h4 { color: #e0e6f0; font-size: 14px; margin: 12px 0 6px; }
+    strong { color: #e8ecf4; }
+    ul, ol { padding-left: 20px; margin: 8px 0; }
+    li { margin-bottom: 4px; font-size: 13px; }
+    p { margin: 6px 0; font-size: 13px; }
+    /* TAGS */
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .tag-alta { background: rgba(231, 76, 60, 0.15); color: #e74c3c; }
+    .tag-media { background: rgba(230, 126, 34, 0.15); color: #e67e22; }
+    .tag-baixa { background: rgba(46, 204, 113, 0.15); color: #2ecc71; }
+    .tag-info { background: rgba(52, 152, 219, 0.15); color: #3498db; }
+    /* RANKING */
+    .ranking-item {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .ranking-pos {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 13px; flex-shrink: 0;
+    }
+    .pos-alta { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+    .pos-media { background: rgba(230, 126, 34, 0.2); color: #e67e22; }
+    .pos-baixa { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+    .ranking-nome { font-weight: 600; color: #fff; flex: 1; }
+    .ranking-extra { color: #8899bb; font-size: 12px; }
+    /* SWOT */
+    .swot { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+    .swot-item { padding: 12px; border-radius: 8px; font-size: 13px; }
+    .swot-forca { background: rgba(46, 204, 113, 0.08); border: 1px solid rgba(46, 204, 113, 0.2); }
+    .swot-fraqueza { background: rgba(231, 76, 60, 0.08); border: 1px solid rgba(231, 76, 60, 0.2); }
+    .swot-oportunidade { background: rgba(52, 152, 219, 0.08); border: 1px solid rgba(52, 152, 219, 0.2); }
+    .swot-ameaca { background: rgba(230, 126, 34, 0.08); border: 1px solid rgba(230, 126, 34, 0.2); }
+    .swot-title { font-weight: 700; margin-bottom: 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .swot-forca .swot-title { color: #2ecc71; }
+    .swot-fraqueza .swot-title { color: #e74c3c; }
+    .swot-oportunidade .swot-title { color: #3498db; }
+    .swot-ameaca .swot-title { color: #e67e22; }
+    /* CALENDARIO */
+    .cal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; margin: 10px 0; }
+    .cal-item {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+    .cal-item.cal-destaque { border-color: #f0c040; background: rgba(240, 192, 64, 0.08); }
+    .cal-data { font-size: 12px; font-weight: 700; color: #f0c040; width: 85px; flex-shrink: 0; }
+    .cal-evento { font-size: 13px; color: #c0c8d8; }
+    .cal-item.cal-destaque .cal-evento { color: #fff; font-weight: 600; }
+    /* PERFIL HEADER */
+    .perfil-header {
+      display: flex; gap: 20px; align-items: flex-start;
+      background: rgba(52, 152, 219, 0.06);
+      border: 1px solid rgba(52, 152, 219, 0.15);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .perfil-avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      overflow: hidden;
+      border: 3px solid #f0c040;
+      box-shadow: 0 4px 15px rgba(240, 192, 64, 0.3);
+    }
+    .perfil-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .perfil-info { flex: 1; min-width: 200px; }
+    .perfil-nome { font-size: 20px; font-weight: 800; color: #fff; }
+    .perfil-cargo { font-size: 13px; color: #f0c040; margin-top: 2px; }
+    .perfil-dados { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+    .perfil-dado {
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    .perfil-dado strong { color: #f0c040; }
+    /* FOOTER */
+    .footer {
+      text-align: center; padding: 25px;
+      color: #445; font-size: 11px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      margin-top: 20px;
+    }
+    /* SEPARADOR */
+    .sep { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 14px 0; }
+    /* MAPA PODER */
+    .poder-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 10px 0; }
+    .poder-col { padding: 12px; border-radius: 8px; font-size: 12px; }
+    .poder-total { background: rgba(46, 204, 113, 0.08); border: 1px solid rgba(46, 204, 113, 0.2); }
+    .poder-ressalva { background: rgba(230, 126, 34, 0.08); border: 1px solid rgba(230, 126, 34, 0.2); }
+    .poder-adversario { background: rgba(231, 76, 60, 0.08); border: 1px solid rgba(231, 76, 60, 0.2); }
+    .poder-col h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .poder-total h4 { color: #2ecc71; }
+    .poder-ressalva h4 { color: #e67e22; }
+    .poder-adversario h4 { color: #e74c3c; }
+    @media (max-width: 700px) {
+      .header { padding: 12px 15px; }
+      .header h1 { font-size: 16px; }
+      .accordion-content, .sub-content { padding: 14px; }
+      .perfil-header { flex-direction: column; align-items: center; text-align: center; }
+      .perfil-dados { justify-content: center; }
+      .swot { grid-template-columns: 1fr; }
+      .poder-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo-icon"><img src="arte.jpeg" alt="Celina Leão"></div>
+    <div>
+      <h1>CAMPANHA 2026</h1>
+      <p>Painel Completo &bull; Governadora do DF</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="btn-abrir-tudo" onclick="abrirTudo()"><i class="fa-solid fa-angles-down"></i> Abrir tudo</button>
+    <button class="btn-fechar-tudo" onclick="fecharTudo()"><i class="fa-solid fa-angles-up"></i> Fechar tudo</button>
+    <div class="countdown">
+      <div class="dias" id="diasRestantes">--</div>
+      <div class="label">dias p/ 1&ordm; turno</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- RESUMO -->
+<div class="resumo">
+  <div class="resumo-card destaque"><div class="valor">40-50%</div><div class="desc">Pesquisas Eleitorais</div></div>
+  <div class="resumo-card"><div class="valor">11+</div><div class="desc">Partidos Coligados</div></div>
+  <div class="resumo-card verde"><div class="valor">63%</div><div class="desc">Aprovacao Ibaneis</div></div>
+  <div class="resumo-card alerta"><div class="valor">19-27%</div><div class="desc">Rejeicao</div></div>
+  <div class="resumo-card alerta"><div class="valor">3</div><div class="desc">Crises Ativas</div></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 1. PERFIL CELINA LEAO -->
+<!-- ============================================================ -->
+<div class="accordion">
+  <div class="accordion-header acc-perfil" onclick="toggleAcc(this)">
+    <div class="acc-icon"><i class="fa-solid fa-user"></i></div>
+    <div>
+      <div class="acc-title">Perfil Completo - Celina Leao</div>
+      <div class="acc-desc">Biografia, trajetoria, partido, formacao, familia, realizacoes, bandeiras politicas</div>
+    </div>
+    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+  </div>
+  <div class="accordion-body">
+    <div class="accordion-content">
+
+      <!-- Perfil Header Visual -->
+      <div class="perfil-header">
+        <div class="perfil-avatar"><img src="foto celina.jpg" alt="Celina Leão - Vice-Governadora do DF"></div>
+        <div class="perfil-info">
+          <div class="perfil-nome">Celina Leao Hizim Ferreira</div>
+          <div class="perfil-cargo">Vice-Governadora do DF (PP) &bull; Candidata a Governadora 2026</div>
+          <div class="perfil-dados">
+            <div class="perfil-dado"><strong>Idade:</strong> 48 anos (02/03/1977)</div>
+            <div class="perfil-dado"><strong>Natural:</strong> Goiania-GO</div>
+            <div class="perfil-dado"><strong>Partido:</strong> PP (Progressistas)</div>
+            <div class="perfil-dado"><strong>Estado civil:</strong> Casada</div>
+            <div class="perfil-dado"><strong>Filhos:</strong> 2 (Bruna e Pedro)</div>
+            <div class="perfil-dado"><strong>Religiao:</strong> Crista</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub: Dados Biograficos -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-id-card" style="color:#3498db"></i> Dados Biograficos e Formacao
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Campo</th><th>Informacao</th></tr>
+            <tr><td>Nome completo</td><td><strong>Celina Leao Hizim Ferreira</strong></td></tr>
+            <tr><td>Nascimento</td><td>02/03/1977 - Goiania-GO</td></tr>
+            <tr><td>Marido</td><td>Fabricio Faleiros (engenheiro)</td></tr>
+            <tr><td>Filhos</td><td>Bruna e Pedro</td></tr>
+            <tr><td>Pai</td><td>Abrao Antonio Hizim (engenheiro civil)</td></tr>
+            <tr><td>Mae</td><td>Maria Celia Leao Neto (administradora)</td></tr>
+            <tr><td>Origem</td><td>Ascendencia arabe/libanesa</td></tr>
+            <tr><td>Profissao</td><td>Administradora de empresas</td></tr>
+            <tr><td>Hobbies</td><td>Futevolei, hipismo, laco feminino</td></tr>
+          </table>
+          <h4>Formacao Academica</h4>
+          <table>
+            <tr><th>Instituicao</th><th>Curso</th><th>Status</th></tr>
+            <tr><td>UniCEUB (Brasilia)</td><td>Administracao de Empresas</td><td>Concluido</td></tr>
+            <tr><td>UniCEUB (Brasilia)</td><td>Direito (2015)</td><td>Incompleto</td></tr>
+            <tr><td>-</td><td>Pos-Graduacao</td><td>Concluido</td></tr>
+          </table>
+          <h4>Historico Pessoal</h4>
+          <ul>
+            <li>Mudou-se para Brasilia por volta de 2000</li>
+            <li>Mae criou a Secretaria da Condicao Feminina de Goias</li>
+            <li>Participou do movimento estudantil (DCE)</li>
+            <li>Trabalhou no Procon-DF</li>
+            <li>Fundou a AME (Associacao Mineira de Equoterapia) - 200+ alunos</li>
+            <li>Criou a ONG "JOIA" (Juventude Organizada para Integracao e Acao)</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <!-- Sub: Trajetoria Politica -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-landmark" style="color:#f0c040"></i> Trajetoria Politica Completa
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Periodo</th><th>Cargo</th><th>Partido</th><th>Votacao</th></tr>
+            <tr><td>2005-2006</td><td><strong>Secretaria da Juventude do DF</strong></td><td>-</td><td>Nomeada (Gov. Roriz)</td></tr>
+            <tr><td>2010-2014</td><td>Deputada Distrital (1o mandato)</td><td>PMN</td><td>7.771 votos</td></tr>
+            <tr><td>2014-2018</td><td>Deputada Distrital (2o mandato)</td><td>PDT/PPS</td><td>12.670 votos</td></tr>
+            <tr><td>2015-2016</td><td><strong>Presidente da CLDF</strong></td><td>PDT</td><td>1a mulher</td></tr>
+            <tr><td>2019-2022</td><td>Deputada Federal</td><td>PP</td><td>31.610 votos</td></tr>
+            <tr><td>Mai-Dez/2020</td><td>Secretaria de Esporte e Lazer DF</td><td>PP</td><td>Nomeada</td></tr>
+            <tr><td>01/01/2023</td><td><strong>Vice-Governadora do DF</strong></td><td>PP</td><td>832.633 (chapa)</td></tr>
+            <tr><td>09/Jan-16/Mar/2023</td><td><strong>Governadora Interina (66 dias)</strong></td><td>PP</td><td>-</td></tr>
+          </table>
+          <h4>Producao Legislativa</h4>
+          <div class="destaque-box">
+            <strong>Na CLDF:</strong> Autora de 43 leis distritais<br>
+            <strong>Na Camara Federal:</strong> 67 projetos de lei, 6 transformados em norma<br>
+            <strong>Destaque:</strong> Lei 14.164/21 - Semana Escolar de Combate a Violencia contra a Mulher<br>
+            <strong>Lider bancada feminina:</strong> 199 projetos aprovados, 78 sancionados
+          </div>
+          <h4>Historico Partidario</h4>
+          <table>
+            <tr><th>Periodo</th><th>Partido</th><th>Obs</th></tr>
+            <tr><td>2010-2011</td><td>PMN</td><td>1o mandato distrital (7.771 votos)</td></tr>
+            <tr><td>2011-2016</td><td>PDT</td><td>2o mandato, Presidente da CLDF (2015-2016)</td></tr>
+            <tr><td>2016-2018</td><td>PPS</td><td>Saiu do PDT apos Cristovam/Reguffe; PPS virou Cidadania em 2019</td></tr>
+            <tr><td>Mar/2018-atual</td><td><strong>PP (Progressistas)</strong></td><td>Presidente do PP-DF, deputada federal, vice-governadora</td></tr>
+          </table>
+          <div class="info-box">
+            <strong>Federacao "Uniao Progressista" (2025):</strong> PP + Uniao Brasil = maior forca partidaria do Brasil com 109 deputados federais e maior numero de prefeitos.
+          </div>
+        </div></div>
+      </div>
+
+      <!-- Sub: Governo Interino -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-building-columns" style="color:#2ecc71"></i> Governo Interino (66 dias) e Atuacao como Vice
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <h4>Realizacoes no Governo Interino (Jan-Mar 2023)</h4>
+          <table>
+            <tr><th>Area</th><th>Acao</th><th>Detalhes</th></tr>
+            <tr><td>Seguranca</td><td><strong>Batalhao dos Poderes</strong></td><td>500 agentes da PM para Esplanada</td></tr>
+            <tr><td>Mulheres</td><td>Bolsa para orfaos de feminicidio</td><td>Assistencia ate 18 anos</td></tr>
+            <tr><td>Saude</td><td>R$ 22 mi em emendas</td><td>Mutirao de cirurgias</td></tr>
+            <tr><td>Educacao</td><td>1.800 monitores</td><td>Para alunos com deficiencia</td></tr>
+            <tr><td>Cultura</td><td>Retomada do Carnaval</td><td>R$ 12 mi investidos, 16.000+ empregos</td></tr>
+            <tr><td>Seguranca</td><td>Reducao de 24% criminalidade</td><td>Comparado ao Carnaval 2020</td></tr>
+          </table>
+          <h4>Atuacao como Vice-Governadora (2023-2026)</h4>
+          <ul>
+            <li><strong>Saude:</strong> Ampliacao de 70 para 180 vagas de hemodialise (157%)</li>
+            <li><strong>Mulheres:</strong> Lei renda mensal filhos de feminicidio, auxilio-aluguel violencia domestica</li>
+            <li><strong>Seguranca:</strong> Centro de Apoio Biopsicossocial para servidores (pioneiro no pais)</li>
+            <li><strong>Articulacao:</strong> Federacao PP + Uniao Brasil, cidadania honoraria de Brasilia</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <!-- Sub: Bandeiras e Posicionamento -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-flag" style="color:#e67e22"></i> Bandeiras Politicas e Posicionamento Ideologico
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <h4>Pautas Prioritarias</h4>
+          <ol>
+            <li><strong>Defesa da mulher</strong> - Pauta central de toda carreira</li>
+            <li><strong>Familia e valores conservadores</strong> - Etica crista na politica</li>
+            <li><strong>Seguranca publica</strong> - Batalhao dos Poderes, educacao civico-militar</li>
+            <li><strong>Saude publica</strong> - Mutiroes, hemodialise, hospitais regionais</li>
+            <li><strong>Educacao</strong> - Escolas civico-militares, inclusao</li>
+            <li><strong>Esporte e inclusao</strong> - Bolsa Atleta, democratizacao</li>
+            <li><strong>Pessoas com deficiencia</strong> - Autistas, inclusao escolar</li>
+            <li><strong>Juventude</strong> - Historico desde Secretaria (2005)</li>
+          </ol>
+          <h4>Posicionamento</h4>
+          <div class="destaque-box">
+            <strong>Centro-direita a direita</strong> - Bolsonarista pragmatica, forte com evangelicos e mulheres.<br>
+            Busca ser candidata de unidade da centro-direita/direita. Projeto de continuidade Ibaneis com marca propria.
+          </div>
+          <h4>Base Eleitoral</h4>
+          <table>
+            <tr><th>Regiao</th><th>% Eleitorado</th><th>Presenca</th></tr>
+            <tr><td>Ceilandia/Taguatinga/Sol Nascente/Brazlandia</td><td><strong>24%</strong></td><td>Muito forte</td></tr>
+            <tr><td>Samambaia/Gama/Santa Maria/Recanto</td><td><strong>23%</strong></td><td>Forte</td></tr>
+            <tr><td>Planaltina/Sobradinho/S.Sebastiao</td><td>Significativo</td><td>Forte</td></tr>
+            <tr><td>Plano Piloto/Lagos</td><td>Menor peso</td><td>Apoio empresarial</td></tr>
+          </table>
+          <h4>Redes Sociais</h4>
+          <table>
+            <tr><th>Plataforma</th><th>Perfil</th><th>Seguidores</th></tr>
+            <tr><td>Instagram</td><td>@celinaleao</td><td><strong>217 mil</strong></td></tr>
+            <tr><td>Twitter/X</td><td>@celinaleao</td><td>~14 mil</td></tr>
+            <tr><td>TikTok</td><td>@celinaleaodf</td><td>~3.400 <span class="tag tag-alta">FRACO</span></td></tr>
+          </table>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 2. PESQUISAS ELEITORAIS -->
+<!-- ============================================================ -->
+<div class="accordion">
+  <div class="accordion-header acc-pesquisa" onclick="toggleAcc(this)">
+    <div class="acc-icon"><i class="fa-solid fa-chart-line"></i></div>
+    <div>
+      <div class="acc-title">Pesquisas Eleitorais DF 2026</div>
+      <div class="acc-desc">9 pesquisas (mar-dez/2025), 4 institutos, todos os cenarios, rejeicao, tendencias</div>
+    </div>
+    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+  </div>
+  <div class="accordion-body">
+    <div class="accordion-content">
+
+      <div class="verde-box">
+        <strong>Celina lidera 100% dos cenarios testados</strong> em todas as pesquisas desde marco/2025. Sem Arruda, chega a 50-54% (vitoria no 1o turno).
+      </div>
+
+      <!-- Evolucao -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-chart-area" style="color:#2ecc71"></i> Evolucao - Linha do Tempo
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Data</th><th>Instituto</th><th>Celina</th><th>2o Colocado</th><th>Diferenca</th></tr>
+            <tr><td>Mar/2025</td><td>Parana Pesquisas</td><td><strong>36,6%</strong></td><td>Izalci 11,3%</td><td>+25,3</td></tr>
+            <tr><td>Jun/2025</td><td>Parana Pesquisas</td><td><strong>31,1%</strong></td><td>Fred 21,5%</td><td>+9,6</td></tr>
+            <tr><td>Jul/2025</td><td>Inst. Opiniao</td><td><strong>27,5%</strong></td><td>Fred 21,2%</td><td>+6,3</td></tr>
+            <tr><td>Ago/2025</td><td>Parana Pesquisas</td><td><strong>37,2%</strong></td><td>Arruda 16,0%</td><td>+21,2</td></tr>
+            <tr><td>Set/2025</td><td>Real Time Big Data</td><td><strong>49,0%</strong></td><td>Grass 14,0%</td><td>+35,0</td></tr>
+            <tr><td>Out/2025</td><td>Parana Pesquisas</td><td><strong>32,2%</strong></td><td>Arruda 29,8%</td><td>+2,4</td></tr>
+            <tr><td>Nov/2025</td><td>Real Time Big Data</td><td><strong>40,0%</strong></td><td>Arruda 20,0%</td><td>+20,0</td></tr>
+            <tr><td>Dez/2025</td><td>Real Time Big Data</td><td><strong>40,0%</strong></td><td>Arruda 21,0%</td><td>+19,0</td></tr>
+            <tr><td>Dez/2025</td><td>Colectta</td><td><strong>30,6%</strong></td><td>Arruda 16,3%</td><td>+14,3</td></tr>
+          </table>
+        </div></div>
+      </div>
+
+      <!-- Cenarios Sem Arruda -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-trophy" style="color:#f0c040"></i> Cenarios SEM Arruda (vitoria no 1o turno)
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Data/Instituto</th><th>Celina</th><th>2o Colocado</th></tr>
+            <tr><td>Jun/2025 - Parana</td><td><strong>42,8%</strong></td><td>Izalci 9,9%</td></tr>
+            <tr><td>Ago/2025 - Parana</td><td><strong>45,6%</strong></td><td>Izalci 12,7%</td></tr>
+            <tr><td>Set/2025 - RTBD</td><td><strong>49,0%</strong></td><td>Grass 14,0%</td></tr>
+            <tr><td>Nov/2025 - RTBD</td><td><strong>50,0%</strong></td><td>Grass 15,0%</td></tr>
+            <tr><td>Dez/2025 - RTBD</td><td><strong>50,0%</strong></td><td>Grass 16,0%</td></tr>
+          </table>
+          <div class="destaque-box"><strong>Sem Arruda, Celina vence no 1o turno com 50%.</strong></div>
+        </div></div>
+      </div>
+
+      <!-- Rejeicao -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-thumbs-down" style="color:#e74c3c"></i> Rejeicao Comparada
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Candidato</th><th>RTBD Set/25</th><th>RTBD Dez/25</th><th>Colectta Dez/25</th></tr>
+            <tr><td>Jose R. Arruda</td><td>-</td><td><strong>53%</strong></td><td>12,6%</td></tr>
+            <tr><td>Celina Leao</td><td>25%</td><td>27%</td><td>19,6%</td></tr>
+            <tr><td>Izalci Lucas</td><td>29%</td><td>-</td><td>-</td></tr>
+            <tr><td>Ricardo Cappelli</td><td>20%</td><td>24%</td><td>-</td></tr>
+            <tr><td>Paula Belmonte</td><td>19%</td><td>22%</td><td>-</td></tr>
+            <tr><td>Leandro Grass</td><td>15%</td><td>20%</td><td>8,9%</td></tr>
+          </table>
+          <div class="alerta-box"><strong>Arruda tem a maior rejeicao absoluta (53-61%).</strong> Celina tem rejeicao moderada (19-27%).</div>
+        </div></div>
+      </div>
+
+      <!-- Segundo Turno -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-scale-balanced" style="color:#3498db"></i> Simulacoes de Segundo Turno
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Confronto</th><th>Resultado</th><th>Obs</th></tr>
+            <tr><td>Celina x Arruda (Parana Out/25)</td><td>42,5% x 42,4%</td><td><span class="tag tag-alta">EMPATE TECNICO</span></td></tr>
+            <tr><td>Celina x Grass (Parana Out/25)</td><td>57,1% x 25,3%</td><td><span class="tag tag-baixa">VENCE FOLGADA</span></td></tr>
+            <tr><td>Celina x Grass (RTBD Set/25)</td><td>54% x 19%</td><td><span class="tag tag-baixa">VENCE FOLGADA</span></td></tr>
+          </table>
+          <div class="alerta-box"><strong>ATENCAO:</strong> Contra Arruda no 2o turno, ha empate tecnico (0,1 ponto de diferenca).</div>
+        </div></div>
+      </div>
+
+      <!-- Avaliacao Imagem -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-eye" style="color:#9b59b6"></i> Avaliacao de Imagem dos Candidatos
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Candidato</th><th>Positiva</th><th>Neutra</th><th>Negativa</th><th>Nao conhece</th></tr>
+            <tr><td><strong>Celina Leao</strong></td><td><strong>42%</strong></td><td>24%</td><td>20%</td><td>14%</td></tr>
+            <tr><td>Arruda</td><td>19%</td><td>14%</td><td><strong>61%</strong></td><td>6%</td></tr>
+            <tr><td>Paula Belmonte</td><td>21%</td><td>26%</td><td>20%</td><td>33%</td></tr>
+            <tr><td>Leandro Grass</td><td>15%</td><td>32%</td><td>14%</td><td>39%</td></tr>
+            <tr><td>Cappelli</td><td>7%</td><td>17%</td><td>12%</td><td><strong>64%</strong></td></tr>
+          </table>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 3. ADVERSARIOS -->
+<!-- ============================================================ -->
+<div class="accordion">
+  <div class="accordion-header acc-adversarios" onclick="toggleAcc(this)">
+    <div class="acc-icon"><i class="fa-solid fa-chess"></i></div>
+    <div>
+      <div class="acc-title">Adversarios e Oposicao</div>
+      <div class="acc-desc">Pre-candidatos, perfil, pontos fortes/fracos, aliancas, ranking de ameaca</div>
+    </div>
+    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+  </div>
+  <div class="accordion-body">
+    <div class="accordion-content">
+
+      <h3>Ranking de Ameaca</h3>
+      <div class="ranking-item"><div class="ranking-pos pos-alta">1</div><div class="ranking-nome">Jose Roberto Arruda</div><div class="ranking-extra">PSD &bull; 16-30%</div><span class="tag tag-alta">ALTA</span></div>
+      <div class="ranking-item"><div class="ranking-pos pos-media">2</div><div class="ranking-nome">Leandro Grass</div><div class="ranking-extra">PT &bull; 10-16%</div><span class="tag tag-media">MEDIA</span></div>
+      <div class="ranking-item"><div class="ranking-pos pos-baixa">3</div><div class="ranking-nome">Izalci Lucas</div><div class="ranking-extra">PL &bull; 9-11%</div><span class="tag tag-baixa">BAIXA</span></div>
+      <div class="ranking-item"><div class="ranking-pos pos-baixa">4</div><div class="ranking-nome">Paula Belmonte</div><div class="ranking-extra">PSDB &bull; 5-7%</div><span class="tag tag-baixa">BAIXA</span></div>
+      <div class="ranking-item"><div class="ranking-pos pos-baixa">5</div><div class="ranking-nome">Ricardo Cappelli</div><div class="ranking-extra">PSB &bull; 5-6%</div><span class="tag tag-baixa">BAIXA</span></div>
+
+      <hr class="sep">
+
+      <!-- Arruda -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-user-secret" style="color:#e74c3c"></i> <strong>Jose Roberto Arruda (PSD)</strong> - Principal Adversario
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <div class="alerta-box">
+            <strong>Ex-governador do DF</strong> (2007-2010) - primeiro governador brasileiro preso no exercicio do cargo (Operacao Caixa de Pandora). Condenado em 5 acoes de improbidade. Elegibilidade depende do STF (ministra Carmen Lucia relatora).
+          </div>
+          <h4>Pesquisas</h4>
+          <ul>
+            <li>Empate tecnico com Celina em OUT/25: 32,2% x 29,8%</li>
+            <li>2o turno: empate absoluto 42,5% x 42,4%</li>
+            <li>Rejeicao: <strong>53-61%</strong> (a maior de todos)</li>
+          </ul>
+          <h4>Aliancas: PSD (Kassab), Avante (Gim Argello), Alberto Fraga (PL)</h4>
+          <h4>Pontos Fortes</h4>
+          <ul>
+            <li>Alta recall eleitoral, experiencia administrativa, forte nas cidades-satelite</li>
+          </ul>
+          <h4>Pontos Fracos</h4>
+          <ul>
+            <li>Imagem de corrupto (video recebendo dinheiro), elegibilidade incerta, maior rejeicao</li>
+          </ul>
+          <h4>Ataque a Celina: Usa escandalo BRB-Master como principal arma</h4>
+        </div></div>
+      </div>
+
+      <!-- Grass -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-user" style="color:#e67e22"></i> Leandro Grass (PT) - Esquerda
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <p>Presidente do IPHAN, arquiteto/urbanista, mestre/doutor UnB. Candidato em 2022 - 434 mil votos.</p>
+          <p><strong>Pesquisas:</strong> 10-16% (3o lugar consistente)</p>
+          <p><strong>Pontos fortes:</strong> Base do PT, experiencia de campanha</p>
+          <p><strong>Pontos fracos:</strong> "Abandonado por Lula", novato no PT, esquerda fraca no DF</p>
+          <p><strong>Ataque:</strong> "gestao local incompetente", "regressao de indicadores"</p>
+        </div></div>
+      </div>
+
+      <!-- Izalci -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-user" style="color:#3498db"></i> Izalci Lucas (PL) - Direita
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <p>Senador pelo DF, contador/professor. Migrou PSDB para PL em 2024.</p>
+          <p><strong>Pesquisas:</strong> 9-11% - nao decola</p>
+          <p><strong>Risco:</strong> Pode fechar com Arruda OU desistir e apoiar Celina. Perfil tecnico, pouco carismatico.</p>
+        </div></div>
+      </div>
+
+      <!-- Cappelli e Paula -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-users" style="color:#9b59b6"></i> Cappelli (PSB) e Paula Belmonte (PSDB) - Menores
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <h4>Ricardo Cappelli (PSB) - 5-6%</h4>
+          <p>Ex-interventor federal no DF pos-8/jan. Desconhecido por 64% dos eleitores. Mais agressivo digitalmente - pediu renuncia de Ibaneis e Celina.</p>
+          <h4>Paula Belmonte (PSDB) - 5-7%</h4>
+          <p>Deputada distrital, perfil moderado/centro. PSDB e partido pequeno no DF, baixa visibilidade.</p>
+        </div></div>
+      </div>
+
+      <!-- Mapa de Aliancas -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-diagram-project" style="color:#1abc9c"></i> Mapa de Aliancas Politicas
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <div class="poder-grid">
+            <div class="poder-col poder-total">
+              <h4>Bloco Celina (Situacao)</h4>
+              <ul><li>PP, MDB, Republicanos, Podemos, PL, PSDB, Agir, Avante, PRD, PMB, Uniao Brasil</li></ul>
+            </div>
+            <div class="poder-col poder-adversario">
+              <h4>Bloco Arruda (Oposicao Direita)</h4>
+              <ul><li>PSD (Kassab), Avante (Gim), Alberto Fraga, bolsonaristas dissidentes</li></ul>
+            </div>
+            <div class="poder-col poder-adversario">
+              <h4>Bloco Esquerda (Fragmentado)</h4>
+              <ul><li>PT (Grass), PSB (Cappelli), PCdoB, PV, PSOL, PDT, Rede</li></ul>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 4. APOIADORES E ALIANCAS -->
+<!-- ============================================================ -->
+<div class="accordion">
+  <div class="accordion-header acc-apoio" onclick="toggleAcc(this)">
+    <div class="acc-icon"><i class="fa-solid fa-handshake"></i></div>
+    <div>
+      <div class="acc-title">Apoiadores e Aliancas</div>
+      <div class="acc-desc">Apoio nacional, Ibaneis, deputados, senadores, empresarios, evangelicos, vice</div>
+    </div>
+    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+  </div>
+  <div class="accordion-body">
+    <div class="accordion-content">
+
+      <!-- Mapa de Poder -->
+      <div class="poder-grid">
+        <div class="poder-col poder-total">
+          <h4>Apoio Total</h4>
+          <ul>
+            <li>Ibaneis Rocha (MDB)</li>
+            <li>Ciro Nogueira (PP)</li>
+            <li>Rafael Prudente (MDB)</li>
+            <li>Damares Alves (Republicanos)</li>
+            <li>Paulo Octavio</li>
+            <li>Gustavo Rocha (vice)</li>
+            <li>Wellington Luiz (MDB)</li>
+            <li>Fred Linhares (Republicanos)</li>
+            <li>14+ deputados distritais</li>
+            <li>11+ partidos</li>
+            <li>Empresariado do DF</li>
+            <li>Liderancas evangelicas</li>
+          </ul>
+        </div>
+        <div class="poder-col poder-ressalva">
+          <h4>Apoio com Ressalvas</h4>
+          <ul>
+            <li>Michelle Bolsonaro</li>
+            <li>PL (tensoes internas)</li>
+            <li>Izalci Lucas</li>
+            <li>Gov. Lula (neutro)</li>
+          </ul>
+        </div>
+        <div class="poder-col poder-adversario">
+          <h4>Adversarios</h4>
+          <ul>
+            <li>Arruda (PSD)</li>
+            <li>Kassab (PSD)</li>
+            <li>Esquerda (PT/PSOL)</li>
+            <li>Movimentos sociais</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <!-- Sub: Apoio Nacional -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-globe" style="color:#f0c040"></i> Apoio Nacional e Bolsonaro
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <h4>Ciro Nogueira (PP) - Presidente nacional do PP</h4>
+          <p>"A Uniao Progressista tem Celina como nossa pre-candidata e tenho certeza de que sera uma grande governadora"</p>
+          <h4>Relacao com Bolsonaro/Michelle</h4>
+          <ul>
+            <li>Apoiadora declarada de Bolsonaro</li>
+            <li>Michelle anunciou apoio em almoco, mas relacao oscilou</li>
+            <li>Se Michelle apoiar Celina = consolida direita no DF</li>
+            <li>Se Michelle nao apoiar = abre espaco para divisao</li>
+          </ul>
+          <h4>Damares Alves (Republicanos)</h4>
+          <p>Recuou da propria candidatura e declarou apoio: "Se Celina for candidata ao governo, tera meu apoio"</p>
+        </div></div>
+      </div>
+
+      <!-- Sub: Ibaneis -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-star" style="color:#f0c040"></i> Ibaneis Rocha - Apoio Total e Irrestrito
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <div class="destaque-box">
+            <strong>Principal padrinho politico.</strong> Ibaneis coordena pessoalmente as articulacoes de aliancas para Celina. Escolheu Gustavo Rocha como vice. Plano: Ibaneis ao Senado + Celina ao Governo.
+          </div>
+          <p><strong>Risco:</strong> Escandalo BRB/Banco Master atinge Ibaneis e pode respingar em Celina.</p>
+        </div></div>
+      </div>
+
+      <!-- Sub: Deputados e Vice -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-users" style="color:#3498db"></i> Deputados, Senadores e Vice
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <h4>Deputados Federais Confirmados</h4>
+          <table>
+            <tr><th>Deputado</th><th>Partido</th><th>Papel</th></tr>
+            <tr><td>Rafael Prudente</td><td>MDB</td><td>Principal articulador</td></tr>
+            <tr><td>Bia Kicis</td><td>PL</td><td>Apoio ao governo</td></tr>
+            <tr><td>Gilvan Maximo</td><td>Republicanos</td><td>Apoio declarado</td></tr>
+            <tr><td>Fred Linhares</td><td>Republicanos</td><td>"Fechado com Celina"</td></tr>
+          </table>
+          <h4>14+ Deputados Distritais apoiam, incluindo presidente da CLDF</h4>
+          <h4>Vice Definido: Gustavo Rocha (Republicanos)</h4>
+          <p>Chefe da Casa Civil, braco direito de Ibaneis, ex-Ministro dos Direitos Humanos, ex-membro do CNMP. Perfil tecnico de confianca.</p>
+        </div></div>
+      </div>
+
+      <!-- Sub: Evangelicos e Empresarios -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-church" style="color:#9b59b6"></i> Evangelicos, Empresarios e Coligacao
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <h4>Evangelicos</h4>
+          <ul>
+            <li>Almoco com 20+ lideres evangelicos no Palacio do Buriti</li>
+            <li>Programa <strong>Igreja Legal</strong> - regularizacao de 554 templos</li>
+            <li>Presenca constante em cultos e jantares com pastores</li>
+          </ul>
+          <h4>Empresarios</h4>
+          <ul>
+            <li>Paulo Octavio (Lide Brasilia) - apoio declarado</li>
+            <li>Setor imobiliario e comercial de Brasilia</li>
+            <li>Imagem de gestora pro-mercado</li>
+          </ul>
+          <h4>Coligacao: 11+ Partidos</h4>
+          <p><strong>Nucleo:</strong> PP, Uniao Brasil, MDB, Republicanos, Podemos</p>
+          <p><strong>Aliados:</strong> PL, PSDB, Agir, Avante, PRD, PMB</p>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 5. PONTOS NEGATIVOS E CRISES -->
+<!-- ============================================================ -->
+<div class="accordion">
+  <div class="accordion-header acc-crise" onclick="toggleAcc(this)">
+    <div class="acc-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+    <div>
+      <div class="acc-title">Pontos Negativos, Crises e Vulnerabilidades <span class="tag tag-alta">ATUALIZADO</span></div>
+      <div class="acc-desc">BRB-Master (federalizacao), Bilhete Flavio, Processos, censura, 8 de janeiro, saude</div>
+    </div>
+    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+  </div>
+  <div class="accordion-body">
+    <div class="accordion-content">
+
+      <!-- Quadro resumo -->
+      <table>
+        <tr><th>#</th><th>Vulnerabilidade</th><th>Gravidade</th><th>Status</th></tr>
+        <tr><td>1</td><td><strong>Escandalo BRB-Master</strong></td><td><span class="tag tag-alta">ALTISSIMA</span></td><td>PF investigando</td></tr>
+        <tr><td>2</td><td>Acao Improbidade (Dracon)</td><td><span class="tag tag-alta">ALTA</span></td><td>MPDFT pede condenacao</td></tr>
+        <tr><td>3</td><td>Censura/intimidacao jornalistas</td><td><span class="tag tag-alta">ALTA</span></td><td>Multiplos casos</td></tr>
+        <tr><td>4</td><td>Crise na saude do DF</td><td><span class="tag tag-media">MEDIA-ALTA</span></td><td>Declaracoes polemicas</td></tr>
+        <tr><td>5</td><td>Ambiguidade 8 de janeiro</td><td><span class="tag tag-media">MEDIA</span></td><td>Contradicoes publicas</td></tr>
+        <tr><td>6</td><td><strong>Bilhete Flavio Bolsonaro</strong></td><td><span class="tag tag-alta">ALTA</span></td><td><span class="tag tag-alta">NOVO 26/02</span></td></tr>
+        <tr><td>7</td><td><strong>Risco Federalizacao BRB</strong></td><td><span class="tag tag-alta">ALTISSIMA</span></td><td><span class="tag tag-alta">NOVO - ABRIL</span></td></tr>
+        <tr><td>8</td><td>Dependencia Michelle/PL - condicionada</td><td><span class="tag tag-alta">ALTA</span></td><td>Apoio NAO garantido</td></tr>
+        <tr><td>9</td><td>Cortes em educacao</td><td><span class="tag tag-media">MEDIA</span></td><td>Dados concretos</td></tr>
+        <tr><td>10</td><td>Feminicidios recordes</td><td><span class="tag tag-media">MEDIA</span></td><td>Dados estatisticos</td></tr>
+      </table>
+
+      <hr class="sep">
+
+      <!-- BRB Master -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-bomb" style="color:#e74c3c"></i> <strong>Escandalo BRB x Banco Master</strong> - BOMBA PRINCIPAL <span class="tag tag-alta">ATUALIZADO 26/02</span>
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <div class="alerta-box">
+            <strong>PF - Operacao Compliance Zero (Nov/2025):</strong> Daniel Vorcaro (dono do Master) PRESO. Presidente do BRB AFASTADO pela PF. BRB comprou R$ 12,2 bilhoes em carteiras fraudulentas. <strong>Perdas estimadas: R$ 5 a R$ 9 bilhoes.</strong>
+          </div>
+
+          <h4>Numeros da Crise (Atualizados)</h4>
+          <table>
+            <tr><th>Indicador</th><th>Valor</th><th>Status</th></tr>
+            <tr><td>Carteiras fraudulentas compradas</td><td><strong>R$ 12,2 bilhoes</strong></td><td><span class="tag tag-alta">FRAUDE</span></td></tr>
+            <tr><td>Total injetado no Master (2024-2025)</td><td><strong>R$ 16,7 bilhoes</strong></td><td><span class="tag tag-alta">CRITICO</span></td></tr>
+            <tr><td>Provisionamento exigido pelo BC</td><td><strong>R$ 2,6 bilhoes</strong></td><td><span class="tag tag-alta">OBRIGATORIO</span></td></tr>
+            <tr><td>Patrimonio liquido do BRB</td><td>R$ 4,5 bilhoes</td><td><span class="tag tag-media">EM RISCO</span></td></tr>
+            <tr><td>Perdas estimadas totais</td><td><strong>R$ 5 a R$ 9 bilhoes</strong></td><td><span class="tag tag-alta">DEVASTADOR</span></td></tr>
+            <tr><td>Aporte de capital proposto</td><td>Ate R$ 8,86 bilhoes</td><td><span class="tag tag-media">PENDENTE</span></td></tr>
+            <tr><td>Indice de Basileia</td><td><strong>ACIMA DO LIMITE</strong></td><td><span class="tag tag-alta">ALARME</span></td></tr>
+          </table>
+
+          <h4>Risco de Federalizacao - Cenario Abril/2026</h4>
+          <div class="alerta-box">
+            <strong>ALERTA MAXIMO:</strong> O balanco do BRB sai em <strong>abril/2026</strong>. O banco esta <strong>acima do limite da Basileia</strong>. Se o GDF nao realizar aportes ate <strong>31 de marco</strong>, o Banco Central pode aplicar medidas prudenciais preventivas. A <strong>Caixa Economica Federal</strong> ja negocia compra de carteiras do BRB. Ha risco real de <strong>federalizacao</strong> e o DF pode <strong>perder o BRB</strong>.
+          </div>
+          <div class="citacao">"O tempo e nosso inimigo. Precisamos de coisas rapidas e nao sei se vamos conseguir"<div class="citacao-autor">- Fonte interna do BRB (NeoFeed, fev/2026)</div></div>
+
+          <h4>Cenarios Possiveis (do menos ao mais grave)</h4>
+          <ol>
+            <li>Venda de ativos do Master e imoveis do GDF</li>
+            <li>Emprestimo do FGC (Fundo Garantidor de Credito)</li>
+            <li>Emprestimo de consorcio de bancos privados</li>
+            <li>Criacao de FII com imoveis publicos do DF</li>
+            <li><strong>Intervencao do Banco Central</strong></li>
+            <li><strong style="color:#e74c3c">Federalizacao (Caixa assume) - DF PERDE O BRB</strong></li>
+            <li><strong style="color:#e74c3c">Liquidacao (ultimo recurso)</strong></li>
+          </ol>
+
+          <h4>Datas Criticas</h4>
+          <div class="timeline-item"><div class="timeline-data">18/03/2026</div><div class="timeline-texto">Assembleia Geral Extraordinaria do BRB para deliberar aumento de capital</div></div>
+          <div class="timeline-item"><div class="timeline-data">28/03/2026</div><div class="timeline-texto">Saida programada de Ibaneis do governo (Celina assume)</div></div>
+          <div class="timeline-item"><div class="timeline-data">31/03/2026</div><div class="timeline-texto">Data-limite para aporte no BRB antes de medidas do BC</div></div>
+          <div class="timeline-item"><div class="timeline-data">Abril/2026</div><div class="timeline-texto">Divulgacao do balanco do BRB - momento da verdade</div></div>
+
+          <h4>Ligacao Ibaneis-Master (Agencia Publica, fev/2026)</h4>
+          <ul>
+            <li>Carteira de credito do BRB saltou de <strong>R$ 37 bi para R$ 57 bi</strong> em 12 meses (R$ 12,2 bi do Master)</li>
+            <li>Ibaneis enviou PL 1882/2025 em <strong>regime de urgencia</strong> a CLDF para comprar 49% do Master. Aprovado em <strong>1 semana</strong></li>
+            <li>BC <strong>vetou a aquisicao</strong> por irregularidades em setembro/2025</li>
+            <li>Ibaneis se reuniu <strong>4 vezes com Daniel Vorcaro</strong> (dono do Master)</li>
+            <li><strong>Juliana Monici</strong> (chefe de gabinete de Ibaneis) era membro do conselho fiscal do BRB - re em investigacao da CVM</li>
+          </ul>
+          <div class="citacao">"Entrei mudo e sai calado"<div class="citacao-autor">- Ibaneis Rocha, negando ter discutido BRB/Master com Vorcaro</div></div>
+          <div class="citacao">"Eu nao faria aquisicao de banco sem comunicar ao acionista controlador"<div class="citacao-autor">- Paulo Henrique Costa, ex-presidente do BRB (contradizendo Ibaneis)</div></div>
+          <div class="citacao">"Fomos enganados"<div class="citacao-autor">- Deputado da base de Ibaneis sobre o caso BRB-Master (Correio Braziliense, fev/2026)</div></div>
+
+          <h4>Ligacao com Celina</h4>
+          <ul>
+            <li>Criticos: "Ibaneis e Celina armaram a compra do Master pelo BRB"</li>
+            <li>Movimentos pedem "Fora Ibaneis e Celina!"</li>
+            <li>3 pedidos de impeachment (PSB, Cidadania, PSOL) citando 7 crimes</li>
+            <li>Saida antecipada de Ibaneis <strong>sepulta o impeachment</strong></li>
+          </ul>
+          <p><strong>Contraponto:</strong> Tendencia e que BRB seja visto como VITIMA de fraude. <strong>Nao ha acusacao direta contra Celina.</strong> Se Ibaneis sair em marco, Celina assume limpa.</p>
+        </div></div>
+      </div>
+
+      <!-- Dracon -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-gavel" style="color:#e67e22"></i> Operacao Dracon - Improbidade Administrativa
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <p><strong>Criminal:</strong> ABSOLVIDA em marco/2025 (in dubio pro reo)</p>
+          <div class="alerta-box">
+            <strong>Improbidade:</strong> PROCESSO CONTINUA em tramitacao. TJDFT negou recurso de Celina em outubro/2025. MPDFT pede condenacao. Gravacoes de Liliane Roriz reconhecidas como provas validas.
+          </div>
+          <h4>Audio comprometedor</h4>
+          <p>"La no meu gabinete ta cheio de analfabeto, que nao sabe fazer nada, mas sao as pessoas que me ajudaram"</p>
+        </div></div>
+      </div>
+
+      <!-- Censura -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-ban" style="color:#e74c3c"></i> Censura e Intimidacao da Imprensa
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <ul>
+            <li><strong>Caso Notibras:</strong> Pediu prisao do editor Jose Seabra. ABI denunciou.</li>
+            <li><strong>Caso STJ:</strong> Ministro Salomao suspendeu censura a jornalista</li>
+            <li><strong>Brasilia Ironica:</strong> Jornalista condenado a R$ 30 mil</li>
+            <li><strong>Padrao:</strong> "Engrenagem de intimidacao" (Diario de Ceilandia)</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <!-- BILHETE FLAVIO BOLSONARO -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-file-pen" style="color:#c0392b"></i> <strong>Bilhete de Flavio Bolsonaro</strong> - Apoio a Celina Condicionado <span class="tag tag-alta">NOVO 26/02</span>
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <div class="alerta-box">
+            <strong>BOMBA (25-26/02/2026):</strong> A Folha de S. Paulo obteve anotacoes manuscritas de <strong>Flavio Bolsonaro</strong> feitas durante reuniao da cupula do PL em 24/02/2026. No trecho sobre o DF, Flavio escreveu a mao: <strong>"Se Ibaneis for candidato ao Senado, nao da para oficializar com Celina"</strong>.
+          </div>
+
+          <h4>O Documento</h4>
+          <ul>
+            <li><strong>O que e:</strong> Anotacoes manuscritas intituladas "Situacao nos Estados" - lista impressa com observacoes a mao de Flavio</li>
+            <li><strong>Quando:</strong> Reuniao da cupula do PL em Brasilia, <strong>24 de fevereiro de 2026</strong></li>
+            <li><strong>Presentes:</strong> Flavio Bolsonaro, Valdemar Costa Neto (presidente do PL), Rogerio Marinho e dirigentes do PL</li>
+            <li><strong>Como vazou:</strong> Folha de S. Paulo obteve durante entrevista coletiva</li>
+          </ul>
+
+          <h4>A Anotacao sobre o DF - Transcricao Exata</h4>
+          <div class="citacao" style="border-left-color: #c0392b;">
+            "Se Ibaneis for candidato ao Senado, <strong>nao da para oficializar com Celina</strong>"
+            <div class="citacao-autor">- Anotacao manuscrita de Flavio Bolsonaro, reuniao PL 24/02/2026</div>
+          </div>
+
+          <h4>Chapa Planejada pelo PL no DF</h4>
+          <table>
+            <tr><th>Cargo</th><th>Candidato(a)</th><th>Partido</th><th>Status</th></tr>
+            <tr><td>Governadora</td><td><strong>Celina Leao</strong></td><td>PP</td><td><span class="tag tag-media">CONDICIONADO</span></td></tr>
+            <tr><td>Senadora (vaga 1)</td><td><strong>Michelle Bolsonaro</strong></td><td>PL</td><td><span class="tag tag-baixa">CONFIRMADA</span></td></tr>
+            <tr><td>Senadora (vaga 2)</td><td><strong>Bia Kicis</strong></td><td>PL</td><td><span class="tag tag-baixa">CONFIRMADA</span></td></tr>
+          </table>
+          <div class="info-box"><strong>Problema:</strong> Se Ibaneis concorrer ao Senado, disputara diretamente com Michelle e Bia Kicis. Isso torna insustentavel o PL apoiar Celina (vice de Ibaneis) e ao mesmo tempo concorrer contra ele ao Senado.</div>
+
+          <h4>Declaracoes de Flavio Bolsonaro</h4>
+          <div class="citacao">
+            "As pessoas com quem eu conversava falavam sobre suas impressoes e opinioes, e eu anotava para aproveitar ou nao o que as pessoas estavam falando"
+            <div class="citacao-autor">- Flavio Bolsonaro ao O Globo, justificando as anotacoes (25/02/2026)</div>
+          </div>
+          <div class="citacao">
+            "Muitas opinioes registradas ali nao sao minhas, e sim de outros participantes do encontro"
+            <div class="citacao-autor">- Flavio Bolsonaro, tentando minimizar o impacto (25/02/2026)</div>
+          </div>
+          <p><strong>Bia Kicis</strong> confirmou a "chapa pura" do PL (Michelle + Bia) ao Correio Braziliense em 23/02/2026.</p>
+
+          <h4>Impacto Direto na Campanha de Celina</h4>
+          <div class="alerta-box">
+            <strong>5 CONSEQUENCIAS IMEDIATAS:</strong>
+            <ol>
+              <li>Apoio do PL a Celina <strong>NAO esta garantido</strong> - depende de Ibaneis</li>
+              <li>Se Ibaneis concorrer ao Senado, o PL pode <strong>nao oficializar</strong> apoio a Celina</li>
+              <li>Expoe <strong>atrito interno</strong> entre Flavio e Michelle sobre a estrategia no DF</li>
+              <li>Michelle ja contava com apoio a Celina como certo - revisao gera <strong>tensao</strong></li>
+              <li>Celina fica refem de uma <strong>decisao que nao controla</strong> (se Ibaneis sai ou fica)</li>
+            </ol>
+          </div>
+
+          <h4>Atrito Flavio x Michelle</h4>
+          <ul>
+            <li><strong>Michelle:</strong> Esperava consolidacao antecipada do apoio a Celina (aliada proxima)</li>
+            <li><strong>Flavio:</strong> Prefere aguardar decisao de Ibaneis antes de fechar o arranjo</li>
+            <li><strong>Bolsonaro pai:</strong> Ja sinalizou apoio a chapa Michelle + Bia Kicis (chapa pura PL)</li>
+            <li><strong>Michelle e Celina:</strong> Procuradas, NAO quiseram comentar o teor das anotacoes</li>
+          </ul>
+
+          <h4>Conexao com Saida de Ibaneis - Por que Importa</h4>
+          <div class="destaque-box">
+            <strong>PONTO-CHAVE:</strong> A saida de Ibaneis do governo (prevista para <strong>28/03/2026</strong>) e <strong>fundamental</strong> para o projeto da Celina. Se Ibaneis desistir do Senado por causa da crise do BRB e do veto do PL, ele <strong>pode nao renunciar em abril</strong>. Sem a renuncia, Celina nao assume o governo e perde o principal ativo eleitoral: <strong>governar o DF antes da eleicao</strong>.
+          </div>
+
+          <h4>Cenarios Possiveis</h4>
+          <table>
+            <tr><th>Cenario</th><th>Probabilidade</th><th>Impacto para Celina</th></tr>
+            <tr><td>Ibaneis renuncia e NAO concorre ao Senado</td><td><span class="tag tag-baixa">MELHOR</span></td><td>Celina assume governo + PL oficializa apoio</td></tr>
+            <tr><td>Ibaneis renuncia e concorre ao Senado</td><td><span class="tag tag-media">MEDIO</span></td><td>Celina assume, mas perde apoio formal do PL</td></tr>
+            <tr><td>Ibaneis NAO renuncia (desiste do Senado)</td><td><span class="tag tag-alta">PIOR</span></td><td>Celina NAO assume o governo. Projeto comprometido</td></tr>
+          </table>
+
+          <h4>Fontes</h4>
+          <ul style="font-size:11px; color:#8899bb;">
+            <li>Folha de S. Paulo - Anotacoes de Flavio Bolsonaro (25/02/2026)</li>
+            <li>Metropoles - Anotacoes de Flavio indicam estrategias do PL nos estados</li>
+            <li>Poder360 - Anotacoes de Flavio mostram impasse do PL em eleicoes do DF</li>
+            <li>Tribuna do Sertao - "Nao da para oficializar": plano de Flavio expoe atrito com Michelle</li>
+            <li>InfoMoney - "Me puxa", "e do Valdemar" e "ligar para Tarcisio"</li>
+            <li>CNN Brasil - Flavio diz que Bolsonaro decidiu candidaturas do PL ao Senado</li>
+            <li>Gazeta do Povo - Bolsonaro escolhe chapa pura do PL com Bia Kicis e Michelle</li>
+            <li>CartaCapital - Rifado pelo bolsonarismo, Ibaneis ve candidatura perder espaco</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <!-- 8 de Janeiro e Saude -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-exclamation-circle" style="color:#f0c040"></i> 8 de Janeiro, Saude e Outras Crises
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <h4>8 de Janeiro - Posicionamento Contraditorio</h4>
+          <ul>
+            <li>Foi ao ato pedindo anistia na Av. Paulista (abr/2025)</li>
+            <li>Tentou jogar culpa no governo Lula</li>
+            <li>Se beneficiou do evento (assumiu governo quando Ibaneis foi afastado)</li>
+          </ul>
+          <h4>Crise na Saude</h4>
+          <ul>
+            <li>Disse "49% dos atendimentos sao do Entorno" sem apresentar dados</li>
+            <li>Frase infeliz: "Se temos fila, e porque temos programas sociais"</li>
+            <li>Corte de R$ 1,1 bi no orcamento da saude para 2026</li>
+          </ul>
+          <h4>Outras</h4>
+          <ul>
+            <li>Feminicidios recordes durante gestao interina</li>
+            <li>Demolicoes de ocupacoes nas periferias</li>
+            <li>Cortes orcamentarios em educacao</li>
+          </ul>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 6. REDES SOCIAIS E IMAGEM -->
+<!-- ============================================================ -->
+<div class="accordion">
+  <div class="accordion-header acc-redes" onclick="toggleAcc(this)">
+    <div class="acc-icon"><i class="fa-solid fa-hashtag"></i></div>
+    <div>
+      <div class="acc-title">Redes Sociais e Imagem Publica <span class="tag tag-alta">ATUALIZADO</span></div>
+      <div class="acc-desc">Instagram, Twitter, TikTok, midia, SWOT, repercussao bilhete Flavio, cobertura crise BRB</div>
+    </div>
+    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+  </div>
+  <div class="accordion-body">
+    <div class="accordion-content">
+
+      <!-- Redes -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-brands fa-instagram" style="color:#e74c3c"></i> Presenca nas Redes Sociais <span class="tag tag-info">ATUALIZADO 26/02</span>
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Plataforma</th><th>Perfil</th><th>Seguidores</th><th>Status</th></tr>
+            <tr><td>Instagram</td><td>@celinaleao</td><td><strong>220 mil</strong> (13 mil posts)</td><td><span class="tag tag-baixa">FORTE</span></td></tr>
+            <tr><td>Twitter/X</td><td>@celinaleao</td><td>~14 mil</td><td><span class="tag tag-media">MEDIO</span></td></tr>
+            <tr><td>TikTok</td><td>@celinaleaodf</td><td>~3.400</td><td><span class="tag tag-alta">FRACO</span></td></tr>
+            <tr><td>YouTube</td><td>-</td><td>-</td><td><span class="tag tag-alta">AUSENTE</span></td></tr>
+          </table>
+          <div class="alerta-box"><strong>TikTok e YouTube sao pontos criticos.</strong> 3.400 seguidores no TikTok e inaceitavel para pre-candidata a governadora. Instagram cresceu para 220k mas engajamento institucional demais.</div>
+        </div></div>
+      </div>
+
+      <!-- O que falam -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-comments" style="color:#2ecc71"></i> O que Falam Bem / O que Falam Mal
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <h4 style="color:#2ecc71">Elogios Recorrentes</h4>
+          <ol>
+            <li>Gestora presente e ativa - conhece o DF em profundidade</li>
+            <li>Experiencia politica completa (distrital + federal + vice)</li>
+            <li>Articuladora habilidosa</li>
+            <li>Defensora das mulheres (43 leis)</li>
+            <li>Proxima do povo (76% de 64 mil demandas resolvidas)</li>
+            <li>Menor indice de homicidios em 48 anos</li>
+            <li>Igreja Legal: 554 templos regularizados</li>
+          </ol>
+          <h4 style="color:#e74c3c">Criticas Recorrentes</h4>
+          <ol>
+            <li>Escandalo BRB-Master (principal fragilidade)</li>
+            <li>Processos contra imprensa / censura</li>
+            <li>"Cola com Ibaneis" - tudo que atinge ele, atinge ela</li>
+            <li>Posicionamento polarizado (apoio a Bolsonaro)</li>
+            <li>Rejeicao de 21-27%</li>
+          </ol>
+        </div></div>
+      </div>
+
+      <!-- SWOT -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-table-cells" style="color:#f0c040"></i> Analise SWOT
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <div class="swot">
+            <div class="swot-item swot-forca">
+              <div class="swot-title">Forcas</div>
+              <ul>
+                <li>Lider absoluta (40-50%)</li>
+                <li>Gestora competente</li>
+                <li>Base evangelica solida</li>
+                <li>Apoio de Ibaneis e maquina</li>
+                <li>Instagram forte (220k)</li>
+              </ul>
+            </div>
+            <div class="swot-item swot-fraqueza">
+              <div class="swot-title">Fraquezas</div>
+              <ul>
+                <li>Escandalo BRB-Master (agravado)</li>
+                <li>TikTok/YouTube inexistentes</li>
+                <li>Processos contra imprensa</li>
+                <li><strong>Apoio PL condicionado (bilhete Flavio)</strong></li>
+                <li>Comunicacao muito institucional</li>
+                <li><strong>Risco de herdar crise BRB</strong></li>
+              </ul>
+            </div>
+            <div class="swot-item swot-oportunidade">
+              <div class="swot-title">Oportunidades</div>
+              <ul>
+                <li>Vitoria no 1o turno</li>
+                <li>Ibaneis desistir do Senado = PL oficializa</li>
+                <li>Assumir governo em marco (se Ibaneis sair)</li>
+                <li>Narrativa propria, descolada de Ibaneis</li>
+                <li>Pauta feminina com forca</li>
+                <li>Salvar o BRB = heroina</li>
+              </ul>
+            </div>
+            <div class="swot-item swot-ameaca">
+              <div class="swot-title">Ameacas</div>
+              <ul>
+                <li><strong>Federalizacao do BRB (abril)</strong></li>
+                <li><strong>Ibaneis NAO renunciar</strong></li>
+                <li><strong>PL nao oficializar apoio</strong></li>
+                <li>Candidatura forte de Arruda</li>
+                <li>Cappelli agressivo nas redes</li>
+                <li>Fragmentacao direita</li>
+              </ul>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- Estrategia -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-bullseye" style="color:#e67e22"></i> Estrategia de Comunicacao e Midia
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <h4>Pontos Fortes da Estrategia</h4>
+          <ul>
+            <li>Discricao calculada - evita polemicas</li>
+            <li>Foco em "mostrar servico" - inauguracoes, entregas</li>
+            <li>Presenca territorial - conhece cada RA</li>
+            <li>Aproximacao com evangelicos</li>
+            <li>Narrativa "continuidade com evolucao"</li>
+          </ul>
+          <h4>Pontos Fracos da Estrategia</h4>
+          <ul>
+            <li>TikTok abandonado, YouTube ausente</li>
+            <li>Reacao agressiva a criticos (efeito Streisand)</li>
+            <li>Falta hashtags/campanhas virais proprias</li>
+            <li>Comunicacao muito institucional, falta humanizacao</li>
+          </ul>
+          <h4>Cobertura na Midia - Geral</h4>
+          <table>
+            <tr><th>Veiculo</th><th>Tom</th></tr>
+            <tr><td>Metropoles</td><td>Equilibrado, nao poupa criticas</td></tr>
+            <tr><td>Correio Braziliense</td><td>Institucional, detalhado</td></tr>
+            <tr><td>CNN Brasil</td><td>Factual, focado em dados</td></tr>
+            <tr><td>Gazeta do Povo</td><td>Favoravel (centro-direita)</td></tr>
+            <tr><td>CartaCapital</td><td>Critico (centro-esquerda)</td></tr>
+            <tr><td>Brasil de Fato</td><td>Hostil</td></tr>
+          </table>
+        </div></div>
+      </div>
+
+      <!-- NOVA: Repercussao Midia - Bilhete e BRB -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-newspaper" style="color:#c0392b"></i> <strong>Repercussao na Midia: Bilhete Flavio + Crise BRB</strong> <span class="tag tag-alta">NOVO 26/02</span>
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+
+          <h4>Cobertura do Bilhete de Flavio Bolsonaro (25-26/02/2026)</h4>
+          <div class="alerta-box"><strong>EXPOSICAO NACIONAL:</strong> O vazamento das anotacoes de Flavio tomou a midia nacional em menos de 24h. Celina aparece em todas as materias como "refem" de uma decisao entre Ibaneis e o PL.</div>
+          <table>
+            <tr><th>Veiculo</th><th>Manchete / Abordagem</th><th>Tom</th></tr>
+            <tr><td><strong>Folha de S. Paulo</strong></td><td>Revelou as anotacoes originais - "Situacao nos Estados"</td><td><span class="tag tag-alta">CRITICO</span></td></tr>
+            <tr><td><strong>Metropoles</strong></td><td>"Anotacoes de Flavio indicam estrategias do PL nos estados"</td><td><span class="tag tag-media">FACTUAL</span></td></tr>
+            <tr><td><strong>Poder360</strong></td><td>"Anotacoes de Flavio mostram impasse do PL em eleicoes do DF"</td><td><span class="tag tag-media">FACTUAL</span></td></tr>
+            <tr><td><strong>CNN Brasil</strong></td><td>"Flavio diz que Bolsonaro decidiu candidaturas do PL ao Senado"</td><td><span class="tag tag-media">FACTUAL</span></td></tr>
+            <tr><td><strong>Tribuna do Sertao</strong></td><td>"'Nao da para oficializar': plano de Flavio expoe atrito com Michelle"</td><td><span class="tag tag-alta">NEGATIVO</span></td></tr>
+            <tr><td><strong>InfoMoney</strong></td><td>"Plano de Flavio no DF expoe novo ponto de atrito com Michelle"</td><td><span class="tag tag-alta">NEGATIVO</span></td></tr>
+            <tr><td><strong>CartaCapital</strong></td><td>"Rifado pelo bolsonarismo, Ibaneis ve candidatura ao Senado perder espaco"</td><td><span class="tag tag-alta">HOSTIL</span></td></tr>
+            <tr><td><strong>Brasil 247</strong></td><td>"Anotacoes de Flavio revelam estrategia eleitoral do PL"</td><td><span class="tag tag-alta">HOSTIL</span></td></tr>
+            <tr><td><strong>Revista Forum</strong></td><td>"Bomba: Folha teve acesso a anotacoes de Flavio sobre candidatos"</td><td><span class="tag tag-alta">HOSTIL</span></td></tr>
+            <tr><td><strong>Gazeta do Povo</strong></td><td>"Bolsonaro escolhe chapa pura com Bia Kicis e Michelle ao Senado"</td><td><span class="tag tag-baixa">NEUTRO</span></td></tr>
+            <tr><td><strong>Portal JT</strong></td><td>"Notas de Flavio ampliam racha com Michelle no PL"</td><td><span class="tag tag-alta">NEGATIVO</span></td></tr>
+          </table>
+
+          <h4>Cobertura da Crise BRB / Federalizacao (fev/2026)</h4>
+          <table>
+            <tr><th>Veiculo</th><th>Manchete</th><th>Tom</th></tr>
+            <tr><td><strong>NeoFeed</strong></td><td>"Em clima de tensao e ameaca de federalizacao, o tempo e inimigo do BRB"</td><td><span class="tag tag-alta">ALARMISTA</span></td></tr>
+            <tr><td><strong>Gazeta do Povo</strong></td><td>"BRB pode virar banco federal e transferir rombo ao contribuinte"</td><td><span class="tag tag-alta">CRITICO</span></td></tr>
+            <tr><td><strong>Agencia Publica</strong></td><td>"BRB: como Ibaneis Rocha esta ligado a crise do Banco Master"</td><td><span class="tag tag-alta">INVESTIGATIVO</span></td></tr>
+            <tr><td><strong>Correio Braziliense</strong></td><td>"Fomos enganados, diz deputado da base sobre caso BRB-Master"</td><td><span class="tag tag-alta">CRITICO</span></td></tr>
+            <tr><td><strong>Metropoles</strong></td><td>"BRB nega ter recebido comunicacao do BC sobre federalizacao"</td><td><span class="tag tag-media">FACTUAL</span></td></tr>
+            <tr><td><strong>O Tempo</strong></td><td>"Ibaneis oferece ate elefante branco para cobrir rombo do BRB"</td><td><span class="tag tag-alta">IRONICO</span></td></tr>
+          </table>
+
+          <h4>Narrativas Dominantes na Midia</h4>
+          <div class="alerta-box">
+            <strong>3 NARRATIVAS PERIGOSAS para Celina:</strong>
+            <ol>
+              <li><strong>"Celina e refem"</strong> - Depende de decisao de Ibaneis e do PL, nao controla proprio destino</li>
+              <li><strong>"Governo BRB-Master"</strong> - Qualquer candidato ligado ao governo Ibaneis carrega o peso do escandalo</li>
+              <li><strong>"O DF pode perder o BRB"</strong> - Se a federalizacao ocorrer durante governo Celina, ela sera responsabilizada</li>
+            </ol>
+          </div>
+
+          <h4>Impacto nas Redes Sociais</h4>
+          <ul>
+            <li><strong>Twitter/X:</strong> "Bilhete do Flavio" e "BRB" nos trending topics do DF em 25-26/02</li>
+            <li><strong>Instagram:</strong> Celina NAO se pronunciou sobre as anotacoes de Flavio</li>
+            <li><strong>Adversarios:</strong> Cappelli e oposicao ja usam o bilhete para atacar - "Celina nao tem apoio nem do proprio campo"</li>
+            <li><strong>Memes:</strong> Circulam memes sobre "bilhete de escola" de Flavio pedindo autorizacao para Celina</li>
+          </ul>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 7. CONTROLE DE CRISE - POSICIONAMENTO ESTRATEGICO -->
+<!-- ============================================================ -->
+<div class="accordion">
+  <div class="accordion-header acc-controle" onclick="toggleAcc(this)">
+    <div class="acc-icon"><i class="fa-solid fa-shield-halved"></i></div>
+    <div>
+      <div class="acc-title">Controle de Crise - Posicionamento Estrategico</div>
+      <div class="acc-desc">Bilhete Flavio, BRB, Ibaneis, Michelle, Bolsonaro - Protocolos de Resposta e Posicao da Celina</div>
+    </div>
+    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+  </div>
+  <div class="accordion-body">
+    <div class="accordion-content">
+
+      <div class="alerta-box">
+        <strong>QUADRO CRITICO SIMULTÂNEO (26/02/2026):</strong> Celina enfrenta <strong>3 crises interligadas</strong> ao mesmo tempo: (1) Bilhete de Flavio condicionando apoio do PL; (2) Crise do BRB com risco de federalizacao em abril; (3) Incerteza sobre a renuncia de Ibaneis. As 3 crises se alimentam mutuamente e exigem posicionamento coordenado.
+      </div>
+
+      <!-- CRISE 1: Bilhete Flavio -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-1" style="color:#c0392b"></i> <strong>CRISE 1: Bilhete de Flavio Bolsonaro</strong> - Como Celina Deve se Posicionar
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+
+          <div class="protocolo-box">
+            <div class="protocolo-titulo">Protocolo de Resposta Publica</div>
+            <ul>
+              <li><strong>TOM:</strong> Serena, confiante, acima da briga interna do PL</li>
+              <li><strong>POSTURA:</strong> Nao reagir com nervosismo. Nao atacar Flavio. Nao pedir apoio publicamente</li>
+              <li><strong>MENSAGEM-CHAVE:</strong> "Meu projeto e do povo do DF, nao depende de um partido"</li>
+            </ul>
+          </div>
+
+          <h4>O que Celina DEVE fazer</h4>
+          <div class="verde-box">
+            <ol>
+              <li><strong>Minimizar o bilhete:</strong> "Sao anotacoes de reuniao, nao decisoes. O PL e um parceiro importante, mas minha candidatura e sustentada por 11+ partidos e pelo povo do DF"</li>
+              <li><strong>Reforcar independencia:</strong> "Sou do PP, tenho minha propria base. Quem decide se eu serei governadora e o eleitor, nao uma anotacao"</li>
+              <li><strong>Demonstrar forca:</strong> Divulgar agenda intensa de trabalho, inauguracoes, entregas - mostrar que esta focada em governar</li>
+              <li><strong>Acionar canal privado com Michelle:</strong> Conversa reservada para alinhar que ambas querem o mesmo: Celina governadora + Michelle senadora</li>
+              <li><strong>Deixar claro que Ibaneis e livre:</strong> "O governador fara a melhor escolha para ele e para o DF. Respeito sua decisao"</li>
+            </ol>
+          </div>
+
+          <h4>O que Celina NAO deve fazer</h4>
+          <div class="alerta-box">
+            <ol>
+              <li><strong>NAO criticar Flavio publicamente</strong> - perderia o PL definitivamente</li>
+              <li><strong>NAO pressionar Ibaneis</strong> a desistir do Senado - pareceria desesperada</li>
+              <li><strong>NAO demonstrar dependencia</strong> do apoio do PL - enfraquece a imagem</li>
+              <li><strong>NAO se envolver</strong> no atrito Flavio x Michelle - deixar eles resolverem</li>
+              <li><strong>NAO ficar em silencio total</strong> - pareceria acuada. Deve falar, mas no tom certo</li>
+            </ol>
+          </div>
+
+          <h4>Sugestao de Fala para a Imprensa</h4>
+          <div class="citacao" style="border-left-color: #2ecc71;">
+            "Vi que saiu uma materia sobre anotacoes de uma reuniao do PL. Olha, eu respeito muito o senador Flavio e toda a familia Bolsonaro. Sao parceiros importantes. Mas minha candidatura nao depende de uma anotacao. Tenho o apoio de 11 partidos, de milhares de liderancas comunitarias e, o mais importante, tenho o apoio do povo do DF, que ve no meu trabalho a continuidade e a evolucao que Brasilia precisa. Estou focada em governar e entregar resultados."
+            <div class="citacao-autor">- Sugestao de fala para Celina Leao</div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- CRISE 2: BRB -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-2" style="color:#c0392b"></i> <strong>CRISE 2: BRB e Risco de Federalizacao</strong> - Posicionamento da Celina
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+
+          <div class="protocolo-box">
+            <div class="protocolo-titulo">Protocolo - Crise BRB</div>
+            <ul>
+              <li><strong>TOM:</strong> Firme, tecnica, responsavel. Defensora do patrimonio do DF</li>
+              <li><strong>POSTURA:</strong> Se posicionar como quem vai RESOLVER o problema, nao como parte dele</li>
+              <li><strong>MENSAGEM-CHAVE:</strong> "O BRB e patrimonio do povo de Brasilia e nao sera perdido"</li>
+            </ul>
+          </div>
+
+          <h4>O que esta em jogo</h4>
+          <div class="alerta-box">
+            <strong>RISCO MAXIMO:</strong>
+            <ul>
+              <li>Balanco do BRB sai em <strong>abril/2026</strong> - Celina provavelmente ja estara no governo</li>
+              <li>Banco esta <strong>acima do limite da Basileia</strong></li>
+              <li>Se nao houver aporte ate 31/03, <strong>BC pode intervir</strong></li>
+              <li>Caixa Economica ja negocia compra de carteiras - <strong>prenuncio de federalizacao</strong></li>
+              <li>Se DF perder o BRB, Celina sera a <strong>governadora que perdeu o banco</strong></li>
+            </ul>
+          </div>
+
+          <h4>Estrategia de Posicionamento sobre o BRB</h4>
+          <div class="verde-box">
+            <ol>
+              <li><strong>Antes de assumir (agora ate marco):</strong> Pedir transparencia total sobre a situacao real do BRB. "O povo do DF tem direito de saber"</li>
+              <li><strong>Se distanciar da operacao Master:</strong> "Essa compra foi uma decisao da gestao do BRB e do governo. Eu nao participei de nenhuma negociacao"</li>
+              <li><strong>Ao assumir o governo:</strong> Anunciar imediatamente uma "auditoria completa e independente no BRB"</li>
+              <li><strong>Sobre a federalizacao:</strong> "Enquanto eu for governadora, o BRB permanecera como banco do DF. Vou lutar com todas as forcas para preservar nosso patrimonio"</li>
+              <li><strong>Sobre o aporte:</strong> Defender a capitalizacao do banco com transparencia e responsabilidade fiscal</li>
+              <li><strong>Narrativa de heroina:</strong> Transformar a crise em oportunidade - "Vou salvar o BRB"</li>
+            </ol>
+          </div>
+
+          <h4>Sugestao de Fala sobre o BRB</h4>
+          <div class="citacao" style="border-left-color: #2ecc71;">
+            "O BRB e um patrimonio de 60 anos do povo de Brasilia. Mais de 1 milhao de familias dependem desse banco. Eu estou acompanhando a situacao com muita preocupacao e seriedade. Quando assumir o governo, minha primeira medida sera uma auditoria completa e independente. Nao vou permitir que o BRB seja federalizado ou liquidado. Vamos preservar o nosso banco e responsabilizar quem causou esse prejuizo."
+            <div class="citacao-autor">- Sugestao de fala para Celina Leao sobre o BRB</div>
+          </div>
+
+          <h4>Datas-Limite para Acao</h4>
+          <table>
+            <tr><th>Data</th><th>Evento</th><th>Acao da Celina</th></tr>
+            <tr><td><strong>18/03</strong></td><td>AGE do BRB (aumento capital)</td><td>Acompanhar de perto, pedir transparencia</td></tr>
+            <tr><td><strong>28/03</strong></td><td>Saida de Ibaneis (se renunciar)</td><td>Assumir governo e anunciar equipe economica de crise</td></tr>
+            <tr><td><strong>31/03</strong></td><td>Prazo aporte BC</td><td>Se ja for governadora, aprovar aporte emergencial</td></tr>
+            <tr><td><strong>Abril</strong></td><td>Balanco BRB divulgado</td><td>Ter plano B pronto. Comunicado a populacao</td></tr>
+          </table>
+        </div></div>
+      </div>
+
+      <!-- CRISE 3: Ibaneis -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-3" style="color:#c0392b"></i> <strong>CRISE 3: Renuncia de Ibaneis</strong> - A Peca-Chave do Xadrez
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+
+          <div class="destaque-box">
+            <strong>POR QUE A RENUNCIA E FUNDAMENTAL:</strong> Se Ibaneis renunciar em marco/abril, Celina assume o governo do DF e ganha o maior ativo eleitoral possivel: <strong>governar antes de pedir votos</strong>. Se Ibaneis NAO renunciar, Celina disputa como "vice" - posicao muito mais fraca.
+          </div>
+
+          <h4>Cenario Atual (26/02/2026)</h4>
+          <ul>
+            <li>Ibaneis anunciou saida para <strong>28/03/2026</strong> para disputar o Senado</li>
+            <li>Porem, com o bilhete de Flavio e a chapa pura do PL (Michelle + Bia Kicis), Ibaneis esta sendo <strong>"rifado" pelo bolsonarismo</strong></li>
+            <li>A crise do BRB <strong>desgasta Ibaneis</strong> como candidato ao Senado</li>
+            <li>Ha risco real de Ibaneis <strong>desistir do Senado e permanecer no governo</strong></li>
+            <li>Ibaneis ja busca <strong>"distanciamento do PL"</strong> e articula palanque proprio</li>
+          </ul>
+
+          <h4>O que Celina DEVE fazer</h4>
+          <div class="verde-box">
+            <ol>
+              <li><strong>Canal aberto com Ibaneis:</strong> Manter conversa frequente, privada, respeitosa. Mostrar que a continuidade do projeto depende dele</li>
+              <li><strong>Nao pressionar publicamente:</strong> Qualquer pressao publica para Ibaneis sair pode ter efeito contrario</li>
+              <li><strong>Ja montar secretariado:</strong> Ter nomes prontos para anunciar no dia da posse - mostra preparo e velocidade</li>
+              <li><strong>Preparar dois cenarios:</strong> Campanha como governadora (se Ibaneis sair) OU campanha como vice (se Ibaneis ficar)</li>
+              <li><strong>Reforcar lealdade:</strong> "Ibaneis e um grande governador. Vou honrar seu legado"</li>
+            </ol>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- CRISE 4: Bolsonaro/Michelle -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-4" style="color:#c0392b"></i> <strong>CRISE 4: Posicao sobre Bolsonaro, Michelle e o PL</strong>
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+
+          <div class="protocolo-box">
+            <div class="protocolo-titulo">Protocolo - Relacao com o Campo Bolsonarista</div>
+            <ul>
+              <li><strong>TOM:</strong> Aliada, mas independente. Proxima, mas nao submissa</li>
+              <li><strong>POSTURA:</strong> Parceira, nao pedinte. Nao se humilhar por apoio</li>
+              <li><strong>MENSAGEM:</strong> "Somos aliados naturais. Temos os mesmos valores. O DF nos unira"</li>
+            </ul>
+          </div>
+
+          <h4>Posicao sobre Cada Ator</h4>
+          <table>
+            <tr><th>Ator</th><th>Posicao Recomendada</th><th>Tom</th></tr>
+            <tr><td><strong>Jair Bolsonaro</strong></td><td>Respeito total. "O presidente e um lider que admiro". Nao cobrar apoio publicamente</td><td>Deferente</td></tr>
+            <tr><td><strong>Flavio Bolsonaro</strong></td><td>Minimizar o bilhete. "Anotacoes de reuniao, nao decisoes". Canal diplomatico aberto</td><td>Diplomatico</td></tr>
+            <tr><td><strong>Michelle Bolsonaro</strong></td><td>Aliada proxima. Manter relacao direta. "Michelle e eu temos a mesma visao para o DF"</td><td>Parceria</td></tr>
+            <tr><td><strong>Bia Kicis</strong></td><td>Boa relacao. Apoiar candidatura ao Senado. Nao disputar espaço</td><td>Cordial</td></tr>
+            <tr><td><strong>Ibaneis Rocha</strong></td><td>Lealdade total publica. "O melhor governador do DF". Nunca criticar</td><td>Leal</td></tr>
+            <tr><td><strong>Valdemar Costa Neto</strong></td><td>Articulacao nos bastidores. Mostrar que Celina e a melhor opcao para o PL no DF</td><td>Pragmatico</td></tr>
+          </table>
+
+          <h4>Sobre o Teor do Bilhete - Posicao Publica</h4>
+          <div class="verde-box">
+            <strong>LINHA OFICIAL:</strong>
+            <ol>
+              <li>"Nao li o bilhete e nao vou comentar anotacoes pessoais de ninguem"</li>
+              <li>"O PL e um grande parceiro. Michelle e Bia sao amigas e serao otimas senadoras"</li>
+              <li>"Minha candidatura tem sustentacao propria, com 11 partidos e o apoio popular"</li>
+              <li>"As alianças se constroem no dialogo, nao na imprensa. Estou tranquila"</li>
+            </ol>
+          </div>
+
+          <h4>Nos Bastidores - Acoes Urgentes</h4>
+          <div class="destaque-box">
+            <strong>ACOES IMEDIATAS (proximas 72h):</strong>
+            <ol>
+              <li>Telefonema PRIVADO para Michelle - alinhar que sao aliadas</li>
+              <li>Contato RESERVADO com Valdemar Costa Neto - reforcar que Celina e a melhor opcao</li>
+              <li>Conversa com Ibaneis - entender se ele ainda vai sair em marco</li>
+              <li>Reunir 11 partidos da coligacao - mostrar que a base e solida mesmo sem PL oficial</li>
+              <li>Preparar "plano B" de campanha sem apoio formal do PL</li>
+            </ol>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- CRISE 5: Matriz Integrada -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-chess" style="color:#f0c040"></i> <strong>Matriz Integrada de Crise</strong> - Visao Geral e Cronograma
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+
+          <h4>Interligacao das Crises</h4>
+          <div class="info-box">
+            <strong>COMO AS 3 CRISES SE CONECTAM:</strong>
+            <ul>
+              <li>A crise do <strong>BRB desgasta Ibaneis</strong> como candidato ao Senado</li>
+              <li>Ibaneis desgastado + <strong>bilhete do Flavio</strong> = risco de Ibaneis nao concorrer ao Senado</li>
+              <li>Se Ibaneis nao concorre, <strong>pode nao renunciar</strong> ao governo</li>
+              <li>Se Ibaneis nao renuncia, <strong>Celina nao assume</strong> e perde o principal ativo</li>
+              <li>POREM: se Ibaneis nao concorre, <strong>PL pode oficializar</strong> apoio a Celina (pois o "se" do bilhete nao se aplica)</li>
+            </ul>
+          </div>
+
+          <h4>Cenario Ideal para Celina (MELHOR CASO)</h4>
+          <div class="verde-box">
+            <ol>
+              <li>Ibaneis <strong>desiste do Senado</strong> (pressionado pelo PL e pela crise BRB)</li>
+              <li>Ibaneis <strong>renuncia mesmo assim</strong> em marco (por desgaste, para evitar impeachment)</li>
+              <li>PL <strong>oficializa apoio a Celina</strong> (pois Ibaneis nao e mais candidato ao Senado)</li>
+              <li>Celina assume governo, anuncia <strong>"auditoria do BRB"</strong> e se posiciona como salvadora</li>
+              <li>Michelle + Bia Kicis ao Senado + Celina ao governo = <strong>chapa unificada</strong></li>
+            </ol>
+          </div>
+
+          <h4>Cenario Pessimista (PIOR CASO)</h4>
+          <div class="alerta-box">
+            <ol>
+              <li>Ibaneis <strong>insiste no Senado</strong> mesmo rifado</li>
+              <li>PL <strong>NAO oficializa</strong> apoio a Celina</li>
+              <li>BRB e <strong>federalizado</strong> em abril durante governo Celina</li>
+              <li>Celina e vista como <strong>"a governadora que perdeu o BRB"</strong></li>
+              <li>Oposicao explora todas as frentes simultaneamente</li>
+            </ol>
+          </div>
+
+          <h4>Cronograma Critico - Proximos 45 Dias</h4>
+          <div class="timeline-item"><div class="timeline-data">26/02 (HOJE)</div><div class="timeline-texto"><strong>Repercussao do bilhete.</strong> Acionar canais privados. Nao reagir publicamente ainda</div></div>
+          <div class="timeline-item"><div class="timeline-data">27-28/02</div><div class="timeline-texto">Telefonemas para Michelle, Valdemar, Ibaneis. Reuniao de crise interna</div></div>
+          <div class="timeline-item"><div class="timeline-data">01-07/03</div><div class="timeline-texto">Se questionada pela imprensa, usar a fala sugerida. Foco em agenda positiva</div></div>
+          <div class="timeline-item"><div class="timeline-data">08-17/03</div><div class="timeline-texto">Montar secretariado. Preparar discurso de posse. Equipe economica definida</div></div>
+          <div class="timeline-item"><div class="timeline-data">18/03</div><div class="timeline-texto"><strong>AGE do BRB</strong> - Acompanhar resultado. Preparar posicionamento</div></div>
+          <div class="timeline-item"><div class="timeline-data">28/03</div><div class="timeline-texto"><strong>MOMENTO D:</strong> Ibaneis sai ou fica? Se sair, Celina assume e anuncia equipe</div></div>
+          <div class="timeline-item"><div class="timeline-data">31/03</div><div class="timeline-texto"><strong>Prazo BC:</strong> Se Celina ja for governadora, aprovar medidas emergenciais BRB</div></div>
+          <div class="timeline-item"><div class="timeline-data">Abril</div><div class="timeline-texto"><strong>Balanco BRB:</strong> Momento da verdade. Ter narrativa pronta para qualquer resultado</div></div>
+
+          <h4>Indicadores de Alerta - Monitorar Diariamente</h4>
+          <table>
+            <tr><th>Indicador</th><th>Sinal de Perigo</th><th>Acao</th></tr>
+            <tr><td>Ibaneis fala em "ficar no governo"</td><td><span class="tag tag-alta">CRITICO</span></td><td>Ativar articuladores para convencer saida</td></tr>
+            <tr><td>Flavio repete "nao oficializar"</td><td><span class="tag tag-alta">ALTO</span></td><td>Reforcar Plano B sem PL formal</td></tr>
+            <tr><td>BC anuncia intervencao no BRB</td><td><span class="tag tag-alta">CRITICO</span></td><td>Pronunciamento imediato: "Vamos salvar o BRB"</td></tr>
+            <tr><td>Pesquisa mostra queda de Celina</td><td><span class="tag tag-media">MEDIO</span></td><td>Intensificar agenda positiva e redes sociais</td></tr>
+            <tr><td>Michelle se manifesta contra Celina</td><td><span class="tag tag-alta">CRITICO</span></td><td>Conversa direta e urgente. Ceder se necessario</td></tr>
+            <tr><td>Ibaneis formaliza candidatura Senado</td><td><span class="tag tag-media">MEDIO</span></td><td>Aceitar e trabalhar sem PL oficial</td></tr>
+          </table>
+
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 8. CONTEXTO POLITICO DF -->
+<!-- ============================================================ -->
+<div class="accordion">
+  <div class="accordion-header acc-contexto" onclick="toggleAcc(this)">
+    <div class="acc-icon"><i class="fa-solid fa-landmark"></i></div>
+    <div>
+      <div class="acc-title">Contexto Politico do DF 2026</div>
+      <div class="acc-desc">Problemas, orcamento, obras, eleitorado, historico, calendario eleitoral</div>
+    </div>
+    <i class="fa-solid fa-chevron-down acc-arrow"></i>
+  </div>
+  <div class="accordion-body">
+    <div class="accordion-content">
+
+      <!-- Problemas -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-exclamation-triangle" style="color:#e74c3c"></i> Principais Problemas do DF
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Problema</th><th>Gravidade</th><th>Detalhe</th></tr>
+            <tr><td><strong>Saude (SUS)</strong></td><td><span class="tag tag-alta">CRITICO</span></td><td>Corte de R$ 1,1 bi, falta profissionais, filas</td></tr>
+            <tr><td>Transporte</td><td><span class="tag tag-alta">ALTO</span></td><td>2,1 mi veiculos, onibus lotados, congestionamentos</td></tr>
+            <tr><td>Habitacao</td><td><span class="tag tag-media">MEDIO</span></td><td>Deficit de 100 mil moradias, investimento reduzido 50%</td></tr>
+            <tr><td><strong>Seguranca</strong></td><td><span class="tag tag-baixa">POSITIVO</span></td><td>Menor taxa de homicidios em 11 anos, 3a menor do Brasil</td></tr>
+            <tr><td><strong>Educacao</strong></td><td><span class="tag tag-baixa">POSITIVO</span></td><td>Fila creches reduzida 94%, 12.338 servidores nomeados</td></tr>
+          </table>
+        </div></div>
+      </div>
+
+      <!-- Orcamento -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-coins" style="color:#f0c040"></i> Orcamento e Obras 2026
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Item</th><th>Valor</th></tr>
+            <tr><td><strong>Orcamento Total</strong></td><td><strong>R$ 74,4 bilhoes</strong></td></tr>
+            <tr><td>Tesouro Distrital</td><td>R$ 45,9 bi</td></tr>
+            <tr><td>Fundo Constitucional (FCDF)</td><td>R$ 28,4 bi (~40%)</td></tr>
+            <tr><td>Investimentos em obras</td><td>~R$ 15 bilhoes ate fim 2026</td></tr>
+          </table>
+          <h4>Principais Obras</h4>
+          <ul>
+            <li>Duplicacao Guara-Bandeirante, 2 pontes Lago Sul, BRT Sul Santa Maria</li>
+            <li>Sol Nascente - maior projeto de infraestrutura urbana do DF</li>
+            <li>13 novas UBS + 7 novas UPAs</li>
+            <li>Novas creches e centros de educacao infantil</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <!-- Eleitorado -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-people-group" style="color:#3498db"></i> Perfil do Eleitorado do DF
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Dado</th><th>Valor</th></tr>
+            <tr><td>Total eleitores</td><td>~2,2 milhoes</td></tr>
+            <tr><td>Mulheres</td><td><strong>1.192.539 (maioria)</strong></td></tr>
+            <tr><td>Homens</td><td>1.013.057</td></tr>
+            <tr><td>Maior faixa</td><td>36-45 anos (23%)</td></tr>
+            <tr><td>Maior escolaridade</td><td>Ensino Medio (667k) + Superior (508k)</td></tr>
+          </table>
+          <h4>Maiores Colegios Eleitorais</h4>
+          <ol>
+            <li><strong>Ceilandia</strong> (3 zonas eleitorais) - maior eleitorado</li>
+            <li><strong>Aguas Claras</strong> - maior colegio individual</li>
+            <li><strong>Samambaia</strong></li>
+            <li><strong>Taguatinga</strong></li>
+          </ol>
+          <div class="info-box">
+            <strong>DF tende para centro-direita.</strong> Eleitor pragmatico, valoriza gestao e resultados. Cidades satelites concentram maioria dos votos. Escolaridade acima da media nacional.
+          </div>
+        </div></div>
+      </div>
+
+      <!-- Historico -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-clock-rotate-left" style="color:#9b59b6"></i> Historico Eleitoral do DF
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <table>
+            <tr><th>Ano</th><th>Governador</th><th>Partido</th><th>Turno</th></tr>
+            <tr><td>1990</td><td>Joaquim Roriz</td><td>PTR</td><td>1o</td></tr>
+            <tr><td>1994</td><td>Cristovam Buarque</td><td>PT</td><td>2o</td></tr>
+            <tr><td>1998</td><td>Joaquim Roriz</td><td>MDB</td><td>2o</td></tr>
+            <tr><td>2002</td><td>Joaquim Roriz</td><td>MDB</td><td>1o</td></tr>
+            <tr><td>2006</td><td>Jose R. Arruda</td><td>DEM</td><td>1o</td></tr>
+            <tr><td>2010</td><td>Agnelo Queiroz</td><td>PT</td><td>2o</td></tr>
+            <tr><td>2014</td><td>Rodrigo Rollemberg</td><td>PSB</td><td>2o</td></tr>
+            <tr><td>2018</td><td>Ibaneis Rocha</td><td>MDB</td><td>1o</td></tr>
+            <tr><td>2022</td><td>Ibaneis Rocha</td><td>MDB</td><td>1o</td></tr>
+          </table>
+          <div class="destaque-box"><strong>Tendencia recente:</strong> Desde 2006, candidatos com ampla vantagem vencem no 1o turno (Arruda 2006, Ibaneis 2018, Ibaneis 2022).</div>
+        </div></div>
+      </div>
+
+      <!-- Calendario -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-calendar-days" style="color:#f0c040"></i> Calendario Eleitoral 2026
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <div class="cal-grid">
+            <div class="cal-item"><div class="cal-data">Abr/2026</div><div class="cal-evento">Ibaneis sai, Celina assume governo</div></div>
+            <div class="cal-item"><div class="cal-data">06/Mai</div><div class="cal-evento">Prazo final titulo de eleitor</div></div>
+            <div class="cal-item"><div class="cal-data">20/Jul-05/Ago</div><div class="cal-evento">Convencoes partidarias</div></div>
+            <div class="cal-item"><div class="cal-data">15/Ago</div><div class="cal-evento">Prazo registro candidaturas</div></div>
+            <div class="cal-item"><div class="cal-data">16/Ago</div><div class="cal-evento">Inicio propaganda nas ruas</div></div>
+            <div class="cal-item"><div class="cal-data">28/Ago</div><div class="cal-evento">Inicio horario eleitoral (radio/TV)</div></div>
+            <div class="cal-item cal-destaque"><div class="cal-data">04/Out</div><div class="cal-evento">1&ordm; TURNO</div></div>
+            <div class="cal-item cal-destaque"><div class="cal-data">25/Out</div><div class="cal-evento">2&ordm; TURNO (se houver)</div></div>
+            <div class="cal-item"><div class="cal-data">Ate 19/Dez</div><div class="cal-evento">Diplomacao dos eleitos</div></div>
+            <div class="cal-item"><div class="cal-data">01/Jan/2027</div><div class="cal-evento">Posse</div></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- Peculiaridades -->
+      <div class="sub-accordion">
+        <div class="sub-header" onclick="toggleSub(this)">
+          <i class="fa-solid fa-star" style="color:#1abc9c"></i> Peculiaridades do DF
+          <i class="fa-solid fa-chevron-down sub-arrow"></i>
+        </div>
+        <div class="sub-body"><div class="sub-content">
+          <ul>
+            <li>NAO tem municipios - acumula competencias de estado E municipio</li>
+            <li>35 Regioes Administrativas (administradores indicados pelo governador)</li>
+            <li>NAO ha eleicoes para prefeito/vereador</li>
+            <li>CLDF: 24 deputados distritais (assembleia + camara)</li>
+            <li>8 deputados federais (uma das menores bancadas)</li>
+            <li>FCDF (~40% do orcamento) - tema sensivel, governo federal tentou acabar 2x</li>
+          </ul>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  Campanha Celina Leao (PP) - Governadora DF 2026 &bull; Painel Completo &bull; Atualizado 26/02/2026 &bull; Inclui: Bilhete Flavio, Crise BRB, Controle de Crise
+</div>
+
+<script>
+  // Countdown
+  const dataEleicao = new Date('2026-10-04');
+  const hoje = new Date();
+  const dias = Math.ceil((dataEleicao - hoje) / (1000 * 60 * 60 * 24));
+  document.getElementById('diasRestantes').textContent = dias;
+
+  // Toggle accordion principal
+  function toggleAcc(el) {
+    const body = el.nextElementSibling;
+    const isOpen = el.classList.contains('active');
+    el.classList.toggle('active');
+    body.classList.toggle('open');
+  }
+
+  // Toggle sub-accordion
+  function toggleSub(el) {
+    const body = el.nextElementSibling;
+    el.classList.toggle('active');
+    body.classList.toggle('open');
+  }
+
+  // Fechar tudo
+  function fecharTudo() {
+    document.querySelectorAll('.accordion-header.active').forEach(h => {
+      h.classList.remove('active');
+      h.nextElementSibling.classList.remove('open');
+    });
+    document.querySelectorAll('.sub-header.active').forEach(h => {
+      h.classList.remove('active');
+      h.nextElementSibling.classList.remove('open');
+    });
+  }
+
+  // Abrir tudo
+  function abrirTudo() {
+    document.querySelectorAll('.accordion-header:not(.active)').forEach(h => {
+      h.classList.add('active');
+      h.nextElementSibling.classList.add('open');
+    });
+    document.querySelectorAll('.sub-header:not(.active)').forEach(h => {
+      h.classList.add('active');
+      h.nextElementSibling.classList.add('open');
+    });
+  }
+</script>
+
+</body>
+</html>

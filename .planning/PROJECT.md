@@ -42,6 +42,23 @@ Plataforma web (PWA) de gestao completa de campanhas politicas, nascida para a p
 - [ ] Notificacoes push via PWA
 - [ ] Sistema multi-tenant para vender para outros candidatos (personalizacao de cores, nome, foto)
 - [ ] Responsividade completa mobile-first
+- [ ] Modulo Captacao de Investimentos/Financiamento (controle de doadores, metas, recibos eleitorais)
+- [ ] Controle de Veiculos da campanha (frota, quilometragem, vales combustivel)
+- [ ] Calendario Eleitoral TSE com alertas automaticos de prazos legais
+- [ ] War Room / Feed em tempo real de atividades da equipe em campo
+- [ ] Checklist de pre-campanha e campanha (itens obrigatorios por fase eleitoral)
+- [ ] Subcoordenacoes por segmento (juventude, mulheres, religioso, empresarial, etc)
+- [ ] Dados eleitorais do DF (eleitorado por RA, dados TRE-DF)
+- [ ] Modulo Orcamento da campanha (categorias, controle financeiro, limites legais)
+- [ ] Distribuicao de materiais por regiao com log de entrega
+- [ ] Modulo Patrimonio (inventario de ativos, condicao, valor)
+- [ ] Bandeiracos/Eventos externos com controle de local e conflito de data
+- [ ] Organograma interativo da campanha
+- [ ] Metricas de redes sociais (WhatsApp, Instagram, TikTok -- acompanhamento manual)
+- [ ] Formulario publico de cadastro de apoiador (acessivel via QR Code, sem login)
+- [ ] Modulo Juridico/Prazos (timeline eleitoral, categorias, monitoramento)
+- [ ] Agenda de salas do comite (reserva, conflito de horario)
+- [ ] Tarefas de campo atribuidas por coordenador
 
 ### Out of Scope
 
@@ -79,6 +96,29 @@ O sistema atual e um unico arquivo HTML de 2.474 linhas com CSS e JavaScript inl
 - **QR Code:** Biblioteca JS para gerar e ler QR codes
 - **PDF:** jsPDF ou similar para geracao de relatorios
 - **Hosting:** Vercel, Netlify ou Supabase Hosting
+
+### Referencia: Sistema CONECTA (Celina Leao 2026)
+
+O mesmo desenvolvedor criou o CONECTA para a campanha Celina Leao 2026, sistema mais maduro com:
+- SPA principal com 16+ secoes (CONECTA.html, ~325KB)
+- Modulo de Logistica separado com 16 sub-modulos
+- Login por username via Supabase, 3 usuarios
+- Sincronizacao multiusuario com Supabase
+- Formulario publico de apoiador com LGPD
+- QR Code para cartao de visita digital
+- Organograma interativo da campanha
+- Controle de veiculos e vales combustivel
+- Calendario eleitoral TSE com alertas
+- Dados eleitorais do DF (TRE-DF, 33 RAs, 2.8M eleitores)
+- Agenda de salas do comite
+- Orcamento por categoria
+- War Room com feed em tempo real
+- Checklist de 39 itens (pre-campanha + campanha)
+- PWA basica, deploy em inteia.com.br/conecta2026
+- Coordenadores regionais (6 regioes)
+- Integracoes: Elexion, gamificacao de campo
+
+O CampanhaApp do Neto deve incorporar as melhores funcionalidades do CONECTA, mas com arquitetura mais limpa (modular desde o inicio), visual mais profissional, e pronto para multi-tenant.
 
 ### Modelo de Negocio
 

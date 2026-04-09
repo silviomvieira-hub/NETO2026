@@ -219,13 +219,120 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (populated by roadmapper) | | |
+| INFRA-01 | Phase 1 | Pending |
+| INFRA-02 | Phase 1 | Pending |
+| INFRA-03 | Phase 3 | Pending |
+| INFRA-04 | Phase 3 | Pending |
+| INFRA-05 | Phase 1 | Pending |
+| INFRA-06 | Phase 3 | Pending |
+| INFRA-07 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Pending |
+| AUTH-03 | Phase 1 | Pending |
+| AUTH-04 | Phase 1 | Pending |
+| AUTH-05 | Phase 1 | Pending |
+| AUTH-06 | Phase 1 | Pending |
+| AUTH-07 | Phase 1 | Pending |
+| AUTH-08 | Phase 1 | Pending |
+| DASH-01 | Phase 2 | Pending |
+| DASH-02 | Phase 2 | Pending |
+| DASH-03 | Phase 2 | Pending |
+| DASH-04 | Phase 2 | Pending |
+| DASH-05 | Phase 2 | Pending |
+| TERR-01 | Phase 2 | Pending |
+| TERR-02 | Phase 2 | Pending |
+| TERR-03 | Phase 2 | Pending |
+| TERR-04 | Phase 2 | Pending |
+| TERR-05 | Phase 2 | Pending |
+| TERR-06 | Phase 2 | Pending |
+| AGEN-01 | Phase 2 | Pending |
+| AGEN-02 | Phase 2 | Pending |
+| AGEN-03 | Phase 2 | Pending |
+| AGEN-04 | Phase 2 | Pending |
+| AGEN-05 | Phase 2 | Pending |
+| AGEN-06 | Phase 6 | Pending |
+| PESS-01 | Phase 2 | Pending |
+| PESS-02 | Phase 2 | Pending |
+| PESS-03 | Phase 2 | Pending |
+| PESS-04 | Phase 2 | Pending |
+| PESS-05 | Phase 2 | Pending |
+| PESS-06 | Phase 2 | Pending |
+| LIDE-01 | Phase 2 | Pending |
+| LIDE-02 | Phase 2 | Pending |
+| LIDE-03 | Phase 2 | Pending |
+| LIDE-04 | Phase 2 | Pending |
+| LIDE-05 | Phase 2 | Pending |
+| MAPA-01 | Phase 2 | Pending |
+| MAPA-02 | Phase 2 | Pending |
+| MAPA-03 | Phase 2 | Pending |
+| MAPA-04 | Phase 2 | Pending |
+| DEMA-01 | Phase 2 | Pending |
+| DEMA-02 | Phase 2 | Pending |
+| DEMA-03 | Phase 2 | Pending |
+| DEMA-04 | Phase 2 | Pending |
+| DEMA-05 | Phase 2 | Pending |
+| DEMA-06 | Phase 2 | Pending |
+| PESQ-01 | Phase 2 | Pending |
+| PESQ-02 | Phase 2 | Pending |
+| PESQ-03 | Phase 2 | Pending |
+| PESQ-04 | Phase 2 | Pending |
+| MATE-01 | Phase 2 | Pending |
+| MATE-02 | Phase 2 | Pending |
+| MATE-03 | Phase 2 | Pending |
+| MATE-04 | Phase 2 | Pending |
+| GAME-01 | Phase 4 | Pending |
+| GAME-02 | Phase 4 | Pending |
+| GAME-03 | Phase 4 | Pending |
+| GAME-04 | Phase 4 | Pending |
+| GAME-05 | Phase 4 | Pending |
+| GAME-06 | Phase 4 | Pending |
+| GAME-07 | Phase 4 | Pending |
+| GAME-08 | Phase 4 | Pending |
+| GAME-09 | Phase 4 | Pending |
+| GAME-10 | Phase 4 | Pending |
+| LEAD-01 | Phase 4 | Pending |
+| LEAD-02 | Phase 4 | Pending |
+| LEAD-03 | Phase 4 | Pending |
+| LEAD-04 | Phase 4 | Pending |
+| LEAD-05 | Phase 4 | Pending |
+| LEAD-06 | Phase 4 | Pending |
+| LEAD-07 | Phase 4 | Pending |
+| RELA-01 | Phase 6 | Pending |
+| RELA-02 | Phase 6 | Pending |
+| RELA-03 | Phase 6 | Pending |
+| RELA-04 | Phase 6 | Pending |
+| FINA-01 | Phase 5 | Pending |
+| FINA-02 | Phase 5 | Pending |
+| FINA-03 | Phase 5 | Pending |
+| FINA-04 | Phase 5 | Pending |
+| FINA-05 | Phase 5 | Pending |
+| CAMP-01 | Phase 5 | Pending |
+| CAMP-02 | Phase 5 | Pending |
+| CAMP-03 | Phase 5 | Pending |
+| CAMP-04 | Phase 5 | Pending |
+| CAMP-05 | Phase 5 | Pending |
+| COMP-01 | Phase 6 | Pending |
+| COMP-02 | Phase 6 | Pending |
+| COMP-03 | Phase 6 | Pending |
+| COMP-04 | Phase 6 | Pending |
+| MULT-01 | Phase 7 | Pending |
+| MULT-02 | Phase 7 | Pending |
+| MULT-03 | Phase 7 | Pending |
+| MULT-04 | Phase 7 | Pending |
+| UXUI-01 | Phase 3 | Pending |
+| UXUI-02 | Phase 3 | Pending |
+| UXUI-03 | Phase 3 | Pending |
+| UXUI-04 | Phase 3 | Pending |
+| UXUI-05 | Phase 6 | Pending |
+| UXUI-06 | Phase 6 | Pending |
+| UXUI-07 | Phase 6 | Pending |
+| UXUI-08 | Phase 6 | Pending |
 
 **Coverage:**
 - v1 requirements: 92 total
-- Mapped to phases: 0
-- Unmapped: 92
+- Mapped to phases: 92
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-09*
-*Last updated: 2026-04-09 after initial definition*
+*Last updated: 2026-04-09 after roadmap creation*

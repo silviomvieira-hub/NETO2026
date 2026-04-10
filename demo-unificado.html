@@ -139,6 +139,181 @@
             }
         }
 
+        /* ===== WOW EFFECTS ===== */
+        @keyframes borderGlow {
+            0% { border-color: rgba(0,230,118,0.2); box-shadow: 0 0 5px rgba(0,230,118,0.1); }
+            50% { border-color: rgba(0,230,118,0.6); box-shadow: 0 0 20px rgba(0,230,118,0.2), 0 0 40px rgba(0,230,118,0.1); }
+            100% { border-color: rgba(0,230,118,0.2); box-shadow: 0 0 5px rgba(0,230,118,0.1); }
+        }
+
+        @keyframes goldBorderGlow {
+            0% { border-color: rgba(255,214,0,0.2); box-shadow: 0 0 5px rgba(255,214,0,0.1); }
+            50% { border-color: rgba(255,214,0,0.6); box-shadow: 0 0 20px rgba(255,214,0,0.2), 0 0 40px rgba(255,214,0,0.1); }
+            100% { border-color: rgba(255,214,0,0.2); box-shadow: 0 0 5px rgba(255,214,0,0.1); }
+        }
+
+        @keyframes cascadeIn {
+            from { opacity: 0; transform: translateY(24px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes tickerScroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes typewriterBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Cascade stagger for cards */
+        .cascade > * { opacity: 0; animation: cascadeIn 0.5s ease forwards; }
+        .cascade > *:nth-child(1) { animation-delay: 0.05s; }
+        .cascade > *:nth-child(2) { animation-delay: 0.12s; }
+        .cascade > *:nth-child(3) { animation-delay: 0.19s; }
+        .cascade > *:nth-child(4) { animation-delay: 0.26s; }
+        .cascade > *:nth-child(5) { animation-delay: 0.33s; }
+        .cascade > *:nth-child(6) { animation-delay: 0.40s; }
+        .cascade > *:nth-child(7) { animation-delay: 0.47s; }
+        .cascade > *:nth-child(8) { animation-delay: 0.54s; }
+        .cascade > *:nth-child(9) { animation-delay: 0.61s; }
+
+        /* Glow border on important cards */
+        .card-glow { animation: borderGlow 3s ease-in-out infinite; }
+        .card-gold-glow { animation: goldBorderGlow 3s ease-in-out infinite; }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 9000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: rgba(10, 10, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--green);
+            border-left: 4px solid var(--green);
+            border-radius: 12px;
+            padding: 12px 18px;
+            color: var(--text);
+            font-size: 0.8rem;
+            min-width: 280px;
+            max-width: 360px;
+            box-shadow: 0 8px 32px rgba(0,230,118,0.15);
+            animation: toastIn 0.4s ease, toastOut 0.4s ease 4s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast-icon { font-size: 1.2rem; flex-shrink: 0; }
+        .toast-body { flex: 1; }
+        .toast-title { font-weight: 600; font-size: 0.8rem; margin-bottom: 2px; }
+        .toast-msg { font-size: 0.7rem; color: var(--text-muted); }
+        .toast-time { font-size: 0.6rem; color: var(--text-muted); flex-shrink: 0; }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100px); }
+        }
+
+        /* Activity ticker */
+        .ticker-bar {
+            position: fixed;
+            bottom: 0;
+            left: var(--sidebar-w);
+            right: 0;
+            height: 32px;
+            background: rgba(10, 10, 26, 0.95);
+            border-top: 1px solid var(--border);
+            z-index: 900;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-label {
+            background: var(--green);
+            color: #000;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-track {
+            flex: 1;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: tickerScroll 35s linear infinite;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .ticker-content span {
+            padding: 0 30px;
+        }
+
+        .ticker-content .t-green { color: var(--green); }
+        .ticker-content .t-gold { color: var(--gold); }
+        .ticker-content .t-cyan { color: var(--cyan); }
+        .ticker-content .t-red { color: var(--red); }
+
+        /* Floating background particles */
+        .bg-particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: particleFloat linear infinite;
+        }
+
+        /* Typewriter cursor */
+        .typewriter-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--green);
+            margin-left: 2px;
+            animation: typewriterBlink 0.7s infinite;
+            vertical-align: text-bottom;
+        }
+
+        /* Counter animation helper */
+        .stat-number[data-target] {
+            transition: color 0.3s;
+        }
+
         @keyframes confetti {
             0% {
                 transform: translateY(0) rotate(0deg) scale(1);
@@ -1891,18 +2066,18 @@
                     <input type="password" id="cfgKey" placeholder="sk-...">
                     <label>Modelo Primario</label>
                     <select id="cfgModel">
-                        <option value="helena-premium">helena-premium (Opus 4.6 + fallbacks)</option>
-                        <option value="cc/claude-opus-4-6">Claude Opus 4.6</option>
+                        <option value="cc/claude-opus-4-6" selected>Claude Opus 4.6 (direto)</option>
+                        <option value="helena-premium">helena-premium (combo + fallbacks)</option>
                         <option value="cx/gpt-5.3-codex-xhigh">GPT 5.4 (Codex xHigh)</option>
                         <option value="fast-quality">fast-quality (Sonnet + Flash)</option>
                         <option value="free-unlimited">free-unlimited (gratuito)</option>
                     </select>
                     <label>Modelo Fallback</label>
                     <select id="cfgFallback">
+                        <option value="helena-premium" selected>helena-premium (combo)</option>
                         <option value="cx/gpt-5.3-codex-xhigh">GPT 5.4 (Codex xHigh)</option>
                         <option value="cc/claude-sonnet-4-5-20250929">Claude Sonnet 4.5</option>
-                        <option value="fast-quality">fast-quality</option>
-                        <option value="free-unlimited">free-unlimited</option>
+                        <option value="free-unlimited">free-unlimited (gratuito)</option>
                     </select>
                     <div class="config-btns">
                         <button class="config-cancel" onclick="closeConfig()">Cancelar</button>
@@ -3337,6 +3512,28 @@
         </div>
     </main>
 
+    <!-- TOAST NOTIFICATIONS -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ACTIVITY TICKER -->
+    <div class="ticker-bar" id="tickerBar" style="display:none;">
+        <div class="ticker-label">AO VIVO</div>
+        <div class="ticker-track">
+            <div class="ticker-content">
+                <span>🗳️ <span class="t-green">+3 eleitores</span> cadastrados em Ceilândia</span>
+                <span>🏆 <span class="t-gold">Marina Costa</span> completou missão "10 novos apoiadores"</span>
+                <span>📊 <span class="t-cyan">Pesquisa Datafolha:</span> Neto sobe 2 pontos</span>
+                <span>💬 <span class="t-green">12 mensagens</span> no grupo Neto Taguatinga Norte</span>
+                <span>📍 <span class="t-gold">Felipe Ribeiro</span> fez check-in em Taguatinga Centro</span>
+                <span>⚡ <span class="t-green">+50 XP</span> Juliana Mendes — foto comprovação aprovada</span>
+                <span>🔔 <span class="t-red">Alerta:</span> grupo Samambaia inativo há 24h</span>
+                <span>📰 <span class="t-cyan">Nova notícia</span> sobre transporte no DF — Helena analisando</span>
+                <span>🎯 <span class="t-gold">Meta semanal:</span> 89% concluída — faltam 42 eleitores</span>
+                <span>🤝 <span class="t-green">André Santos</span> cadastrou 5 eleitores via QR Code</span>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ===== APP STATE =====
         const app = {
@@ -3791,8 +3988,8 @@
         const helenaConfig = {
             url: localStorage.getItem('helena_url') || 'http://72.62.108.24:20128',
             key: localStorage.getItem('helena_key') || 'sk-a36cd1d8bbf8db4c-mb2a4a-68e91e26',
-            model: localStorage.getItem('helena_model') || 'helena-premium',
-            fallback: localStorage.getItem('helena_fallback') || 'cx/gpt-5.3-codex-xhigh'
+            model: localStorage.getItem('helena_model') || 'cc/claude-opus-4-6',
+            fallback: localStorage.getItem('helena_fallback') || 'helena-premium'
         };
         let helenaHistory = [];
 
@@ -4052,7 +4249,7 @@ ${JSON.stringify(dados, null, 2)}
                 body: JSON.stringify({
                     model: modelo,
                     messages: messages,
-                    max_tokens: 1500,
+                    max_tokens: 4096,
                     temperature: 0.7,
                     stream: true
                 })
@@ -4113,12 +4310,184 @@ ${JSON.stringify(dados, null, 2)}
             }
         });
 
+        // ===== WOW EFFECTS =====
+
+        // 1. Animated number counters
+        function animateCounters() {
+            document.querySelectorAll('.stat-number[data-target]').forEach(el => {
+                const target = el.getAttribute('data-target');
+                const isPercent = target.includes('%');
+                const isFraction = target.includes('/');
+                if (isFraction || isPercent) { el.textContent = target; return; }
+                const num = parseInt(target.replace(/\./g, ''));
+                if (isNaN(num)) { el.textContent = target; return; }
+                let current = 0;
+                const step = Math.max(1, Math.floor(num / 40));
+                const fmt = (n) => n.toLocaleString('pt-BR');
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= num) { current = num; clearInterval(timer); }
+                    el.textContent = fmt(current);
+                }, 30);
+            });
+        }
+
+        // 2. Toast notification system
+        const toastMessages = [
+            { icon: '🗳️', title: 'Novo eleitor', msg: 'José Roberto cadastrado em Ceilândia por Marina Costa', color: 'var(--green)' },
+            { icon: '🏆', title: 'Missão concluída', msg: 'Felipe Ribeiro completou "10 novos apoiadores" — +100 XP', color: 'var(--gold)' },
+            { icon: '💬', title: 'Grupo ativo', msg: '18 mensagens em "Neto Taguatinga Norte" na última hora', color: 'var(--cyan)' },
+            { icon: '📍', title: 'Check-in', msg: 'Juliana Mendes registrou presença em Samambaia Centro', color: 'var(--green)' },
+            { icon: '📰', title: 'Notícia detectada', msg: 'Helena encontrou matéria sobre educação no Correio Braziliense', color: 'var(--purple)' },
+            { icon: '⚡', title: '+50 XP', msg: 'Marina Costa — comprovação criativa aprovada pelo Coord. Geral', color: 'var(--gold)' },
+            { icon: '🎯', title: 'Meta semanal', msg: 'Região Taguatinga atingiu 100% da meta de cadastros', color: 'var(--green)' },
+            { icon: '🔔', title: 'Alerta Helena', msg: 'Rival aumentou investimento em ads na região Samambaia', color: 'var(--red)' },
+            { icon: '📊', title: 'Pesquisa atualizada', msg: 'Neto subiu 2 pontos na pesquisa estimulada Quaest', color: 'var(--cyan)' },
+            { icon: '🎂', title: 'Aniversário', msg: 'Sandra Lopes faz aniversário hoje — coordenador notificado', color: 'var(--gold)' },
+        ];
+        let toastIdx = 0;
+
+        function showToast() {
+            const t = toastMessages[toastIdx % toastMessages.length];
+            toastIdx++;
+            const container = document.getElementById('toastContainer');
+            const el = document.createElement('div');
+            el.className = 'toast';
+            el.style.borderLeftColor = t.color;
+            el.style.borderColor = t.color;
+            el.innerHTML = `
+                <div class="toast-icon">${t.icon}</div>
+                <div class="toast-body">
+                    <div class="toast-title">${t.title}</div>
+                    <div class="toast-msg">${t.msg}</div>
+                </div>
+                <div class="toast-time">agora</div>
+            `;
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 4500);
+        }
+
+        let toastInterval;
+        function startToasts() {
+            setTimeout(showToast, 3000);
+            toastInterval = setInterval(showToast, 12000);
+        }
+
+        // 3. Typewriter effect for Helena briefing
+        function typewriterEffect(element, text, speed = 18) {
+            element.textContent = '';
+            let i = 0;
+            const cursor = document.createElement('span');
+            cursor.className = 'typewriter-cursor';
+            element.appendChild(cursor);
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.insertBefore(document.createTextNode(text[i]), cursor);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    setTimeout(() => cursor.remove(), 2000);
+                }
+            }, speed);
+        }
+
+        // 4. Floating background particles
+        function createBgParticles() {
+            const colors = ['rgba(0,230,118,0.3)', 'rgba(255,214,0,0.2)', 'rgba(0,229,255,0.2)', 'rgba(179,136,255,0.15)'];
+            for (let i = 0; i < 15; i++) {
+                const p = document.createElement('div');
+                p.className = 'bg-particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.width = (Math.random() * 3 + 1) + 'px';
+                p.style.height = p.style.width;
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.animationDuration = (Math.random() * 20 + 15) + 's';
+                p.style.animationDelay = (Math.random() * 15) + 's';
+                document.body.appendChild(p);
+            }
+        }
+
+        // 5. Add cascade class to grids on page change
+        const origNavigate = app.navigate;
+        const origNavBind = () => {
+            const origHashHandler = window.onhashchange;
+            window.addEventListener('hashchange', () => {
+                setTimeout(() => {
+                    document.querySelectorAll('.page.active .grid').forEach(g => {
+                        g.classList.remove('cascade');
+                        void g.offsetWidth; // force reflow
+                        g.classList.add('cascade');
+                    });
+                }, 50);
+            });
+        };
+
+        // 6. Add data-target to dashboard stat numbers for counter animation
+        function setupCounters() {
+            const statsPage = document.getElementById('page-dashboard');
+            if (statsPage) {
+                statsPage.querySelectorAll('.stat-number').forEach(el => {
+                    if (!el.getAttribute('data-target')) {
+                        el.setAttribute('data-target', el.textContent.trim());
+                    }
+                });
+            }
+        }
+
+        // 7. Enhanced enterSystem with wow effects
+        const origEnterSystem = enterSystem;
+        enterSystem = function() {
+            const splash = document.getElementById('splash');
+            splash.classList.add('hidden');
+            createConfetti();
+            app.init();
+
+            // Show ticker
+            document.getElementById('tickerBar').style.display = 'flex';
+
+            // Start background particles
+            createBgParticles();
+
+            // Animate counters
+            setTimeout(() => {
+                setupCounters();
+                animateCounters();
+            }, 300);
+
+            // Add cascade to initial grid
+            setTimeout(() => {
+                document.querySelectorAll('.page.active .grid').forEach(g => g.classList.add('cascade'));
+            }, 100);
+
+            // Typewriter on Helena briefing
+            setTimeout(() => {
+                const briefing = document.querySelector('#page-dashboard .briefing-text');
+                if (briefing) {
+                    const fullText = briefing.textContent;
+                    typewriterEffect(briefing, fullText, 15);
+                }
+            }, 800);
+
+            // Start toast notifications
+            startToasts();
+
+            // Add glow to briefing card
+            const briefingCard = document.querySelector('#page-dashboard .briefing-card');
+            if (briefingCard) briefingCard.classList.add('card-gold-glow');
+
+            // Second confetti burst
+            setTimeout(createConfetti, 1500);
+
+            // Bind cascade to navigation
+            origNavBind();
+        };
+
         // ===== INIT ON LOAD =====
         window.addEventListener('DOMContentLoaded', () => {
             // Start confetti on page load
             createConfetti();
 
-            // Auto-hide splash after 4 seconds if not clicked
+            // Auto-hide splash after 5 seconds if not clicked
             setTimeout(() => {
                 const splash = document.getElementById('splash');
                 if (splash && !splash.classList.contains('hidden')) {

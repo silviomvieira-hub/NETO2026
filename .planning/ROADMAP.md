@@ -35,7 +35,13 @@
 4. Cross-tenant query test returns empty results (RLS prevents data leakage)
 5. Code is modularized into separate CSS and JS files instead of single 2,474-line HTML
 
-**Plans**: TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Modularizar prototipo monolitico em ES6 modules
+- [ ] 01-02-PLAN.md — Criar schema PostgreSQL, RLS policies e seed data
+- [ ] 01-03-PLAN.md — Implementar autenticacao Supabase com 3 niveis de acesso
+- [ ] 01-04-PLAN.md — Substituir localStorage por Supabase CRUD e ferramenta de migracao
 
 ---
 
@@ -162,7 +168,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Database & Security Foundation | 0/0 | Not started | - |
+| 1. Database & Security Foundation | 0/4 | Planning complete | - |
 | 2. Core Campaign Management | 0/0 | Not started | - |
 | 3. PWA & Offline Field Operations | 0/0 | Not started | - |
 | 4. Gamification & Lead Capture | 0/0 | Not started | - |

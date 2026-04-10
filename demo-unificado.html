@@ -1610,8 +1610,19 @@
             <div class="nav-item" onclick="navigateTo('materiais')">
                 <span class="nav-icon">📦</span> Materiais
             </div>
+            <div class="nav-item" onclick="navigateTo('operacoes')">
+                <span class="nav-icon">🚗</span> Operações Campo
+            </div>
+
+            <div class="nav-section">SISTEMA</div>
             <div class="nav-item" onclick="navigateTo('gamificacao')">
                 <span class="nav-icon">🎮</span> Gamificação
+            </div>
+            <div class="nav-item" onclick="navigateTo('relatorios')">
+                <span class="nav-icon">📄</span> Relatórios
+            </div>
+            <div class="nav-item" onclick="navigateTo('compliance')">
+                <span class="nav-icon">⚖️</span> Compliance
             </div>
         </div>
 
@@ -2689,6 +2700,640 @@
 
             <h2 class="section-title">🎖️ Troféus</h2>
             <div class="grid grid-4" id="trofeusContainer"></div>
+
+            <h2 class="section-title">⚡ Streaks</h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px;">
+                <div class="card stat-card">
+                    <div class="stat-label">Ativo 3 dias</div>
+                    <div style="font-size: 2rem; margin: 10px 0; color: var(--cyan);">🔥3</div>
+                    <div style="font-size: 0.75rem; color: var(--green);">+15 XP/dia</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Ativo 7 dias</div>
+                    <div style="font-size: 2rem; margin: 10px 0; color: var(--gold);">🔥7</div>
+                    <div style="font-size: 0.75rem; color: var(--orange);">+40 XP/dia</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Ativo 15 dias</div>
+                    <div style="font-size: 2rem; margin: 10px 0; color: var(--purple);">🔥15</div>
+                    <div style="font-size: 0.75rem; color: var(--purple);">+100 XP/dia</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MÍDIA KIT PAGE -->
+        <div class="page" id="page-midiakit">
+            <div class="grid grid-4" style="margin-bottom: 20px;">
+                <div class="card stat-card">
+                    <div class="stat-label">Materiais Ativos</div>
+                    <div class="stat-number">18</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Novos Esta Semana</div>
+                    <div class="stat-number">5</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Stories</div>
+                    <div class="stat-number">12</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Videos</div>
+                    <div class="stat-number">8</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">📲 Materiais Gerados por IA</h2>
+            <div style="margin-bottom: 25px;">
+                <div style="display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" style="background: rgba(0, 230, 118, 0.15); border-color: var(--green); color: var(--green);">Todos</button>
+                    <button class="btn btn-secondary">Instagram</button>
+                    <button class="btn btn-secondary">WhatsApp</button>
+                    <button class="btn btn-secondary">Stories</button>
+                    <button class="btn btn-secondary">Videos</button>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px;">
+                    <div class="card" style="padding: 15px;">
+                        <div style="background: linear-gradient(135deg, var(--green), var(--cyan)); height: 150px; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: #000; font-weight: 700;">🎨 Instagram Post</div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">#Neto2026 Futuro</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Baseado em pesquisa +15% em saúde</div>
+                        <div style="display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap;">
+                            <span class="badge badge-success">#Saúde</span>
+                            <span class="badge badge-info">#Esperança</span>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="btn btn-primary" style="flex: 1; padding: 6px;">⬇️ Baixar</button>
+                            <button class="btn btn-secondary" style="flex: 1; padding: 6px;">📋 Copiar</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 15px;">
+                        <div style="background: linear-gradient(135deg, var(--gold), var(--orange)); height: 150px; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: #000; font-weight: 700;">🎬 Story</div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">Trabalho mudo para Brasília</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">4 frames com CTA/votação</div>
+                        <div style="display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap;">
+                            <span class="badge badge-warning">#Trabalho</span>
+                            <span class="badge badge-info">#Brasília</span>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="btn btn-primary" style="flex: 1; padding: 6px;">⬇️ Baixar</button>
+                            <button class="btn btn-secondary" style="flex: 1; padding: 6px;">📋 Copiar</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 15px;">
+                        <div style="background: linear-gradient(135deg, var(--purple), var(--blue)); height: 150px; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700;">🎥 Reel</div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">Testimunho Ceilândia 30s</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Corte de entrevista com dona Maria</div>
+                        <div style="display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap;">
+                            <span class="badge badge-success">#Comunidade</span>
+                            <span class="badge badge-info">#Ceilândia</span>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="btn btn-primary" style="flex: 1; padding: 6px;">⬇️ Baixar</button>
+                            <button class="btn btn-secondary" style="flex: 1; padding: 6px;">📋 Copiar</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 15px;">
+                        <div style="background: linear-gradient(135deg, #ff5252, var(--orange)); height: 150px; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700;">💬 WhatsApp</div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">Campanha Segurança DF</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Texto pronto para copiar e colar</div>
+                        <div style="display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap;">
+                            <span class="badge badge-danger">#Segurança</span>
+                            <span class="badge badge-warning">#Urgente</span>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="btn btn-primary" style="flex: 1; padding: 6px;">📋 Copiar</button>
+                            <button class="btn btn-secondary" style="flex: 1; padding: 6px;">✉️ Enviar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">📊 Trending</h2>
+                <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px;">
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-weight: 600;">
+                        <div>Material</div>
+                        <div>Engajamento</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <div>"Neto 2026" Reel Ceilândia</div>
+                        <div style="color: var(--green); font-weight: 700;">2.4K views</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+                        <div>Story Trabalho Brasília</div>
+                        <div style="color: var(--green); font-weight: 700;">1.8K impressões</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <div>Post Segurança Samambaia</div>
+                        <div style="color: var(--green); font-weight: 700;">890 engajamentos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRUPOS WHATSAPP PAGE -->
+        <div class="page" id="page-grupos">
+            <div class="grid grid-4" style="margin-bottom: 20px;">
+                <div class="card stat-card">
+                    <div class="stat-label">Grupos Ativos</div>
+                    <div class="stat-number">16</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Membros Total</div>
+                    <div class="stat-number">2.847</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Mensagens/Dia</div>
+                    <div class="stat-number">842</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Helena Bot Status</div>
+                    <div style="font-size: 1.5rem; color: var(--green); font-weight: 700; margin-top: 10px;">🟢 Ativo</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">🤖 Helena Bot</h2>
+            <div class="card" style="margin-bottom: 25px; padding: 20px;">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <div style="font-size: 2rem;">🤖</div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 1.1rem;">Número próprio da campanha</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">+55 61 98765-4321</div>
+                        <div style="font-size: 0.75rem; color: var(--green); margin-top: 4px;">🟢 Adicionado em 12 grupos</div>
+                    </div>
+                </div>
+                <div style="padding-top: 15px; border-top: 1px solid var(--border); display: flex; gap: 10px;">
+                    <button class="btn btn-secondary" style="flex: 1;">📊 Relatório Completo</button>
+                    <button class="btn btn-secondary" style="flex: 1;">⚙️ Configurar</button>
+                </div>
+            </div>
+
+            <h2 class="section-title">💬 Lista de Grupos</h2>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px;">
+                <div class="card" style="margin-bottom: 12px; padding: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div>
+                            <div style="font-weight: 600;">Neto Ceilândia — Central</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Admin: Marina Costa · 487 membros</div>
+                        </div>
+                        <span class="badge badge-success">Ativo</span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">1.2K mensagens/semana · Crescimento +12% · Última: agora</div>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="btn btn-secondary" style="flex: 1; padding: 6px;">📱 Abrir</button>
+                        <button class="btn btn-secondary" style="flex: 1; padding: 6px;">📊 Relatório</button>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 12px; padding: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div>
+                            <div style="font-weight: 600;">Neto Taguatinga — Mobilização</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Admin: Felipe Ribeiro · 356 membros</div>
+                        </div>
+                        <span class="badge badge-success">Ativo</span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">890 mensagens/semana · Crescimento +8% · Última: 15 min</div>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="btn btn-secondary" style="flex: 1; padding: 6px;">📱 Abrir</button>
+                        <button class="btn btn-secondary" style="flex: 1; padding: 6px;">📊 Relatório</button>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 12px; padding: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div>
+                            <div style="font-weight: 600;">Neto Samambaia — Ação</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Admin: Juliana Mendes · 289 membros</div>
+                        </div>
+                        <span class="badge badge-warning">Atenção</span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">520 mensagens/semana · Crescimento -5% · Última: 2h</div>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="btn btn-secondary" style="flex: 1; padding: 6px;">📱 Abrir</button>
+                        <button class="btn btn-secondary" style="flex: 1; padding: 6px;">📊 Relatório</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FINANCEIRO PAGE -->
+        <div class="page" id="page-financeiro">
+            <div class="grid grid-3" style="margin-bottom: 20px;">
+                <div class="card" style="padding: 20px; border-left: 4px solid var(--green);">
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; font-weight: 700;">Meta Arrecadação</div>
+                    <div style="font-size: 2.2rem; color: var(--green); font-weight: 900; margin-bottom: 4px;">R$ 150K</div>
+                    <div style="font-size: 0.75rem; color: var(--gold);">até 04/10/2026</div>
+                </div>
+                <div class="card" style="padding: 20px; border-left: 4px solid var(--gold);">
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; font-weight: 700;">Arrecadado</div>
+                    <div style="font-size: 2.2rem; color: var(--gold); font-weight: 900; margin-bottom: 4px;">R$ 87.500</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">58% da meta</div>
+                </div>
+                <div class="card" style="padding: 20px; border-left: 4px solid var(--cyan);">
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; font-weight: 700;">Saldo</div>
+                    <div style="font-size: 2.2rem; color: var(--cyan); font-weight: 900; margin-bottom: 4px;">R$ 62.500</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Faltam 42%</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">📊 Arrecadação</h2>
+            <div class="card" style="padding: 15px; margin-bottom: 25px;">
+                <div style="height: 200px; background: linear-gradient(90deg, rgba(0,230,118,0.1), rgba(255,214,0,0.1), rgba(0,229,255,0.1)); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.2rem; color: var(--gold);">📈 Gráfico de Arrecadação</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">Visualização da tendência (mockado)</div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-around; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; color: var(--green); font-weight: 700;">R$ 45K</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">Última semana</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; color: var(--gold); font-weight: 700;">R$ 87.5K</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">Total</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; color: var(--cyan); font-weight: 700;">+18%</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">Crescimento</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">💰 Categorias de Despesa</h2>
+            <div class="grid grid-2" style="margin-bottom: 25px;">
+                <div class="card" style="padding: 15px;">
+                    <div style="font-weight: 600; margin-bottom: 8px;">Materiais de Campanha</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Santinhos, adesivos, bandeiras</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 1.5rem; color: var(--green); font-weight: 700;">R$ 28K</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">32%</div>
+                    </div>
+                </div>
+                <div class="card" style="padding: 15px;">
+                    <div style="font-weight: 600; margin-bottom: 8px;">Combustível & Transporte</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Deslocamento equipe</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 1.5rem; color: var(--gold); font-weight: 700;">R$ 12K</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">14%</div>
+                    </div>
+                </div>
+                <div class="card" style="padding: 15px;">
+                    <div style="font-weight: 600; margin-bottom: 8px;">Mídia & Publicidade</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Social media, rádio, TV</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 1.5rem; color: var(--cyan); font-weight: 700;">R$ 32K</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">37%</div>
+                    </div>
+                </div>
+                <div class="card" style="padding: 15px;">
+                    <div style="font-weight: 600; margin-bottom: 8px;">Pessoal & Eventos</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Equipe e ativações</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 1.5rem; color: var(--orange); font-weight: 700;">R$ 15.5K</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">17%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OPERAÇÕES DE CAMPO PAGE -->
+        <div class="page" id="page-operacoes">
+            <h2 class="section-title">🚗 Frota de Veículos</h2>
+            <div style="display: grid; gap: 15px; margin-bottom: 25px;">
+                <div class="card" style="padding: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div>
+                            <div style="font-weight: 600;">VAN-001</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Placa: SSA-1234</div>
+                        </div>
+                        <span class="badge badge-success">Operacional</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 0.8rem;">
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.7rem;">Motorista</div>
+                            <div style="font-weight: 600;">João Silva</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.7rem;">Km Atual</div>
+                            <div style="font-weight: 600; color: var(--cyan);">12.450 km</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.7rem;">Combustível</div>
+                            <div style="font-weight: 600; color: var(--gold);">85%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div>
+                            <div style="font-weight: 600;">VAN-002</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Placa: SSA-5678</div>
+                        </div>
+                        <span class="badge badge-success">Operacional</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 0.8rem;">
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.7rem;">Motorista</div>
+                            <div style="font-weight: 600;">Carlos Oliveira</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.7rem;">Km Atual</div>
+                            <div style="font-weight: 600; color: var(--cyan);">8.920 km</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.7rem;">Combustível</div>
+                            <div style="font-weight: 600; color: var(--gold);">62%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div>
+                            <div style="font-weight: 600;">MOTO-003</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Placa: SSA-9012</div>
+                        </div>
+                        <span class="badge badge-warning">Manutenção</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 0.8rem;">
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.7rem;">Motorista</div>
+                            <div style="font-weight: 600;">Disponível</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.7rem;">Km Atual</div>
+                            <div style="font-weight: 600; color: var(--text-muted);">5.234 km</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.7rem;">Retorno</div>
+                            <div style="font-weight: 600; color: var(--orange);">12/04</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">⛽ Vales Combustível</h2>
+            <div class="card" style="padding: 15px; margin-bottom: 25px;">
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;">
+                    <div>
+                        <div style="font-weight: 600;">João Silva — VAN-001</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">08/04 — R$ 150</div>
+                    </div>
+                    <span class="badge badge-success">Autorizado</span>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;">
+                    <div>
+                        <div style="font-weight: 600;">Carlos Oliveira — VAN-002</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">07/04 — R$ 120</div>
+                    </div>
+                    <span class="badge badge-success">Autorizado</span>
+                </div>
+                <div style="padding: 10px 0; display: flex; justify-content: space-between;">
+                    <div>
+                        <div style="font-weight: 600;">André Pereira (Moto)</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">06/04 — R$ 80</div>
+                    </div>
+                    <span class="badge badge-warning">Pendente</span>
+                </div>
+            </div>
+
+            <h2 class="section-title">✅ Checklist Pré-Campanha</h2>
+            <div class="card" style="padding: 15px; margin-bottom: 25px;">
+                <div style="padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px;">
+                    <input type="checkbox" checked style="width: 18px; height: 18px; cursor: pointer;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Veículos registrados e documentação em dia</div>
+                    </div>
+                    <span class="badge badge-success">✓</span>
+                </div>
+                <div style="padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px;">
+                    <input type="checkbox" checked style="width: 18px; height: 18px; cursor: pointer;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Materiais impressos e distribuídos</div>
+                    </div>
+                    <span class="badge badge-success">✓</span>
+                </div>
+                <div style="padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px;">
+                    <input type="checkbox" style="width: 18px; height: 18px; cursor: pointer;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Todos coordenadores treinados</div>
+                    </div>
+                    <span class="badge badge-warning">Em andamento</span>
+                </div>
+                <div style="padding: 8px 0; display: flex; align-items: center; gap: 12px;">
+                    <input type="checkbox" style="width: 18px; height: 18px; cursor: pointer;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Sistema de WhatsApp groups operacional</div>
+                    </div>
+                    <span class="badge badge-success">✓</span>
+                </div>
+            </div>
+
+            <h2 class="section-title">🚩 Bandeiraços Agendados</h2>
+            <div class="card" style="padding: 15px;">
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border);">
+                    <div style="font-weight: 600; margin-bottom: 4px;">Ceilândia — Avenida Central</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">📅 09/04 · 08h-11h · Responsável: Marina Costa</div>
+                    <div style="font-size: 0.75rem; color: var(--gold); margin-top: 4px;">Previsão: 150 participantes</div>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border);">
+                    <div style="font-weight: 600; margin-bottom: 4px;">Taguatinga — Centro Comercial</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">📅 12/04 · 09h-12h · Responsável: Felipe Ribeiro</div>
+                    <div style="font-size: 0.75rem; color: var(--gold); margin-top: 4px;">Previsão: 200 participantes</div>
+                </div>
+                <div style="padding: 10px 0;">
+                    <div style="font-weight: 600; margin-bottom: 4px;">Samambaia — Feira Comunitária</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">📅 15/04 · 10h-13h · Responsável: Juliana Mendes</div>
+                    <div style="font-size: 0.75rem; color: var(--gold); margin-top: 4px;">Previsão: 180 participantes</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RELATÓRIOS PAGE -->
+        <div class="page" id="page-relatorios">
+            <h2 class="section-title">📄 Gerar Relatórios</h2>
+            <div class="grid grid-2" style="margin-bottom: 25px;">
+                <div class="card" style="padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,230,118,0.08)';" onmouseout="this.style.background='';">
+                    <div style="font-size: 2.5rem; margin-bottom: 12px;">📊</div>
+                    <div style="font-weight: 600; margin-bottom: 8px;">Resumo da Campanha</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Métricas gerais, coordenadores, eleitores</div>
+                    <button class="btn btn-primary" style="width: 100%;">📥 Gerar PDF</button>
+                </div>
+                <div class="card" style="padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,214,0,0.08)';" onmouseout="this.style.background='';">
+                    <div style="font-size: 2.5rem; margin-bottom: 12px;">🗺️</div>
+                    <div style="font-weight: 600; margin-bottom: 8px;">Relatório por Região</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Performance das 33 RAs</div>
+                    <button class="btn btn-primary" style="width: 100%;">📥 Gerar PDF</button>
+                </div>
+                <div class="card" style="padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(179,136,255,0.08)';" onmouseout="this.style.background='';">
+                    <div style="font-size: 2.5rem; margin-bottom: 12px;">🎮</div>
+                    <div style="font-weight: 600; margin-bottom: 8px;">Relatório Gamificação</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Ranking XP, troféus, missões</div>
+                    <button class="btn btn-primary" style="width: 100%;">📥 Gerar PDF</button>
+                </div>
+                <div class="card" style="padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,229,255,0.08)';" onmouseout="this.style.background='';">
+                    <div style="font-size: 2.5rem; margin-bottom: 12px;">💾</div>
+                    <div style="font-weight: 600; margin-bottom: 8px;">Backup Completo</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">JSON com todos os dados</div>
+                    <button class="btn btn-primary" style="width: 100%;">📥 Download JSON</button>
+                </div>
+            </div>
+
+            <h2 class="section-title">📋 Últimos Relatórios Gerados</h2>
+            <div class="card" style="padding: 15px;">
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 600;">Resumo da Campanha — 07/04</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">2.8 MB · PDF</div>
+                    </div>
+                    <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">⬇️ Baixar</button>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 600;">Relatório por Região — 05/04</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">4.1 MB · PDF</div>
+                    </div>
+                    <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">⬇️ Baixar</button>
+                </div>
+                <div style="padding: 10px 0; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 600;">Relatório Gamificação — 02/04</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">1.5 MB · PDF</div>
+                    </div>
+                    <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">⬇️ Baixar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPLIANCE PAGE -->
+        <div class="page" id="page-compliance">
+            <h2 class="section-title">⚖️ Dados Eleitorais (TRE-DF)</h2>
+            <div class="card" style="padding: 15px; margin-bottom: 25px;">
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; font-size: 0.85rem;">
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <th style="padding: 10px; text-align: left; color: var(--gold); font-weight: 700;">Região Administrativa</th>
+                            <th style="padding: 10px; text-align: right; color: var(--gold); font-weight: 700;">Eleitorado</th>
+                            <th style="padding: 10px; text-align: right; color: var(--gold); font-weight: 700;">Visitada</th>
+                            <th style="padding: 10px; text-align: right; color: var(--gold); font-weight: 700;">Cobertura %</th>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 10px;">Plano Piloto</td>
+                            <td style="padding: 10px; text-align: right;">45.890</td>
+                            <td style="padding: 10px; text-align: right;">✓</td>
+                            <td style="padding: 10px; text-align: right; color: var(--green); font-weight: 700;">100%</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 10px;">Ceilândia</td>
+                            <td style="padding: 10px; text-align: right;">87.230</td>
+                            <td style="padding: 10px; text-align: right;">✓</td>
+                            <td style="padding: 10px; text-align: right; color: var(--green); font-weight: 700;">100%</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 10px;">Taguatinga</td>
+                            <td style="padding: 10px; text-align: right;">72.450</td>
+                            <td style="padding: 10px; text-align: right;">✓</td>
+                            <td style="padding: 10px; text-align: right; color: var(--green); font-weight: 700;">98%</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 10px;">Samambaia</td>
+                            <td style="padding: 10px; text-align: right;">64.120</td>
+                            <td style="padding: 10px; text-align: right;">✓</td>
+                            <td style="padding: 10px; text-align: right; color: var(--orange); font-weight: 700;">65%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;">Gama</td>
+                            <td style="padding: 10px; text-align: right;">38.670</td>
+                            <td style="padding: 10px; text-align: right;">✓</td>
+                            <td style="padding: 10px; text-align: right; color: var(--green); font-weight: 700;">95%</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <h2 class="section-title">📅 Calendário Eleitoral TSE</h2>
+            <div class="card" style="padding: 15px; margin-bottom: 25px;">
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 15px;">
+                    <div style="font-size: 2rem; color: var(--green);">✓</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Início da Pré-Campanha</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">16 de agosto de 2025</div>
+                    </div>
+                    <span class="badge badge-success">Cumprido</span>
+                </div>
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 15px;">
+                    <div style="font-size: 2rem; color: var(--green);">✓</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Registro de Candidatura</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">até 15 de agosto de 2026</div>
+                    </div>
+                    <span class="badge badge-warning">Pendente</span>
+                </div>
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 15px;">
+                    <div style="font-size: 2rem; color: var(--gold);">📢</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Início da Campanha Oficial</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">16 de agosto de 2026</div>
+                    </div>
+                    <span class="badge badge-warning">Futuro</span>
+                </div>
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 15px;">
+                    <div style="font-size: 2rem; color: var(--gold);">🗳️</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Eleição (1º turno)</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">04 de outubro de 2026</div>
+                    </div>
+                    <span class="badge badge-warning">Futuro</span>
+                </div>
+                <div style="padding: 12px 0; display: flex; align-items: center; gap: 15px;">
+                    <div style="font-size: 2rem; color: var(--gold);">🗳️</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Eleição (2º turno, se houver)</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">25 de outubro de 2026</div>
+                    </div>
+                    <span class="badge badge-warning">Futuro</span>
+                </div>
+            </div>
+
+            <h2 class="section-title">🔒 LGPD & Compliance</h2>
+            <div class="card" style="padding: 15px;">
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px;">
+                    <input type="checkbox" checked style="width: 18px; height: 18px; cursor: pointer;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Consentimento LGPD coletado em cadastros</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Todos os eleitores concordaram com coleta</div>
+                    </div>
+                    <span class="badge badge-success">✓</span>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px;">
+                    <input type="checkbox" checked style="width: 18px; height: 18px; cursor: pointer;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Dados armazenados de forma segura</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Criptografia end-to-end em trânsito</div>
+                    </div>
+                    <span class="badge badge-success">✓</span>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px;">
+                    <input type="checkbox" style="width: 18px; height: 18px; cursor: pointer;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Direito de exclusão respeitado</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Sistema permite solicitação de remoção</div>
+                    </div>
+                    <span class="badge badge-warning">Em configuração</span>
+                </div>
+                <div style="padding: 10px 0; display: flex; align-items: center; gap: 12px;">
+                    <input type="checkbox" checked style="width: 18px; height: 18px; cursor: pointer;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">Conformidade TSE respeitada</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Limites de doação, gastos e regulação</div>
+                    </div>
+                    <span class="badge badge-success">✓</span>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -2822,7 +3467,10 @@
                     grupos: '💬 Grupos WA',
                     financeiro: '💰 Financeiro',
                     materiais: '📦 Materiais',
-                    gamificacao: '🎮 Gamificação'
+                    operacoes: '🚗 Operações Campo',
+                    gamificacao: '🎮 Gamificação',
+                    relatorios: '📄 Relatórios',
+                    compliance: '⚖️ Compliance'
                 };
                 document.getElementById('headerTitle').textContent = icons[page] || page;
                 this.currentPage = page;
@@ -3141,8 +3789,8 @@
 
         // ===== HELENA CHAT =====
         const helenaConfig = {
-            url: localStorage.getItem('helena_url') || '',
-            key: localStorage.getItem('helena_key') || '',
+            url: localStorage.getItem('helena_url') || 'http://72.62.108.24:20128',
+            key: localStorage.getItem('helena_key') || 'sk-a36cd1d8bbf8db4c-mb2a4a-68e91e26',
             model: localStorage.getItem('helena_model') || 'helena-premium',
             fallback: localStorage.getItem('helena_fallback') || 'cx/gpt-5.3-codex-xhigh'
         };
@@ -3280,9 +3928,7 @@ Responda sempre com base nos dados reais acima. Quando cruzar informacoes, cite 
             const text = input.value.trim();
             if (!text) return;
 
-            // Esconder sugestoes apos primeiro uso
             document.getElementById('helenaSuggestions').style.display = 'none';
-
             addHelenaMsg('user', text);
             input.value = '';
             input.style.height = 'auto';
@@ -3292,10 +3938,8 @@ Responda sempre com base nos dados reais acima. Quando cruzar informacoes, cite 
             const typing = document.getElementById('helenaTyping');
             typing.classList.add('active');
 
-            // Adicionar ao historico
             helenaHistory.push({ role: 'user', content: text });
 
-            // Verificar config
             if (!helenaConfig.url || !helenaConfig.key) {
                 typing.classList.remove('active');
                 sendBtn.disabled = false;
@@ -3303,48 +3947,51 @@ Responda sempre com base nos dados reais acima. Quando cruzar informacoes, cite 
                 return;
             }
 
-            // Tentar modelo primario, depois fallback
             const modelos = [helenaConfig.model, helenaConfig.fallback];
-            let resposta = null;
-            let modeloUsado = null;
 
             for (const modelo of modelos) {
                 try {
-                    resposta = await chamarOmniRoute(modelo);
-                    modeloUsado = modelo;
-                    break;
+                    typing.classList.remove('active');
+                    // Criar msg vazia para streaming
+                    const msgEl = document.createElement('div');
+                    msgEl.className = 'helena-msg helena';
+                    msgEl.innerHTML = '<div class="helena-label">Helena Strategos</div><span class="helena-stream-content"></span>';
+                    document.getElementById('helenaMessages').appendChild(msgEl);
+
+                    const fullText = await chamarOmniRouteStream(modelo, msgEl.querySelector('.helena-stream-content'));
+
+                    // Adicionar tag do modelo
+                    const modelTag = document.createElement('div');
+                    modelTag.style.cssText = 'font-size:0.65rem;color:var(--text-muted);margin-top:6px;opacity:0.6;';
+                    modelTag.textContent = 'via ' + modelo;
+                    msgEl.appendChild(modelTag);
+
+                    helenaHistory.push({ role: 'assistant', content: fullText });
+                    document.getElementById('helenaStatusText').textContent = modelo.split('/').pop();
+                    sendBtn.disabled = false;
+                    return;
                 } catch (err) {
                     console.warn('Falha com modelo ' + modelo + ':', err.message);
+                    // Remover msg parcial se falhou
+                    const msgs = document.getElementById('helenaMessages');
+                    const last = msgs.lastElementChild;
+                    if (last && last.classList.contains('helena')) msgs.removeChild(last);
+
                     if (modelo === modelos[modelos.length - 1]) {
                         typing.classList.remove('active');
                         sendBtn.disabled = false;
-                        addHelenaMsg('error', 'Erro: ' + err.message + '. Verifique a configuracao.');
+                        addHelenaMsg('error', 'Erro: ' + err.message);
                         return;
                     }
                 }
             }
-
-            typing.classList.remove('active');
-            sendBtn.disabled = false;
-
-            if (resposta) {
-                helenaHistory.push({ role: 'assistant', content: resposta });
-                const msgEl = addHelenaMsg('helena', resposta);
-                // Mostrar modelo usado
-                const modelTag = document.createElement('div');
-                modelTag.style.cssText = 'font-size:0.65rem;color:var(--text-muted);margin-top:6px;opacity:0.6;';
-                modelTag.textContent = 'via ' + modeloUsado;
-                msgEl.appendChild(modelTag);
-            }
         }
 
-        async function chamarOmniRoute(modelo) {
+        async function chamarOmniRouteStream(modelo, targetEl) {
             const messages = [
                 { role: 'system', content: getHelenaSystemPrompt() },
                 ...helenaHistory
             ];
-
-            // Garantir que nao termina com assistant (bug OmniRoute)
             while (messages.length > 1 && messages[messages.length - 1].role === 'assistant') {
                 messages.pop();
             }
@@ -3358,8 +4005,9 @@ Responda sempre com base nos dados reais acima. Quando cruzar informacoes, cite 
                 body: JSON.stringify({
                     model: modelo,
                     messages: messages,
-                    max_tokens: 1024,
-                    temperature: 0.7
+                    max_tokens: 1500,
+                    temperature: 0.7,
+                    stream: true
                 })
             });
 
@@ -3368,16 +4016,38 @@ Responda sempre com base nos dados reais acima. Quando cruzar informacoes, cite 
                 throw new Error('HTTP ' + response.status + (errBody ? ': ' + errBody.substring(0, 100) : ''));
             }
 
-            const data = await response.json();
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let fullText = '';
+            let buffer = '';
+            const container = document.getElementById('helenaMessages');
 
-            // Suportar formato OpenAI e Anthropic
-            if (data.choices && data.choices[0]) {
-                return data.choices[0].message.content;
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop();
+
+                for (const line of lines) {
+                    if (!line.startsWith('data: ')) continue;
+                    const data = line.slice(6).trim();
+                    if (data === '[DONE]') break;
+                    try {
+                        const parsed = JSON.parse(data);
+                        const delta = parsed.choices?.[0]?.delta?.content;
+                        if (delta) {
+                            fullText += delta;
+                            targetEl.innerHTML = formatHelenaText(fullText);
+                            container.scrollTop = container.scrollHeight;
+                        }
+                    } catch (e) { /* skip malformed */ }
+                }
             }
-            if (data.content && data.content[0]) {
-                return data.content[0].text;
-            }
-            throw new Error('Formato de resposta desconhecido');
+
+            if (!fullText) throw new Error('Resposta vazia');
+            return fullText;
         }
 
         // Auto-resize textarea
@@ -3400,6 +4070,14 @@ Responda sempre com base nos dados reais acima. Quando cruzar informacoes, cite 
         window.addEventListener('DOMContentLoaded', () => {
             // Start confetti on page load
             createConfetti();
+
+            // Auto-hide splash after 4 seconds if not clicked
+            setTimeout(() => {
+                const splash = document.getElementById('splash');
+                if (splash && !splash.classList.contains('hidden')) {
+                    enterSystem();
+                }
+            }, 5000);
         });
     </script>
 </body>

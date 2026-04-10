@@ -1850,6 +1850,17 @@
         </div>
     </div>
 
+    <!-- CIDADE/RA MODAL -->
+    <div class="modal" id="cidadeModal">
+        <div class="modal-content" style="max-width:600px;">
+            <div class="modal-header">
+                <h2 class="modal-title" id="cidadeModalName">---</h2>
+                <button class="modal-close" onclick="closeCidadeModal()">✕</button>
+            </div>
+            <div id="cidadeModalBody"></div>
+        </div>
+    </div>
+
     <!-- MAIN CONTENT -->
     <main class="main-content" id="mainContent">
         <!-- DASHBOARD PAGE -->
@@ -3677,9 +3688,12 @@
                 grid.innerHTML = this.rasCidades.map((ra, idx) => {
                     const status = idx < 18 ? 'Visitada' : (idx < 24 ? 'Agendada' : 'Pendente');
                     const badgeClass = status === 'Visitada' ? 'badge-success' : (status === 'Agendada' ? 'badge-warning' : 'badge-danger');
+                    const coord = this.equipe.find(e => e.regiao === ra);
+                    const coordLabel = coord ? `👤 ${coord.nome}` : '<span style="color:var(--red);">VAGA</span>';
                     return `
-                        <div class="card ra-card">
+                        <div class="card ra-card" onclick="showCidadeModal('${ra}', ${idx})" style="cursor:pointer; transition:all 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 24px rgba(0,230,118,0.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
                             <div class="ra-name">${ra}</div>
+                            <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:6px;">${coordLabel}</div>
                             <span class="badge ${badgeClass}">${status}</span>
                         </div>
                     `;
@@ -3954,6 +3968,110 @@
             document.getElementById('eleitorModal').classList.remove('active');
         }
 
+        function showCidadeModal(ra, idx) {
+            const coord = app.equipe.find(e => e.regiao === ra);
+            const eleitoresRA = app.eleitores.filter(e => e.ra === ra);
+            const demandasRA = app.demandas.filter(d => d.ra === ra);
+            const status = idx < 18 ? 'Visitada' : (idx < 24 ? 'Agendada' : 'Pendente');
+            const badgeClass = status === 'Visitada' ? 'badge-success' : (status === 'Agendada' ? 'badge-warning' : 'badge-danger');
+            const mockEleitorado = Math.floor(Math.random() * 80000 + 20000);
+            const mockVisitas = idx < 18 ? Math.floor(Math.random() * 5 + 1) : 0;
+            const mockGrupos = coord ? coord.grupos : 0;
+
+            let coordSection;
+            if (coord) {
+                const coordIdx = app.equipe.indexOf(coord);
+                const xp = app.leaderboard.find(l => l.nome === coord.nome)?.xp || 0;
+                coordSection = `
+                    <div class="card" onclick="closeCidadeModal(); setTimeout(()=>showCoordModal(${coordIdx}),300)" style="cursor:pointer; padding:12px; display:flex; align-items:center; gap:12px; transition:all 0.3s; border:1px solid var(--green);" onmouseover="this.style.background='rgba(0,230,118,0.1)'" onmouseout="this.style.background=''">
+                        <div class="person-avatar" style="width:45px;height:45px;font-size:1.2rem;background:linear-gradient(135deg,var(--green),var(--cyan));flex-shrink:0;">${coord.letra}</div>
+                        <div style="flex:1;">
+                            <div style="font-weight:700;">${coord.nome}</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted);">${coord.cargo} · ${coord.esfera}</div>
+                            <div style="font-size:0.75rem;color:var(--cyan);margin-top:2px;">💬 ${coord.grupos} grupos · 🗳️ ${coord.eleitores} eleitores · ⚡ ${xp} XP</div>
+                        </div>
+                        <span style="font-size:0.7rem;color:var(--green);">Ver perfil →</span>
+                    </div>`;
+            } else {
+                coordSection = `
+                    <div class="card" style="padding:15px; text-align:center; border:1px dashed var(--red);">
+                        <div style="font-size:1.5rem; margin-bottom:8px;">⚠️</div>
+                        <div style="font-weight:700; color:var(--red);">VAGA — Sem coordenador atribuído</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Esta região precisa de um coordenador para iniciar o trabalho de campo</div>
+                        <button class="btn btn-primary" style="margin-top:12px;" onclick="alert('Funcionalidade disponível na versão completa')">Atribuir Coordenador</button>
+                    </div>`;
+            }
+
+            const html = `
+                <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+                    <span class="badge ${badgeClass}" style="font-size:0.8rem;">${status}</span>
+                    <span style="font-size:0.8rem; color:var(--text-muted);">📊 Eleitorado estimado: ${mockEleitorado.toLocaleString('pt-BR')}</span>
+                </div>
+
+                <div class="stat-grid" style="margin-bottom:16px;">
+                    <div class="stat-box">
+                        <div class="stat-box-value">${mockVisitas}</div>
+                        <div class="stat-box-label">Visitas</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">${eleitoresRA.length}</div>
+                        <div class="stat-box-label">Eleitores</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">${demandasRA.length}</div>
+                        <div class="stat-box-label">Demandas</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">${mockGrupos}</div>
+                        <div class="stat-box-label">Grupos WA</div>
+                    </div>
+                </div>
+
+                <h3 style="font-size:0.9rem; color:var(--green); margin-bottom:10px;">🤝 Coordenador da Região</h3>
+                ${coordSection}
+
+                ${eleitoresRA.length > 0 ? `
+                <h3 style="font-size:0.9rem; color:var(--cyan); margin:16px 0 10px;">🗳️ Eleitores Cadastrados (${eleitoresRA.length})</h3>
+                ${eleitoresRA.map((el, i) => {
+                    const elIdx = app.eleitores.indexOf(el);
+                    return `
+                    <div class="card" onclick="closeCidadeModal(); setTimeout(()=>showEleitorModal(${elIdx}),300)" style="padding:10px; margin-bottom:6px; display:flex; align-items:center; gap:10px; cursor:pointer; transition:all 0.3s;" onmouseover="this.style.background='rgba(0,229,255,0.08)'" onmouseout="this.style.background=''">
+                        <div style="width:30px;height:30px;border-radius:50%;background:var(--surface);border:2px solid ${el.status==='Ativo'?'var(--green)':'var(--orange)'};display:flex;align-items:center;justify-content:center;font-size:0.7rem;">${el.nome.charAt(0)}</div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;font-size:0.85rem;">${el.nome}</div>
+                            <div style="font-size:0.7rem;color:var(--text-muted);">💬 ${el.grupo}</div>
+                        </div>
+                        <span class="badge ${el.status==='Ativo'?'badge-success':'badge-warning'}" style="font-size:0.6rem;">${el.status}</span>
+                        <span style="font-size:0.65rem;color:var(--cyan);">→</span>
+                    </div>`;
+                }).join('')}` : ''}
+
+                ${demandasRA.length > 0 ? `
+                <h3 style="font-size:0.9rem; color:var(--gold); margin:16px 0 10px;">📋 Demandas da Região (${demandasRA.length})</h3>
+                ${demandasRA.map(d => `
+                    <div class="card" style="padding:10px; margin-bottom:6px; display:flex; align-items:center; gap:10px;">
+                        <div style="flex:1;">
+                            <div style="font-weight:600;font-size:0.85rem;">${d.titulo}</div>
+                            <div style="font-size:0.7rem;color:var(--text-muted);">${d.categoria}</div>
+                        </div>
+                        <span class="badge ${d.prioridade==='Alta'?'badge-danger':d.prioridade==='Média'?'badge-warning':'badge-info'}" style="font-size:0.6rem;">${d.prioridade}</span>
+                    </div>`).join('')}` : ''}
+
+                <div style="margin-top:16px; display:flex; gap:10px;">
+                    <button class="btn btn-primary" onclick="alert('Registrar visita — disponível na versão completa')">📍 Registrar Visita</button>
+                    <button class="btn btn-secondary" onclick="alert('Adicionar demanda — disponível na versão completa')">📋 Nova Demanda</button>
+                </div>
+            `;
+
+            document.getElementById('cidadeModalName').textContent = ra;
+            document.getElementById('cidadeModalBody').innerHTML = html;
+            document.getElementById('cidadeModal').classList.add('active');
+        }
+
+        function closeCidadeModal() {
+            document.getElementById('cidadeModal').classList.remove('active');
+        }
+
         // Close modals when clicking outside
         document.addEventListener('DOMContentLoaded', () => {
             const coordModal = document.getElementById('coordModal');
@@ -3963,6 +4081,10 @@
             const eleitorModal = document.getElementById('eleitorModal');
             eleitorModal.addEventListener('click', (e) => {
                 if (e.target === eleitorModal) closeEleitorModal();
+            });
+            const cidadeModal = document.getElementById('cidadeModal');
+            cidadeModal.addEventListener('click', (e) => {
+                if (e.target === cidadeModal) closeCidadeModal();
             });
         });
 

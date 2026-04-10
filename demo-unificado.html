@@ -977,6 +977,252 @@
             letter-spacing: 0.5px;
         }
 
+        /* ===== HELENA CHAT ===== */
+        .helena-chat-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        .helena-chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(0,230,118,0.08), rgba(179,136,255,0.08));
+            border-bottom: 1px solid var(--border);
+        }
+        .helena-chat-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--gold);
+        }
+        .helena-status {
+            font-size: 0.75rem;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .helena-status .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        .helena-messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .helena-msg {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            animation: fadeInUp 0.3s ease;
+            white-space: pre-wrap;
+        }
+        .helena-msg.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--green), #00c853);
+            color: #000;
+            border-bottom-right-radius: 4px;
+        }
+        .helena-msg.helena {
+            align-self: flex-start;
+            background: rgba(179,136,255,0.12);
+            border: 1px solid rgba(179,136,255,0.2);
+            color: var(--text);
+            border-bottom-left-radius: 4px;
+        }
+        .helena-msg.helena .helena-label {
+            font-size: 0.7rem;
+            color: var(--purple);
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .helena-msg.system {
+            align-self: center;
+            background: rgba(255,214,0,0.08);
+            border: 1px solid rgba(255,214,0,0.15);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            max-width: 90%;
+            text-align: center;
+        }
+        .helena-msg.error {
+            align-self: center;
+            background: rgba(255,82,82,0.1);
+            border: 1px solid rgba(255,82,82,0.2);
+            color: var(--red);
+            font-size: 0.8rem;
+        }
+        .helena-typing {
+            align-self: flex-start;
+            padding: 12px 20px;
+            background: rgba(179,136,255,0.08);
+            border-radius: 14px;
+            display: none;
+        }
+        .helena-typing.active { display: flex; gap: 4px; align-items: center; }
+        .helena-typing span {
+            width: 6px; height: 6px;
+            background: var(--purple);
+            border-radius: 50%;
+            animation: float 1.2s infinite;
+        }
+        .helena-typing span:nth-child(2) { animation-delay: 0.2s; }
+        .helena-typing span:nth-child(3) { animation-delay: 0.4s; }
+        .helena-input-area {
+            display: flex;
+            gap: 8px;
+            padding: 12px 15px;
+            border-top: 1px solid var(--border);
+            background: rgba(0,0,0,0.2);
+        }
+        .helena-input {
+            flex: 1;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            resize: none;
+            min-height: 42px;
+            max-height: 120px;
+        }
+        .helena-input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 2px rgba(0,230,118,0.15);
+        }
+        .helena-input::placeholder { color: var(--text-muted); }
+        .helena-send {
+            background: linear-gradient(135deg, var(--green), #00c853);
+            border: none;
+            border-radius: 12px;
+            padding: 0 18px;
+            color: #000;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: transform 0.15s, opacity 0.15s;
+            white-space: nowrap;
+        }
+        .helena-send:hover { transform: scale(1.05); }
+        .helena-send:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .helena-suggestions {
+            display: flex;
+            gap: 8px;
+            padding: 8px 15px 12px;
+            overflow-x: auto;
+            flex-wrap: wrap;
+        }
+        .helena-suggestion {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .helena-suggestion:hover {
+            border-color: var(--green);
+            color: var(--green);
+            background: rgba(0,230,118,0.05);
+        }
+        /* Config modal */
+        .config-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .config-modal.open { display: flex; }
+        .config-modal-content {
+            background: #1a1a2e;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+        }
+        .config-modal-content h3 {
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        .config-modal-content label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            margin-top: 12px;
+        }
+        .config-modal-content input, .config-modal-content select {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+        }
+        .config-modal-content input:focus, .config-modal-content select:focus {
+            outline: none;
+            border-color: var(--green);
+        }
+        .config-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+        .config-btns button {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+        .config-save {
+            background: var(--green);
+            color: #000;
+        }
+        .config-cancel {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border) !important;
+        }
+        .helena-config-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 4px 10px;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        .helena-config-btn:hover { border-color: var(--green); color: var(--green); }
+
         /* ===== DEMAND ITEM ===== */
         .demand-item {
             padding: 12px;
@@ -1407,6 +1653,17 @@
         </div>
     </div>
 
+    <!-- ELEITOR MODAL -->
+    <div class="modal" id="eleitorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="eleitorModalName">---</h2>
+                <button class="modal-close" onclick="closeEleitorModal()">✕</button>
+            </div>
+            <div id="eleitorModalBody"></div>
+        </div>
+    </div>
+
     <!-- MAIN CONTENT -->
     <main class="main-content" id="mainContent">
         <!-- DASHBOARD PAGE -->
@@ -1577,6 +1834,71 @@
         <!-- INTELIGÊNCIA PAGE -->
         <div class="page" id="page-inteligencia">
             <h2 class="section-title">Central de Inteligência</h2>
+
+            <!-- HELENA CHAT -->
+            <div class="helena-chat-container">
+                <div class="helena-chat-header">
+                    <h3>🧠 Conversar com Helena</h3>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <div class="helena-status" id="helenaStatus">
+                            <span class="dot"></span>
+                            <span id="helenaStatusText">Opus 4.6</span>
+                        </div>
+                        <button class="helena-config-btn" onclick="openConfig()">Configurar</button>
+                    </div>
+                </div>
+                <div class="helena-messages" id="helenaMessages">
+                    <div class="helena-msg system">
+                        Helena Inteia Vasconcelos — Cientista-Chefe da INTEIA<br>
+                        Acesso a todos os dados da campanha. Pergunte qualquer coisa.
+                    </div>
+                </div>
+                <div class="helena-typing" id="helenaTyping">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="helena-suggestions" id="helenaSuggestions">
+                    <div class="helena-suggestion" onclick="askHelena(this.textContent)">Como esta Samambaia?</div>
+                    <div class="helena-suggestion" onclick="askHelena(this.textContent)">Qual RA tem mais potencial?</div>
+                    <div class="helena-suggestion" onclick="askHelena(this.textContent)">Analise o ranking de coordenadores</div>
+                    <div class="helena-suggestion" onclick="askHelena(this.textContent)">Gere um plano para Ceilandia</div>
+                    <div class="helena-suggestion" onclick="askHelena(this.textContent)">Cruze demandas com visitas</div>
+                    <div class="helena-suggestion" onclick="askHelena(this.textContent)">Quais materiais estao acabando?</div>
+                </div>
+                <div class="helena-input-area">
+                    <textarea class="helena-input" id="helenaInput" placeholder="Pergunte a Helena..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendHelena()}"></textarea>
+                    <button class="helena-send" id="helenaSendBtn" onclick="sendHelena()">Enviar</button>
+                </div>
+            </div>
+
+            <!-- CONFIG MODAL -->
+            <div class="config-modal" id="configModal">
+                <div class="config-modal-content">
+                    <h3>Configuracao Helena IA</h3>
+                    <label>URL do OmniRoute</label>
+                    <input type="text" id="cfgUrl" placeholder="https://seu-omniroute.com">
+                    <label>API Key</label>
+                    <input type="password" id="cfgKey" placeholder="sk-...">
+                    <label>Modelo Primario</label>
+                    <select id="cfgModel">
+                        <option value="helena-premium">helena-premium (Opus 4.6 + fallbacks)</option>
+                        <option value="cc/claude-opus-4-6">Claude Opus 4.6</option>
+                        <option value="cx/gpt-5.3-codex-xhigh">GPT 5.4 (Codex xHigh)</option>
+                        <option value="fast-quality">fast-quality (Sonnet + Flash)</option>
+                        <option value="free-unlimited">free-unlimited (gratuito)</option>
+                    </select>
+                    <label>Modelo Fallback</label>
+                    <select id="cfgFallback">
+                        <option value="cx/gpt-5.3-codex-xhigh">GPT 5.4 (Codex xHigh)</option>
+                        <option value="cc/claude-sonnet-4-5-20250929">Claude Sonnet 4.5</option>
+                        <option value="fast-quality">fast-quality</option>
+                        <option value="free-unlimited">free-unlimited</option>
+                    </select>
+                    <div class="config-btns">
+                        <button class="config-cancel" onclick="closeConfig()">Cancelar</button>
+                        <button class="config-save" onclick="saveConfig()">Salvar</button>
+                    </div>
+                </div>
+            </div>
 
             <div class="briefing-card">
                 <span class="briefing-tag">IA Helena</span>
@@ -2556,11 +2878,11 @@
             },
             renderLideres() {
                 const grid = document.getElementById('lideresGrid');
-                grid.innerHTML = this.eleitores.map(e => {
+                grid.innerHTML = this.eleitores.map((e, idx) => {
                     const statusColor = e.status === 'Ativo' ? 'var(--green)' : 'var(--orange)';
                     const statusBadge = e.status === 'Ativo' ? 'badge-success' : 'badge-warning';
                     return `
-                    <div class="card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:15px;">
+                    <div class="card" onclick="showEleitorModal(${idx})" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:15px; cursor:pointer; transition: all 0.3s;" onmouseover="this.style.transform='translateX(4px)';this.style.borderColor='var(--green)'" onmouseout="this.style.transform='';this.style.borderColor=''">
                         <div class="person-avatar" style="background:var(--surface); border:2px solid ${statusColor}; width:40px; height:40px; font-size:0.9rem; flex-shrink:0;">${e.nome.charAt(0)}</div>
                         <div style="flex:1;">
                             <div style="font-weight:600;">${e.nome}</div>
@@ -2727,13 +3049,75 @@
             document.getElementById('coordModal').classList.remove('active');
         }
 
-        // Close modal when clicking outside
+        function showEleitorModal(idx) {
+            const el = app.eleitores[idx];
+            const cadastro = ['12/03/2026', '25/03/2026', '01/04/2026', '05/04/2026', '28/02/2026', '15/03/2026', '20/03/2026', '08/04/2026'][idx] || '01/04/2026';
+            const aniversario = ['15/06', '22/09', '03/12', '18/01', '07/08', '30/04', '11/11', '25/07'][idx] || '01/01';
+            const statusColor = el.status === 'Ativo' ? 'var(--green)' : 'var(--orange)';
+
+            const html = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div class="person-avatar" style="width: 80px; height: 80px; margin: 0 auto 12px; font-size: 2.5rem; background:var(--surface); border:3px solid ${statusColor};">${el.nome.charAt(0)}</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">Eleitor/Lead</div>
+                    <span class="badge ${el.status === 'Ativo' ? 'badge-success' : 'badge-warning'}" style="margin-top:8px;">${el.status}</span>
+                </div>
+
+                <div class="stat-grid">
+                    <div class="stat-box">
+                        <div class="stat-box-value">📍</div>
+                        <div class="stat-box-label">${el.ra}</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">👤</div>
+                        <div class="stat-box-label">${el.coordenador}</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">💬</div>
+                        <div class="stat-box-label">${el.grupo}</div>
+                    </div>
+                </div>
+
+                <div class="coord-list">
+                    <div class="coord-list-title">📋 Dados do Eleitor</div>
+                    <div class="coord-list-item">📅 Cadastrado em: ${cadastro}</div>
+                    <div class="coord-list-item">🎂 Aniversário: ${aniversario}</div>
+                    <div class="coord-list-item">📍 Região: ${el.ra}</div>
+                    <div class="coord-list-item">👤 Coordenador responsável: ${el.coordenador}</div>
+                    <div class="coord-list-item">💬 Grupo WhatsApp: ${el.grupo}</div>
+                    <div class="coord-list-item">📱 Origem: QR Code do coordenador</div>
+                </div>
+
+                <div class="coord-list">
+                    <div class="coord-list-title">📊 Engajamento</div>
+                    <div class="coord-list-item">✅ Em grupo WhatsApp: ${el.status === 'Ativo' ? 'Sim' : 'Pendente'}</div>
+                    <div class="coord-list-item">📨 Mensagens no grupo: ${Math.floor(Math.random() * 20 + 3)}</div>
+                    <div class="coord-list-item">🗓️ Última interação: ${['ontem', 'há 2 dias', 'há 3 dias', 'hoje'][Math.floor(Math.random() * 4)]}</div>
+                </div>
+
+                <div class="coord-modal-actions">
+                    <button class="btn btn-primary" onclick="alert('Abrindo WhatsApp...')">💚 WhatsApp</button>
+                    <button class="btn btn-secondary" onclick="alert('Abrindo discador...')">📞 Ligar</button>
+                </div>
+            `;
+
+            document.getElementById('eleitorModalName').textContent = el.nome;
+            document.getElementById('eleitorModalBody').innerHTML = html;
+            document.getElementById('eleitorModal').classList.add('active');
+        }
+
+        function closeEleitorModal() {
+            document.getElementById('eleitorModal').classList.remove('active');
+        }
+
+        // Close modals when clicking outside
         document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('coordModal');
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeCoordModal();
-                }
+            const coordModal = document.getElementById('coordModal');
+            coordModal.addEventListener('click', (e) => {
+                if (e.target === coordModal) closeCoordModal();
+            });
+            const eleitorModal = document.getElementById('eleitorModal');
+            eleitorModal.addEventListener('click', (e) => {
+                if (e.target === eleitorModal) closeEleitorModal();
             });
         });
 
@@ -2754,6 +3138,263 @@
                 setTimeout(() => particle.remove(), 5000);
             }
         }
+
+        // ===== HELENA CHAT =====
+        const helenaConfig = {
+            url: localStorage.getItem('helena_url') || '',
+            key: localStorage.getItem('helena_key') || '',
+            model: localStorage.getItem('helena_model') || 'helena-premium',
+            fallback: localStorage.getItem('helena_fallback') || 'cx/gpt-5.3-codex-xhigh'
+        };
+        let helenaHistory = [];
+
+        function getHelenaSystemPrompt() {
+            // Serializar todos os dados do demo para contexto
+            const dados = {
+                candidato: 'Neto Rodrigues — Deputado Distrital DF 2026',
+                diasParaEleicao: Math.floor((new Date(2026, 9, 4) - new Date()) / (1000*60*60*24)),
+                apoiadores: 2847,
+                cidadesVisitadas: '18/33',
+                acoesHoje: 12,
+                coordenadores: app.equipe,
+                cidades: app.rasCidades.map((ra, i) => ({
+                    nome: ra,
+                    status: i < 18 ? 'Visitada' : (i < 24 ? 'Agendada' : 'Pendente')
+                })),
+                agenda: app.eventos,
+                lideres: app.lideres,
+                demandas: app.demandas,
+                materiais: app.materiais.map(m => ({
+                    ...m,
+                    disponivel: m.total - m.distribuidos,
+                    percentual: Math.round((m.distribuidos / m.total) * 100) + '%'
+                })),
+                ranking: app.leaderboard,
+                missoes: app.missoes,
+                trofeus: app.trofeus,
+                alertas: {
+                    samambaia: 'Queda de 18% em atividade nos ultimos 7 dias',
+                    ceilandia: 'Maior RA nao visitada — potencial de 500+ contatos',
+                    rival: 'Adversario investindo pesado em Samambaia (340% aumento mencoes patrocinadas)'
+                },
+                pesquisas: {
+                    espontanea: { neto: '28%', candidatoB: '18%', candidatoC: '15%', indecisos: '39%' },
+                    estimulada: { neto: '42%', candidatoB: '28%', candidatoC: '18%', indecisos: '12%' }
+                },
+                regrasNegocio: {
+                    classes: 'So 2: Coordenador (trabalha, gamificado, tem area) e Eleitor (lead vinculado)',
+                    termosBanidos: '"lider" nao existe no sistema — usar "coordenador" ou "referencia"',
+                    areaObrigatoria: 'Coordenador so existe com area de influencia',
+                    vinculoObrigatorio: 'Todo eleitor vinculado a 1 coordenador',
+                    grupoWA: 'Todo eleitor em pelo menos 1 grupo, todo coordenador admin de pelo menos 1'
+                }
+            };
+
+            return `Voce e a Dra. Helena Inteia Vasconcelos, Cientista-Chefe da INTEIA e cerebro estrategico da campanha de Neto Rodrigues (Deputado Distrital DF 2026).
+
+PERSONALIDADE:
+- Consultora estrategica, nao assistente — recomenda DECISAO, nao lista opcoes
+- Direta, sem rodeios, sem bajulacao
+- Usa dados para fundamentar cada afirmacao
+- Confianca calibrada (0.9+ = forte, 0.7-0.8 = solido, <0.5 = especulacao)
+- Nunca diz "depende" sem dar recomendacao
+- Portugues brasileiro
+
+FORMATO DE RESPOSTA:
+- DECISAO primeiro (1 frase)
+- JUSTIFICATIVA (2-3 bullets com dados)
+- RISCO (1 frase se relevante)
+- Maximo 200 palavras por resposta (concisa)
+
+DADOS DA CAMPANHA (BASE ATUALIZADA):
+${JSON.stringify(dados, null, 2)}
+
+CAPACIDADES:
+- Cruzar dados de cidades visitadas x coordenadores x demandas x pesquisas
+- Identificar janelas de oportunidade (RA subexplorada, tema sem adversario)
+- Analisar ranking e gamificacao
+- Sugerir acoes priorizadas com draft pronto
+- Detectar riscos (queda regional, coordenador inativo, material em falta)
+- Teoria dos jogos aplicada a estrategia eleitoral
+
+Responda sempre com base nos dados reais acima. Quando cruzar informacoes, cite as fontes dos dados.`;
+        }
+
+        function openConfig() {
+            document.getElementById('cfgUrl').value = helenaConfig.url;
+            document.getElementById('cfgKey').value = helenaConfig.key;
+            document.getElementById('cfgModel').value = helenaConfig.model;
+            document.getElementById('cfgFallback').value = helenaConfig.fallback;
+            document.getElementById('configModal').classList.add('open');
+        }
+
+        function closeConfig() {
+            document.getElementById('configModal').classList.remove('open');
+        }
+
+        function saveConfig() {
+            helenaConfig.url = document.getElementById('cfgUrl').value.replace(/\/+$/, '');
+            helenaConfig.key = document.getElementById('cfgKey').value;
+            helenaConfig.model = document.getElementById('cfgModel').value;
+            helenaConfig.fallback = document.getElementById('cfgFallback').value;
+            localStorage.setItem('helena_url', helenaConfig.url);
+            localStorage.setItem('helena_key', helenaConfig.key);
+            localStorage.setItem('helena_model', helenaConfig.model);
+            localStorage.setItem('helena_fallback', helenaConfig.fallback);
+            closeConfig();
+            addHelenaMsg('system', 'Configuracao salva. Modelo: ' + helenaConfig.model);
+            document.getElementById('helenaStatusText').textContent = helenaConfig.model.split('/').pop();
+        }
+
+        function addHelenaMsg(type, text) {
+            const container = document.getElementById('helenaMessages');
+            const div = document.createElement('div');
+            div.className = 'helena-msg ' + type;
+            if (type === 'helena') {
+                div.innerHTML = '<div class="helena-label">Helena Strategos</div>' + formatHelenaText(text);
+            } else {
+                div.textContent = text;
+            }
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+            return div;
+        }
+
+        function formatHelenaText(text) {
+            // Formatar markdown basico
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/^• /gm, '&bull; ')
+                .replace(/^- /gm, '&bull; ')
+                .replace(/\n/g, '<br>');
+        }
+
+        function askHelena(text) {
+            document.getElementById('helenaInput').value = text;
+            sendHelena();
+        }
+
+        async function sendHelena() {
+            const input = document.getElementById('helenaInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            // Esconder sugestoes apos primeiro uso
+            document.getElementById('helenaSuggestions').style.display = 'none';
+
+            addHelenaMsg('user', text);
+            input.value = '';
+            input.style.height = 'auto';
+
+            const sendBtn = document.getElementById('helenaSendBtn');
+            sendBtn.disabled = true;
+            const typing = document.getElementById('helenaTyping');
+            typing.classList.add('active');
+
+            // Adicionar ao historico
+            helenaHistory.push({ role: 'user', content: text });
+
+            // Verificar config
+            if (!helenaConfig.url || !helenaConfig.key) {
+                typing.classList.remove('active');
+                sendBtn.disabled = false;
+                addHelenaMsg('error', 'Configure a URL e API Key do OmniRoute primeiro. Clique em "Configurar".');
+                return;
+            }
+
+            // Tentar modelo primario, depois fallback
+            const modelos = [helenaConfig.model, helenaConfig.fallback];
+            let resposta = null;
+            let modeloUsado = null;
+
+            for (const modelo of modelos) {
+                try {
+                    resposta = await chamarOmniRoute(modelo);
+                    modeloUsado = modelo;
+                    break;
+                } catch (err) {
+                    console.warn('Falha com modelo ' + modelo + ':', err.message);
+                    if (modelo === modelos[modelos.length - 1]) {
+                        typing.classList.remove('active');
+                        sendBtn.disabled = false;
+                        addHelenaMsg('error', 'Erro: ' + err.message + '. Verifique a configuracao.');
+                        return;
+                    }
+                }
+            }
+
+            typing.classList.remove('active');
+            sendBtn.disabled = false;
+
+            if (resposta) {
+                helenaHistory.push({ role: 'assistant', content: resposta });
+                const msgEl = addHelenaMsg('helena', resposta);
+                // Mostrar modelo usado
+                const modelTag = document.createElement('div');
+                modelTag.style.cssText = 'font-size:0.65rem;color:var(--text-muted);margin-top:6px;opacity:0.6;';
+                modelTag.textContent = 'via ' + modeloUsado;
+                msgEl.appendChild(modelTag);
+            }
+        }
+
+        async function chamarOmniRoute(modelo) {
+            const messages = [
+                { role: 'system', content: getHelenaSystemPrompt() },
+                ...helenaHistory
+            ];
+
+            // Garantir que nao termina com assistant (bug OmniRoute)
+            while (messages.length > 1 && messages[messages.length - 1].role === 'assistant') {
+                messages.pop();
+            }
+
+            const response = await fetch(helenaConfig.url + '/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + helenaConfig.key
+                },
+                body: JSON.stringify({
+                    model: modelo,
+                    messages: messages,
+                    max_tokens: 1024,
+                    temperature: 0.7
+                })
+            });
+
+            if (!response.ok) {
+                const errBody = await response.text().catch(() => '');
+                throw new Error('HTTP ' + response.status + (errBody ? ': ' + errBody.substring(0, 100) : ''));
+            }
+
+            const data = await response.json();
+
+            // Suportar formato OpenAI e Anthropic
+            if (data.choices && data.choices[0]) {
+                return data.choices[0].message.content;
+            }
+            if (data.content && data.content[0]) {
+                return data.content[0].text;
+            }
+            throw new Error('Formato de resposta desconhecido');
+        }
+
+        // Auto-resize textarea
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('helenaInput');
+            if (input) {
+                input.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+                });
+            }
+            // Carregar status do modelo
+            if (helenaConfig.model) {
+                const st = document.getElementById('helenaStatusText');
+                if (st) st.textContent = helenaConfig.model.split('/').pop();
+            }
+        });
 
         // ===== INIT ON LOAD =====
         window.addEventListener('DOMContentLoaded', () => {

@@ -68,6 +68,7 @@ Requirements for initial release (Campanha Neto Rodrigues 2026).
 - [ ] **PESS-08**: Organograma visual da campanha listando todas as 33 RAs + areas horizontais com slot para coordenador (preenchido ou vago) — entrada de cadastro principal
 - [ ] **PESS-09**: Toda area pode ter 1 coordenador titular + N sublideres
 - [ ] **PESS-10**: Reatribuir area de um colaborador (transferir ou desligar)
+- [ ] **PESS-11**: Campo data de aniversario no cadastro de coordenador (obrigatorio para gerar lista diaria de aniversariantes)
 
 ### Coordenador Geral (Funcao Unica)
 
@@ -145,6 +146,20 @@ Requirements for initial release (Campanha Neto Rodrigues 2026).
 - [ ] **LEAD-09**: Reatribuir eleitor para outro colaborador (transferencia de carteira)
 - [ ] **LEAD-10**: Dashboard por colaborador: quantos eleitores cadastrou, quantos estao em grupo, taxa de cobertura
 - [ ] **LEAD-11**: Export de eleitores para WhatsApp (lista de telefones formatada)
+- [ ] **LEAD-12**: Campo data de aniversario no cadastro de eleitor (obrigatorio para gerar lista diaria de aniversariantes)
+
+### Aniversariantes (Toque Pessoal do Candidato)
+
+> Modelo: aniversariantes do dia (coordenadores + eleitores) sao consolidados em uma lista no dashboard do candidato. Ligacao pessoal do candidato no aniversario gera fidelidade desproporcional ao custo. Helena prepara o roteiro contextual.
+
+- [ ] **ANIV-01**: Lista diaria de aniversariantes consolidada no dashboard inicial do candidato
+- [ ] **ANIV-02**: Card mostra nome, idade, classificacao (eleitor/coordenador), area, vinculo (qual coordenador cuida)
+- [ ] **ANIV-03**: Botao "Ligar" abre o discador com numero do aniversariante
+- [ ] **ANIV-04**: Botao "WhatsApp" abre wa.me com mensagem template ja preenchida
+- [ ] **ANIV-05**: Helena gera roteiro contextual da ligacao (referencia a area, ultima interacao, demanda relevante)
+- [ ] **ANIV-06**: Notificacao push no dia do aniversario para o coordenador responsavel tambem cumprimentar
+- [ ] **ANIV-07**: Marcar como "ligacao feita" gera XP automatico para o candidato (engajamento) e historico no perfil do aniversariante
+- [ ] **ANIV-08**: Filtro: aniversariantes da semana / mes / proximos 30 dias
 
 ### Relatorios
 

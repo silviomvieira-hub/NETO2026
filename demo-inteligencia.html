@@ -221,6 +221,29 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
 .modal .mstep-d{font-size:11px;color:var(--text-dim);line-height:1.5}
 .modal-close{width:100%;margin-top:20px}
 
+/* ============ ANIVERSARIANTES ============ */
+.aniv{background:linear-gradient(135deg,rgba(255,64,129,.12) 0%,rgba(255,145,0,.06) 50%,rgba(20,20,40,.95) 100%);border:1px solid rgba(255,64,129,.35);border-radius:var(--radius);padding:18px;animation:fadeInUp .5s,glow 4s ease-in-out infinite;position:relative;overflow:hidden}
+.aniv::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--pink),var(--gold),transparent);background-size:200% 100%;animation:shimmer 3s linear infinite}
+.aniv-h{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.aniv-h .em{font-size:24px;animation:float 3s ease-in-out infinite}
+.aniv-h-info{flex:1;min-width:0}
+.aniv-tag{display:inline-block;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--pink);background:rgba(255,64,129,.15);padding:3px 8px;border-radius:6px;border:1px solid rgba(255,64,129,.3);margin-bottom:4px}
+.aniv-titulo{font-size:15px;font-weight:800;color:#fff}
+.aniv-sub{font-size:10px;color:var(--text-dim);font-weight:600}
+.aniv-list{display:flex;flex-direction:column;gap:6px}
+.aniv-item{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:10px;padding:10px;transition:all .2s}
+.aniv-item:hover{border-color:rgba(255,64,129,.3);transform:translateX(2px)}
+.aniv-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a1a;font-size:13px;flex-shrink:0}
+.aniv-info{flex:1;min-width:0}
+.aniv-nome{font-size:12px;font-weight:800;color:#fff;line-height:1.3}
+.aniv-meta{font-size:10px;color:var(--text-dim);font-weight:600;margin-top:2px}
+.aniv-meta b{color:var(--gold)}
+.aniv-btns{display:flex;gap:4px;flex-shrink:0}
+.aniv-btn{background:var(--bg-elev);border:1px solid var(--border);color:var(--text);font-size:11px;padding:6px 10px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:700;transition:all .2s}
+.aniv-btn:hover{border-color:var(--border-hl)}
+.aniv-btn.call{background:var(--green);color:#0a0a1a;border-color:var(--green)}
+.aniv-btn.wa{background:#25d366;color:#0a0a1a;border-color:#25d366}
+
 /* ============ COUNTDOWN ============ */
 @keyframes countPulse{0%,100%{transform:scale(1);text-shadow:0 0 24px rgba(255,23,68,.5)}50%{transform:scale(1.06);text-shadow:0 0 36px rgba(255,23,68,.8),0 0 60px rgba(255,145,0,.4)}}
 @keyframes countBorder{0%,100%{border-color:rgba(255,23,68,.4);box-shadow:0 0 24px rgba(255,23,68,.25)}50%{border-color:rgba(255,145,0,.6);box-shadow:0 0 32px rgba(255,145,0,.35)}}
@@ -562,22 +585,33 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
 /* ============ FOOTER DEMO ============ */
 .demo-tag{position:fixed;bottom:16px;right:16px;background:rgba(255,214,0,.15);border:1px solid rgba(255,214,0,.4);color:var(--gold);padding:6px 12px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;z-index:150;backdrop-filter:blur(8px)}
 
-/* ============ SPLASH NETO ============ */
+/* ============ SPLASH NETO (FULLSCREEN) ============ */
 @keyframes splashFade{from{opacity:0}to{opacity:1}}
-@keyframes splashOut{to{opacity:0;visibility:hidden}}
-@keyframes splashPulse{0%,100%{box-shadow:0 0 60px rgba(0,230,118,.4),0 0 120px rgba(255,214,0,.2)}50%{box-shadow:0 0 80px rgba(0,230,118,.6),0 0 160px rgba(255,214,0,.3)}}
+@keyframes splashOut{to{opacity:0;transform:scale(1.08);visibility:hidden}}
+@keyframes photoBlink{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.04);filter:brightness(1.15)}}
+@keyframes photoRing{0%,100%{box-shadow:0 0 60px rgba(0,230,118,.5),0 0 120px rgba(255,214,0,.3),0 0 0 0 rgba(0,230,118,.5)}50%{box-shadow:0 0 100px rgba(0,230,118,.8),0 0 200px rgba(255,214,0,.5),0 0 0 30px rgba(0,230,118,0)}}
 @keyframes splashArrow{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
-.splash{position:fixed;inset:0;z-index:9999;background:radial-gradient(ellipse at center,#0d0d22 0%,#0a0a1a 70%,#050510 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;animation:splashFade .6s ease-out;padding:24px;max-width:480px;margin:0 auto;left:50%;transform:translateX(-50%)}
-.splash.out{animation:splashOut .5s ease-in forwards}
-.splash-tag{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);background:rgba(255,214,0,.1);border:1px solid rgba(255,214,0,.3);padding:8px 16px;border-radius:20px;margin-bottom:28px;animation:fadeInUp .7s ease-out .1s both}
-.splash-photo{width:min(78vw,340px);height:min(78vw,340px);border-radius:50%;overflow:hidden;border:4px solid var(--green);background:linear-gradient(135deg,var(--green),var(--gold));animation:splashPulse 2.5s ease-in-out infinite,fadeInUp .8s ease-out .2s both;margin-bottom:32px;position:relative}
-.splash-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.splash-name{font-size:28px;font-weight:900;color:#fff;letter-spacing:.5px;margin-bottom:6px;text-align:center;animation:fadeInUp .8s ease-out .35s both}
-.splash-role{font-size:12px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:28px;text-align:center;animation:fadeInUp .8s ease-out .45s both}
+@keyframes phraseBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.85;transform:scale(1.04)}}
+@keyframes splashBg{0%,100%{background:radial-gradient(ellipse at center,#0d0d22 0%,#0a0a1a 70%,#050510 100%)}50%{background:radial-gradient(ellipse at center,#0f1530 0%,#0a0a1a 70%,#050510 100%)}}
+@keyframes confettiFall{0%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(var(--cx,0),var(--cy,800px)) rotate(var(--cr,720deg));opacity:0}}
+
+/* fullscreen — passa por cima do max-width:480px do body */
+.splash{position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;z-index:9999;background:radial-gradient(ellipse at center,#0d0d22 0%,#0a0a1a 70%,#050510 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;animation:splashFade .6s ease-out,splashBg 4s ease-in-out infinite;padding:32px;margin:0;transform:none;overflow:hidden}
+.splash.out{animation:splashOut .6s ease-in forwards}
+.splash::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 20% 20%,rgba(0,230,118,.08),transparent 50%),radial-gradient(circle at 80% 80%,rgba(255,214,0,.06),transparent 50%);pointer-events:none}
+.splash-tag{font-size:12px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--gold);background:rgba(255,214,0,.12);border:1px solid rgba(255,214,0,.4);padding:10px 20px;border-radius:24px;margin-bottom:36px;animation:fadeInUp .7s ease-out .1s both;box-shadow:0 4px 24px rgba(255,214,0,.15);position:relative;z-index:2}
+.splash-photo{width:min(82vw,420px);height:min(82vw,420px);border-radius:50%;overflow:hidden;border:5px solid var(--green);background:linear-gradient(135deg,var(--green),var(--gold));animation:photoRing 2s ease-in-out infinite,fadeInUp .8s ease-out .2s both;margin-bottom:36px;position:relative;z-index:2}
+.splash-photo img{width:100%;height:100%;object-fit:cover;display:block;animation:photoBlink 1.6s ease-in-out infinite}
+.splash-name{font-size:34px;font-weight:900;color:#fff;letter-spacing:1px;margin-bottom:8px;text-align:center;animation:fadeInUp .8s ease-out .35s both;text-shadow:0 4px 30px rgba(0,230,118,.4);position:relative;z-index:2}
+.splash-role{font-size:13px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:3px;margin-bottom:32px;text-align:center;animation:fadeInUp .8s ease-out .45s both;position:relative;z-index:2}
 .splash-role b{color:var(--green)}
-.splash-phrase{font-size:32px;font-weight:900;background:linear-gradient(135deg,var(--green) 0%,var(--gold) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center;letter-spacing:.5px;margin-bottom:24px;animation:fadeInUp .8s ease-out .55s both}
-.splash-cta{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;animation:fadeInUp .8s ease-out .7s both,splashArrow 1.8s ease-in-out 1.5s infinite}
-.splash-cta::after{content:"→";font-size:18px;color:var(--green)}
+.splash-phrase{font-size:42px;font-weight:900;background:linear-gradient(135deg,var(--green) 0%,var(--gold) 50%,var(--green) 100%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center;letter-spacing:1px;margin-bottom:30px;animation:fadeInUp .8s ease-out .55s both,phraseBlink 1.4s ease-in-out infinite,shimmer 3s linear infinite;text-transform:uppercase;line-height:1.1;position:relative;z-index:2}
+.splash-cta{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:2px;animation:fadeInUp .8s ease-out .7s both,splashArrow 1.8s ease-in-out 1.5s infinite;background:rgba(255,214,0,.08);border:1px solid rgba(255,214,0,.3);padding:12px 24px;border-radius:30px;position:relative;z-index:2}
+.splash-cta::after{content:"→";font-size:20px;color:var(--green);font-weight:900}
+
+/* Confete container */
+.confetti{position:fixed;pointer-events:none;z-index:10000;top:0;left:0;width:100vw;height:100vh;overflow:hidden}
+.confetti-piece{position:absolute;width:10px;height:14px;animation:confettiFall 1.6s ease-in forwards;border-radius:2px}
 
 /* ============ MOBILE > 480 ============ */
 @media(min-width:481px){
@@ -658,6 +692,75 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
     <div class="briefing-text">"Dia de ocupar o vazio em transporte de Samambaia e responder ao lançamento do adversário em saúde. Janela curta — próximas 6 horas definem a semana."</div>
   </div>
 
+  <!-- ANIVERSARIANTES DO DIA -->
+  <div class="aniv">
+    <div class="aniv-h">
+      <div class="em">🎂</div>
+      <div class="aniv-h-info">
+        <div class="aniv-tag">Aniversariantes de hoje</div>
+        <div class="aniv-titulo">5 ligações pra fazer</div>
+        <div class="aniv-sub">Toque pessoal · gera fidelidade · Helena já preparou o roteiro</div>
+      </div>
+    </div>
+    <div class="aniv-list">
+      <div class="aniv-item">
+        <div class="aniv-avatar">MC</div>
+        <div class="aniv-info">
+          <div class="aniv-nome">Marlene Cordeiro · 58 anos</div>
+          <div class="aniv-meta">🗳️ Eleitora · vinculada a <b>João Silva</b> · Sobradinho</div>
+        </div>
+        <div class="aniv-btns">
+          <button class="aniv-btn call" onclick="toast('📞 Chamando Marlene')">📞</button>
+          <button class="aniv-btn wa" onclick="toast('💬 Mensagem enviada')">💬</button>
+        </div>
+      </div>
+      <div class="aniv-item">
+        <div class="aniv-avatar">RS</div>
+        <div class="aniv-info">
+          <div class="aniv-nome">Roberto Santos · 42 anos</div>
+          <div class="aniv-meta">👥 Coordenador · <b>Maria Sousa</b> · Taguatinga</div>
+        </div>
+        <div class="aniv-btns">
+          <button class="aniv-btn call" onclick="toast('📞 Chamando Roberto')">📞</button>
+          <button class="aniv-btn wa" onclick="toast('💬 Mensagem enviada')">💬</button>
+        </div>
+      </div>
+      <div class="aniv-item">
+        <div class="aniv-avatar">LP</div>
+        <div class="aniv-info">
+          <div class="aniv-nome">Luciana Pinheiro · 35 anos</div>
+          <div class="aniv-meta">🗳️ Eleitora · <b>Lucas Ferreira</b> · Samambaia · referência mães</div>
+        </div>
+        <div class="aniv-btns">
+          <button class="aniv-btn call" onclick="toast('📞 Chamando Luciana')">📞</button>
+          <button class="aniv-btn wa" onclick="toast('💬 Mensagem enviada')">💬</button>
+        </div>
+      </div>
+      <div class="aniv-item">
+        <div class="aniv-avatar">CA</div>
+        <div class="aniv-info">
+          <div class="aniv-nome">Carlos Almeida · 67 anos</div>
+          <div class="aniv-meta">🗳️ Eleitor · <b>Patrícia Gomes</b> · Águas Claras</div>
+        </div>
+        <div class="aniv-btns">
+          <button class="aniv-btn call" onclick="toast('📞 Chamando Carlos')">📞</button>
+          <button class="aniv-btn wa" onclick="toast('💬 Mensagem enviada')">💬</button>
+        </div>
+      </div>
+      <div class="aniv-item">
+        <div class="aniv-avatar">DM</div>
+        <div class="aniv-info">
+          <div class="aniv-nome">Daniela Moreira · 29 anos</div>
+          <div class="aniv-meta">🗳️ Eleitora · <b>Fernanda Dias</b> · Mulheres NETO</div>
+        </div>
+        <div class="aniv-btns">
+          <button class="aniv-btn call" onclick="toast('📞 Chamando Daniela')">📞</button>
+          <button class="aniv-btn wa" onclick="toast('💬 Mensagem enviada')">💬</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- AGENDA DO DIA (CRONOGRAMA) -->
   <div class="section-title">
     <h2>📅 Agenda de Hoje</h2>
@@ -694,10 +797,10 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
 
     <!-- COLABORADORES -->
     <div class="agenda-track campo">
-      <div class="agenda-track-h"><span class="ico">👥</span>Colaboradores<span class="cnt">4 frentes</span></div>
-      <div class="agenda-item"><span class="agenda-time">Manhã</span><span class="agenda-txt"><b>Blitz Samambaia</b> QR 302/306 · 5 colaboradores · responsável: <b>Lucas Ferreira</b> <i>(campo)</i></span></div>
-      <div class="agenda-item"><span class="agenda-time">Tarde</span><span class="agenda-txt"><b>Mutirão Taguatinga</b> · feira Ceilândia-Centro · 8 colaboradores · responsável: <b>Maria Sousa</b> <i>(campo)</i></span></div>
-      <div class="agenda-item"><span class="agenda-time">16:00</span><span class="agenda-txt"><b>Treinamento novos colaboradores</b> — Sobradinho · cond. <b>João Silva</b> <i>(formação)</i></span></div>
+      <div class="agenda-track-h"><span class="ico">👥</span>Coordenadores<span class="cnt">4 frentes</span></div>
+      <div class="agenda-item"><span class="agenda-time">Manhã</span><span class="agenda-txt"><b>Blitz Samambaia</b> QR 302/306 · 5 coordenadores · responsável: <b>Lucas Ferreira</b> <i>(campo)</i></span></div>
+      <div class="agenda-item"><span class="agenda-time">Tarde</span><span class="agenda-txt"><b>Mutirão Taguatinga</b> · feira Ceilândia-Centro · 8 coordenadores · responsável: <b>Maria Sousa</b> <i>(campo)</i></span></div>
+      <div class="agenda-item"><span class="agenda-time">16:00</span><span class="agenda-txt"><b>Treinamento novos coordenadores</b> — Sobradinho · cond. <b>João Silva</b> <i>(formação)</i></span></div>
       <div class="agenda-item"><span class="agenda-time">Dia</span><span class="agenda-txt"><b>Meta do dia:</b> +35 cadastros · +8 demandas · +12 fotos</span></div>
     </div>
   </div>
@@ -1175,8 +1278,8 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
     <h3>🗺️ Organograma da Campanha</h3>
     <p>Toda pessoa só existe na campanha se tiver uma <b>área de influência</b>. Atribua um coordenador para cada região e cada área temática. Áreas vagas = oportunidades a preencher.</p>
     <div class="classes">
-      <div class="cls colab"><b>👥 Colaborador</b><span>Coordenador de área. Trabalha, cadastra eleitores, ganha pontos.</span></div>
-      <div class="cls elei"><b>🗳️ Eleitor</b><span>Lead vinculado a 1 colaborador. Só vota, não trabalha.</span></div>
+      <div class="cls colab"><b>👥 Coordenador</b><span>Coordenador de área. Trabalha, cadastra eleitores, ganha pontos.</span></div>
+      <div class="cls elei"><b>🗳️ Eleitor</b><span>Lead vinculado a 1 coordenador. Só vota, não trabalha.</span></div>
     </div>
   </div>
 
@@ -1184,14 +1287,6 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
     <div class="org-stat"><div class="n green">11</div><div class="l">Áreas atribuídas</div></div>
     <div class="org-stat"><div class="n orange">37</div><div class="l">Vagas em aberto</div></div>
     <div class="org-stat"><div class="n">48</div><div class="l">Total áreas</div></div>
-  </div>
-
-  <!-- COORD GERAL DESTAQUE -->
-  <div class="briefing" style="padding:14px 18px">
-    <div class="briefing-tag">⭐ Coordenador Geral · Único</div>
-    <div class="briefing-title">Ana Paula Mendes</div>
-    <div class="briefing-date">Função centralizadora · fora do ranking competitivo</div>
-    <div class="briefing-text" style="font-size:12px">Valida comprovações criativas · cadastra missões/metas · distribui materiais · única função sem área de influência geográfica/horizontal porque coordena <b>tudo</b>.</div>
   </div>
 
   <!-- ÁREAS GEOGRÁFICAS -->
@@ -1254,7 +1349,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
     <div class="org-grid">
       <div class="org-slot vaga"><div class="ra">🚌 Concessionárias</div><div class="co empty">+ atribuir</div></div>
       <div class="org-slot vaga"><div class="ra">🌱 Juventude</div><div class="co empty">+ atribuir</div></div>
-      <div class="org-slot filled"><div class="ra">♀️ Mulheres</div><div class="co">Fernanda Dias</div><div class="meta">3 colaboradoras · 47 eleitoras</div></div>
+      <div class="org-slot filled"><div class="ra">♀️ Mulheres</div><div class="co">Fernanda Dias</div><div class="meta">3 coordenadoras · 47 eleitoras</div></div>
       <div class="org-slot vaga"><div class="ra">⛪ Igrejas Evangélicas</div><div class="co empty">+ atribuir</div></div>
       <div class="org-slot vaga"><div class="ra">✝️ Igrejas Católicas</div><div class="co empty">+ atribuir</div></div>
       <div class="org-slot vaga"><div class="ra">🛒 Comércio / Feirantes</div><div class="co empty">+ atribuir</div></div>
@@ -1278,20 +1373,13 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
 <div class="container view" id="viewColabs">
 
   <div class="view-intro">
-    <h3>👥 Colaboradores · Ranking</h3>
-    <p>Todo colaborador é <b>coordenador</b> de uma área (geográfica ou horizontal). Cada eleitor cadastrado vira ponto. O ranking gamifica a militância — top performers ganham reconhecimento direto do candidato.</p>
+    <h3>👥 Coordenadores · Ranking</h3>
+    <p>Todo coordenador é <b>coordenador</b> de uma área (geográfica ou horizontal). Cada eleitor cadastrado vira ponto. O ranking gamifica a militância — top performers ganham reconhecimento direto do candidato.</p>
   </div>
 
-  <!-- COORDENADOR GERAL -->
-  <div class="briefing" style="padding:16px 18px">
-    <div class="briefing-tag">⭐ Coordenador Geral · Único</div>
-    <div class="briefing-title">Ana Paula Mendes</div>
-    <div class="briefing-date">Validadora oficial · distribui materiais · cria missões</div>
-    <div class="briefing-text" style="font-size:13px">Centraliza a operação: <b>aprova as fotos de comprovação</b>, distribui XP, cadastra missões/metas/tarefas do dia, distribui materiais aos coordenadores de área. É a única função fora do ranking competitivo.</div>
-  </div>
 
   <div class="org-stats">
-    <div class="org-stat"><div class="n green">11</div><div class="l">Colaboradores</div></div>
+    <div class="org-stat"><div class="n green">11</div><div class="l">Coordenadores</div></div>
     <div class="org-stat"><div class="n">528</div><div class="l">Eleitores cadastrados</div></div>
     <div class="org-stat"><div class="n orange">+142</div><div class="l">Esta semana</div></div>
   </div>
@@ -1543,7 +1631,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="comp-photo" data-l="Carros">🚗</div>
       <div class="comp-photo" data-l="Time">👥</div>
     </div>
-    <div class="comp-desc">"Adesivo em 80 carros estacionados na feira da Samambaia em 1h30. Time de 5 colaboradores. Já agendamos pra repetir no Recanto sábado."</div>
+    <div class="comp-desc">"Adesivo em 80 carros estacionados na feira da Samambaia em 1h30. Time de 5 coordenadores. Já agendamos pra repetir no Recanto sábado."</div>
     <div class="comp-xp">⚡ Coord. Ana Paula sugere: <b>+120 XP</b></div>
     <div class="comp-btns">
       <button class="wa-btn ok" onclick="toast('✅ Aprovado · +120 XP')">✓ Aprovar +120 XP</button>
@@ -1618,7 +1706,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
 
   <div class="view-intro">
     <h3>💬 Grupos de WhatsApp</h3>
-    <p>Regra de ouro: <b>todo eleitor</b> tem que estar em pelo menos 1 grupo · <b>todo colaborador</b> cuida de no mínimo 1 grupo. O <b>número monitor</b> acima está em todos os grupos capturando cada postagem pró-candidato e atribuindo pontos.</p>
+    <p>Regra de ouro: <b>todo eleitor</b> tem que estar em pelo menos 1 grupo · <b>todo coordenador</b> cuida de no mínimo 1 grupo. O <b>número monitor</b> acima está em todos os grupos capturando cada postagem pró-candidato e atribuindo pontos.</p>
   </div>
 
   <div class="wa-stats">
@@ -1633,7 +1721,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
     <div class="alerta-body">
       <div class="alerta-tag">REGRA · Compliance</div>
       <div class="alerta-titulo">41 eleitores ainda não estão em nenhum grupo</div>
-      <div class="alerta-desc">Distribuir entre os colaboradores das respectivas RAs até sexta · Maior concentração: Ceilândia (12) e Samambaia (9).</div>
+      <div class="alerta-desc">Distribuir entre os coordenadores das respectivas RAs até sexta · Maior concentração: Ceilândia (12) e Samambaia (9).</div>
       <a class="alerta-link" onclick="toast('🔄 Distribuição automática iniciada')">▸ Distribuir agora</a>
     </div>
   </div>
@@ -2078,7 +2166,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
     <span class="bi">🗺️</span><span class="bl">Organog.</span>
   </button>
   <button class="bnav-btn" data-view="viewColabs" onclick="switchView('viewColabs',this)">
-    <span class="bi">👥</span><span class="bl">Colabs</span>
+    <span class="bi">👥</span><span class="bl">Coords</span>
   </button>
   <button class="bnav-btn" data-view="viewMateriais" onclick="switchView('viewMateriais',this)">
     <span class="bi">🎨</span><span class="bl">Mídia</span>
@@ -2150,7 +2238,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">20:30</span><span class="x"><span class="tag c">Cand</span>Ligação Dep. Marcelo Piuí</span></div>
       <div class="cron-line"><span class="t">09:00</span><span class="x"><span class="tag o">Coord</span>Check-in 33 RAs (Ana Paula)</span></div>
       <div class="cron-line"><span class="t">11:00</span><span class="x"><span class="tag o">Coord</span>Recuperação Ceilândia (Paulo R.)</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Blitz Samambaia · Mutirão Taguatinga · Treino Sobradinho</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Blitz Samambaia · Mutirão Taguatinga · Treino Sobradinho</span></div>
       <div class="cron-foco"><b>Foco do dia:</b> ocupar vazio em transporte (Samambaia) e responder lançamento "DF Saudável" do adversário.</div>
     </div>
 
@@ -2164,7 +2252,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">18:00</span><span class="x"><span class="tag c">Cand</span>Live Instagram · balanço da semana</span></div>
       <div class="cron-line"><span class="t">10:00</span><span class="x"><span class="tag o">Coord</span>Fechar escala de fim de semana</span></div>
       <div class="cron-line"><span class="t">16:00</span><span class="x"><span class="tag o">Coord</span>Validar cards gráficos (designer)</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Campo: Recanto das Emas (QR 803/806) · meta +30 cadastros</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Campo: Recanto das Emas (QR 803/806) · meta +30 cadastros</span></div>
       <div class="cron-foco"><b>Foco:</b> consolidar narrativa de saúde preventiva antes da oposição ganhar tração.</div>
     </div>
 
@@ -2179,7 +2267,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">19:00</span><span class="x"><span class="tag c">Cand</span>Jantar referências comunitárias</span></div>
       <div class="cron-line"><span class="t">08:00</span><span class="x"><span class="tag o">Coord</span>Compilar dossiê semanal</span></div>
       <div class="cron-line"><span class="t">14:00</span><span class="x"><span class="tag o">Coord</span>Reunião financeiro · prestação de contas</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Campo: Riacho Fundo II · porta-a-porta QR 813</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Campo: Riacho Fundo II · porta-a-porta QR 813</span></div>
       <div class="cron-foco"><b>Foco:</b> capturar narrativa "mães por creches" antes da 2ª semana.</div>
     </div>
 
@@ -2194,7 +2282,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">15:00</span><span class="x"><span class="tag c">Cand</span>Caminhada Ceilândia Sul (recuperação RA)</span></div>
       <div class="cron-line"><span class="t">18:00</span><span class="x"><span class="tag c">Cand</span>Missa Dom Bosco · cumprimento</span></div>
       <div class="cron-line"><span class="t">07:00</span><span class="x"><span class="tag o">Coord</span>Logística caminhada (som, água, camisetas)</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>30 colaboradores mobilizados · meta +80 cadastros · 15 fotos</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>30 coordenadores mobilizados · meta +80 cadastros · 15 fotos</span></div>
       <div class="cron-foco"><b>Foco:</b> dia de visibilidade alta — caminhada Ceilândia é indispensável para reverter -18%.</div>
     </div>
 
@@ -2206,7 +2294,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">Off</span><span class="x"><span class="tag c">Cand</span>Descanso do candidato (recomendação Helena)</span></div>
       <div class="cron-line"><span class="t">10:00</span><span class="x"><span class="tag c">Cand</span>Missa família · presença leve</span></div>
       <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag o">Coord</span>Consolidar relatório semanal</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Presença em eventos religiosos (voluntário)</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Presença em eventos religiosos (voluntário)</span></div>
       <div class="cron-foco"><b>Foco:</b> preservar energia do candidato para semana decisiva.</div>
     </div>
 
@@ -2216,11 +2304,11 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
         <div><div class="cron-day-date">Seg · 13/04</div><div class="cron-day-wk">D-174 · Semana 16</div></div>
         <span class="cron-day-badge foco">CLDF</span>
       </div>
-      <div class="cron-line"><span class="t">08:00</span><span class="x"><span class="tag c">Cand</span>Reunião semanal de planejamento (todos os colaboradores)</span></div>
+      <div class="cron-line"><span class="t">08:00</span><span class="x"><span class="tag c">Cand</span>Reunião semanal de planejamento (todos os coordenadores)</span></div>
       <div class="cron-line"><span class="t">14:00</span><span class="x"><span class="tag c">Cand</span>CLDF · apresentar PL Creches no plenário</span></div>
       <div class="cron-line"><span class="t">17:00</span><span class="x"><span class="tag c">Cand</span>Podcast regional (Política DF)</span></div>
       <div class="cron-line"><span class="t">09:00</span><span class="x"><span class="tag o">Coord</span>Abertura metas semana 16</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Campo: Planaltina · 3 escolas visitadas</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Campo: Planaltina · 3 escolas visitadas</span></div>
     </div>
 
     <!-- TER 14 -->
@@ -2232,7 +2320,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">15:00</span><span class="x"><span class="tag c">Cand</span>Reunião com base: pauta segurança</span></div>
       <div class="cron-line"><span class="t">19:30</span><span class="x"><span class="tag c">Cand</span>Post vídeo CLDF (corte do plenário)</span></div>
       <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag o">Coord</span>Análise pesquisa interna · amostra 400</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Campo: Sol Nascente · QR 828</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Campo: Sol Nascente · QR 828</span></div>
     </div>
 
     <!-- QUA 15 -->
@@ -2244,7 +2332,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">14:00</span><span class="x"><span class="tag c">Cand</span>Visita UBS Ceilândia Norte (obras maio)</span></div>
       <div class="cron-line"><span class="t">18:00</span><span class="x"><span class="tag c">Cand</span>Live semanal resultados</span></div>
       <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag o">Coord</span>Fechamento conteúdo semana 16</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Campo: Gama · feira central</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Campo: Gama · feira central</span></div>
     </div>
 
     <!-- QUI 16 -->
@@ -2255,8 +2343,8 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">10:00</span><span class="x"><span class="tag c">Cand</span>Reunião bancada aliada</span></div>
       <div class="cron-line"><span class="t">15:00</span><span class="x"><span class="tag c">Cand</span>Visita escola técnica Santa Maria</span></div>
       <div class="cron-line"><span class="t">20:00</span><span class="x"><span class="tag c">Cand</span>Jantar empresários Taguatinga Norte</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag o">Coord</span>Revisão ranking colaboradores</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Campo: Santa Maria · meta +40 cadastros</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag o">Coord</span>Revisão ranking coordenadores</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Campo: Santa Maria · meta +40 cadastros</span></div>
     </div>
 
     <!-- SEX 17 -->
@@ -2269,7 +2357,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">11:00</span><span class="x"><span class="tag c">Cand</span>Coletiva curta · balanço creches</span></div>
       <div class="cron-line"><span class="t">16:00</span><span class="x"><span class="tag c">Cand</span>Gravação TV digital · 2 inserções</span></div>
       <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag o">Coord</span>Consolidar relatório semanal</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Campo: Paranoá · Itapoã</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Campo: Paranoá · Itapoã</span></div>
     </div>
 
     <!-- SAB 18 -->
@@ -2282,7 +2370,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">11:00</span><span class="x"><span class="tag c">Cand</span>Almoço referências comunitárias Sobradinho</span></div>
       <div class="cron-line"><span class="t">16:00</span><span class="x"><span class="tag c">Cand</span>Torneio de futebol · premiação (Gama)</span></div>
       <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag o">Coord</span>Logística 3 eventos simultâneos</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>40 colaboradores · meta +120 cadastros</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>40 coordenadores · meta +120 cadastros</span></div>
     </div>
 
     <!-- DOM 19 -->
@@ -2292,7 +2380,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       </div>
       <div class="cron-line"><span class="t">Off</span><span class="x"><span class="tag c">Cand</span>Descanso · tempo família</span></div>
       <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag o">Coord</span>Planejamento semana 17</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Presença leve eventos religiosos</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Presença leve eventos religiosos</span></div>
     </div>
 
     <!-- SEG 20 -->
@@ -2303,7 +2391,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">08:00</span><span class="x"><span class="tag c">Cand</span>Reunião semanal + leitura pesquisa interna</span></div>
       <div class="cron-line"><span class="t">14:00</span><span class="x"><span class="tag c">Cand</span>CLDF · sessão ordinária</span></div>
       <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag o">Coord</span>Abertura metas semana 17</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Campo: Brazlândia</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Campo: Brazlândia</span></div>
     </div>
 
     <!-- TER 21 -->
@@ -2315,7 +2403,7 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
       <div class="cron-line"><span class="t">09:00</span><span class="x"><span class="tag c">Cand</span>Ato cívico Praça dos Três Poderes</span></div>
       <div class="cron-line"><span class="t">11:00</span><span class="x"><span class="tag c">Cand</span>Visita a monumentos — foto institucional</span></div>
       <div class="cron-line"><span class="t">17:00</span><span class="x"><span class="tag c">Cand</span>Post Tiradentes · mensagem institucional</span></div>
-      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Colab</span>Campo: parques urbanos (alta circulação)</span></div>
+      <div class="cron-line"><span class="t">Dia</span><span class="x"><span class="tag f">Coord</span>Campo: parques urbanos (alta circulação)</span></div>
       <div class="cron-foco"><b>Foco:</b> ocupar narrativa cívica · foto com bandeira DF.</div>
     </div>
 
@@ -2326,13 +2414,41 @@ body::before{content:"";position:fixed;top:0;left:50%;transform:translateX(-50%)
 <div class="demo-tag">DEMO · Helena ● Ativa</div>
 
 <script>
-// Splash: clique entra no dashboard
+// Confete burst — pure JS, sem libs
+function confetti(qtd){
+  qtd=qtd||60;
+  const cores=['#00e676','#ffd600','#ff9100','#b388ff','#00e5ff','#ff4081','#fff'];
+  const c=document.createElement('div');
+  c.className='confetti';
+  document.body.appendChild(c);
+  for(let i=0;i<qtd;i++){
+    const p=document.createElement('div');
+    p.className='confetti-piece';
+    const cor=cores[Math.floor(Math.random()*cores.length)];
+    p.style.background=cor;
+    p.style.left=(50+Math.random()*0-0)+'%';
+    p.style.top='40%';
+    p.style.setProperty('--cx',(Math.random()*800-400)+'px');
+    p.style.setProperty('--cy',(Math.random()*600+200)+'px');
+    p.style.setProperty('--cr',(Math.random()*1080-540)+'deg');
+    p.style.animationDelay=(Math.random()*.2)+'s';
+    p.style.animationDuration=(1.4+Math.random()*.8)+'s';
+    c.appendChild(p);
+  }
+  setTimeout(()=>c.remove(),2400);
+}
+
+// Splash: clique entra no dashboard com confete
 function entrarDashboard(){
   const s=document.getElementById('splash');
   if(!s||s.classList.contains('out'))return;
+  confetti(80);
   s.classList.add('out');
-  setTimeout(()=>s.remove(),500);
+  setTimeout(()=>{s.remove();confetti(40)},500);
 }
+
+// Confete na carga inicial (mentalidade positiva)
+window.addEventListener('load',()=>{setTimeout(()=>confetti(50),600)});
 
 // Modal cronograma completo
 function abrirCronograma(){document.getElementById('modalCronBg').classList.add('show')}
@@ -2363,7 +2479,7 @@ function abrirDetalhe(tipo){
   (map[tipo]||(()=>toast('Detalhe em construção')))();
 }
 
-// Dados dos colaboradores (demo)
+// Dados dos coordenadores (demo)
 const COLABS={
   joao:{nome:'João Silva',iniciais:'JS',rank:1,campeao:true,xp:1240,nivel:'Coord. Master',areaTipo:'geo',area:'RA V · Sobradinho',funcao:'Campo / Coordenação geográfica',
     eleitores:[{n:'Carlos Mendes',m:'cad. há 2d'},{n:'Marlene Aparecida',m:'em grupo'},{n:'Roberto Lima',m:'em grupo'},{n:'+ 144 eleitores',m:'ver lista'}],
@@ -2383,7 +2499,7 @@ const COLABS={
   rodrigo:{nome:'Rodrigo Lima',iniciais:'RL',rank:5,xp:520,nivel:'Coord. Ativo',areaTipo:'geo',area:'RA XIII · Santa Maria',funcao:'Campo',
     eleitores:[{n:'+ 51 eleitores',m:'ver lista'}],grupos:[{n:'Santa Maria Base',m:'51 membros'}],
     posts:12,ataques:0,leadsSem:9,checkin:'há 5h',totalEleitores:51,totalGrupos:1},
-  fernanda:{nome:'Fernanda Dias',iniciais:'FD',rank:6,xp:480,nivel:'Coord. Ativo',areaTipo:'hor',area:'♀️ Mulheres',funcao:'Mobilização horizontal · 3 colaboradoras subordinadas',
+  fernanda:{nome:'Fernanda Dias',iniciais:'FD',rank:6,xp:480,nivel:'Coord. Ativo',areaTipo:'hor',area:'♀️ Mulheres',funcao:'Mobilização horizontal · 3 coordenadoras subordinadas',
     eleitores:[{n:'+ 47 eleitoras',m:'ver lista'}],grupos:[{n:'Mulheres NETO 2026',m:'78 membros · 44 msg/d'},{n:'Mães Ativas DF',m:'29 membros'}],
     posts:21,ataques:0,leadsSem:8,checkin:'há 1h',totalEleitores:47,totalGrupos:2},
   fernando:{nome:'Fernando Reis',iniciais:'FR',rank:7,xp:390,nivel:'Coord. Ativo',areaTipo:'geo',area:'RA VI · Planaltina',funcao:'Campo',

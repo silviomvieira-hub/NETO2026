@@ -1,0 +1,2293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Radar de Campanha — Demo</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: { extend: {} }
+  }
+</script>
+<style>
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+  /* Animações */
+  .fade-in  { animation: fadeIn .35s ease both; }
+  .slide-up { animation: slideUp .4s cubic-bezier(.16,1,.3,1) both; }
+  @keyframes fadeIn  { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+  @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+
+  /* Pulse do indicador ao vivo */
+  .pulse-ring { animation: pulseRing 2s cubic-bezier(.455,.03,.515,.955) infinite; }
+  @keyframes pulseRing { 0%,100% { transform:scale(1); opacity:.75; } 50% { transform:scale(1.6); opacity:0; } }
+
+  /* Typing cursor */
+  .typing::after { content:'|'; animation: blink .7s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* Bouncing dots */
+  .dot-bounce { animation: dotBounce 1.2s ease infinite; }
+  .dot-bounce:nth-child(2) { animation-delay:.15s; }
+  .dot-bounce:nth-child(3) { animation-delay:.3s; }
+  @keyframes dotBounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-8px)} }
+
+  /* Highlight de busca */
+  mark { background:#fef08a; color:#1e293b; border-radius:3px; padding:0 3px; font-weight:600; }
+  .dark mark { background:#b45309; color:#fef3c7; }
+
+  /* Sidebar item */
+  .nav-btn.active { background:#2563eb; color:#fff !important; }
+  .nav-btn:not(.active):hover { background:#f1f5f9; }
+  .dark .nav-btn:not(.active):hover { background:#1e293b; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:99px; }
+  .dark ::-webkit-scrollbar-thumb { background:#334155; }
+
+  /* Medals */
+  .medal-gold   { background:linear-gradient(135deg,#f59e0b,#b45309); }
+  .medal-silver { background:linear-gradient(135deg,#94a3b8,#475569); }
+  .medal-bronze { background:linear-gradient(135deg,#c2773e,#7c2d12); }
+
+  /* Trend icons */
+  .trend-up   { color:#22c55e; }
+  .trend-down { color:#ef4444; }
+  .trend-flat { color:#94a3b8; }
+
+  /* KPI counter */
+  .kpi-value { font-variant-numeric: tabular-nums; }
+
+  /* Alert row transition */
+  .alert-row { transition: opacity .4s ease; }
+  .alert-row.resolved { opacity:.45; }
+
+  /* Login screen */
+  .login-screen { position:fixed; inset:0; z-index:100; background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#0f172a 100%); }
+  .login-card { animation: slideUp .6s cubic-bezier(.16,1,.3,1) both; }
+  .login-input:focus { outline:none; border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.2); }
+
+  /* Group detail modal */
+  .modal-overlay { position:fixed; top:0; left:0; right:0; bottom:0; z-index:50; background:rgba(0,0,0,.5); backdrop-filter:blur(4px); }
+  .modal-panel { position:fixed; top:0; bottom:0; right:0; width:480px; max-width:100vw; background:#fff; z-index:51; box-shadow:-8px 0 40px rgba(0,0,0,.2); overflow-y:auto; }
+  .dark .modal-panel { background:#020617; }
+  .modal-panel-enter { animation:slideInRight .35s cubic-bezier(.16,1,.3,1) both; }
+  @keyframes slideInRight { from { transform:translateX(100%); } to { transform:translateX(0); } }
+
+  /* Termômetro gauge */
+  .gauge-track { fill:none; stroke:#f1f5f9; }
+  .dark .gauge-track { stroke:#1e293b; }
+  .gauge-ring { fill:none; stroke-linecap:round; transition:stroke-dasharray 1.5s cubic-bezier(.25,.46,.45,.94) .4s; }
+
+  /* Live Feed */
+  @keyframes feedSlide { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:none; } }
+  .feed-enter { animation:feedSlide .35s cubic-bezier(.16,1,.3,1) both; }
+
+  /* Inteligência Adversarial */
+  .threat-card { border-left:4px solid #ef4444; }
+  .threat-card.med { border-left-color:#f97316; }
+  .adv-bar { transition:width 1.4s cubic-bezier(.25,.46,.45,.94) .6s; }
+
+  /* Pulse badge */
+  @keyframes pulseBadge { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.5)} 50%{box-shadow:0 0 0 6px rgba(239,68,68,0)} }
+  .badge-pulse { animation:pulseBadge 2s ease infinite; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+<!-- ═══════════════════════════════ LOGIN ═══════════════════════════════ -->
+<div id="login-screen" class="login-screen flex items-center justify-center p-4">
+  <!-- Partículas decorativas -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="login-card w-full max-w-sm relative">
+    <!-- Logo -->
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/30">
+        <svg class="w-9 h-9 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" d="M20.49 9A9 9 0 1 1 5.64 4.64"/></svg>
+      </div>
+      <h1 class="text-2xl font-bold text-white tracking-tight">Radar Eleitoral</h1>
+      <p class="text-blue-300 text-sm mt-1">Monitoramento Político com Inteligência Artificial</p>
+    </div>
+
+    <!-- Card de login -->
+    <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
+      <h2 class="text-white font-semibold text-base mb-6">Acesse sua conta</h2>
+
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs font-semibold text-blue-200 uppercase tracking-wider block mb-1.5">Usuário</label>
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" value="coordenacao@radarpolitico.app" readonly
+              class="login-input w-full bg-white/10 border border-white/20 text-white placeholder:text-blue-300/60 rounded-xl pl-10 pr-4 py-3 text-sm transition-all" />
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-blue-200 uppercase tracking-wider block mb-1.5">Senha</label>
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path stroke-linecap="round" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" value="••••••••••" readonly
+              class="login-input w-full bg-white/10 border border-white/20 text-white placeholder:text-blue-300/60 rounded-xl pl-10 pr-4 py-3 text-sm transition-all" />
+          </div>
+        </div>
+      </div>
+
+      <button onclick="doLogin()" id="login-btn"
+        class="mt-6 w-full bg-blue-600 hover:bg-blue-500 active:scale-[.98] text-white font-semibold py-3.5 rounded-xl transition-all shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 text-sm">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+        Entrar no sistema
+      </button>
+
+      <div class="mt-4 flex items-center gap-2">
+        <span class="flex-1 h-px bg-white/10"></span>
+        <span class="text-xs text-blue-300/60">Demo — acesso pré-autorizado</span>
+        <span class="flex-1 h-px bg-white/10"></span>
+      </div>
+    </div>
+
+    <p class="text-center text-xs text-blue-400/60 mt-6">© 2026 Radar Eleitoral · Versão Demo</p>
+  </div>
+</div>
+
+<div id="app" class="hidden flex h-screen overflow-hidden bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+
+  <!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+  <aside class="w-60 flex-shrink-0 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-colors duration-300">
+
+    <!-- Logo -->
+    <div class="flex h-14 items-center gap-2.5 border-b border-slate-200 dark:border-slate-800 px-5">
+      <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+        <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" d="M20.49 9A9 9 0 1 1 5.64 4.64"/></svg>
+      </div>
+      <div>
+        <p class="text-sm font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-none">Radar Eleitoral</p>
+        <p class="text-[10px] text-slate-400 leading-none mt-0.5">Monitoramento Político IA</p>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex-1 p-3 space-y-0.5">
+      <button onclick="setTab('overview')" id="nav-overview" class="nav-btn active w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-white">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </button>
+      <button onclick="setTab('busca')" id="nav-busca" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-500 dark:text-slate-400">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+        Busca Inteligente
+        <span class="ml-auto bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">847</span>
+      </button>
+      <button onclick="setTab('grupos')" id="nav-grupos" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-500 dark:text-slate-400">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path stroke-linecap="round" d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Grupos WhatsApp
+        <span class="ml-auto bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">8</span>
+      </button>
+      <button onclick="setTab('inteligencia')" id="nav-inteligencia" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-500 dark:text-slate-400">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path stroke-linecap="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+        Inteligência
+        <span class="ml-auto bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none badge-pulse">3</span>
+      </button>
+      <button onclick="setTab('mapa')" id="nav-mapa" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-500 dark:text-slate-400">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 1.447-.894L9 7m0 13 6-3m-6 3V7m6 10 4.553 2.276A1 1 0 0 0 21 18.382V7.618a1 1 0 0 0-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+        Mapa Político
+        <span class="ml-auto bg-amber-400 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">6 gaps</span>
+      </button>
+      <button onclick="setTab('ranking')" id="nav-ranking" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-500 dark:text-slate-400">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Coordenadores
+      </button>
+      <button onclick="setTab('alertas')" id="nav-alertas" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-500 dark:text-slate-400">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path stroke-linecap="round" d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Alertas
+        <span class="ml-auto bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">2</span>
+      </button>
+      <button onclick="setTab('agenda')" id="nav-agenda" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-500 dark:text-slate-400">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Agenda & Impacto
+      </button>
+      <button onclick="setTab('relatorio')" id="nav-relatorio" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-500 dark:text-slate-400">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z"/></svg>
+        Relatório do Dia
+      </button>
+      <button class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 dark:text-slate-600 cursor-not-allowed">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        Configurações
+      </button>
+    </nav>
+
+    <!-- Candidato -->
+    <div class="px-3 pb-2">
+      <div class="rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 p-3 text-white">
+        <div class="flex items-center gap-2.5 mb-2">
+          <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold flex-shrink-0">DR</div>
+          <div>
+            <p class="text-xs font-bold leading-tight">Dep. [Nome]</p>
+            <p class="text-[10px] text-blue-200 leading-tight">Câmara Legislativa · DF</p>
+          </div>
+        </div>
+        <div class="text-[10px] font-semibold text-blue-200 flex items-center gap-1">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+          Eleições 2026 · Em campanha
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="border-t border-slate-200 dark:border-slate-800 p-3 space-y-1">
+      <button onclick="window.open('demo-unificado.html','_self')" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors border border-emerald-200 dark:border-emerald-800">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Voltar ao Sistema NETO
+      </button>
+      <button onclick="toggleDark()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        <svg id="dark-icon" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="dark-label">Modo Escuro</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
+  <div class="flex flex-1 flex-col overflow-hidden">
+
+    <!-- Topbar -->
+    <header class="flex h-14 items-center gap-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 transition-colors duration-300">
+      <div class="flex items-center gap-2">
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="pulse-ring absolute inline-flex h-full w-full rounded-full bg-emerald-400"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+        </span>
+        <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Ao Vivo</span>
+      </div>
+
+      <div class="h-4 w-px bg-slate-200 dark:bg-slate-700"></div>
+      <span class="text-xs text-slate-400 hidden sm:block" id="date-display"></span>
+
+      <div class="ml-auto flex items-center gap-3">
+        <span class="text-[10px] font-bold uppercase tracking-widest border border-amber-400 text-amber-600 dark:text-amber-400 px-2.5 py-1 rounded-full">Demo</span>
+        <div class="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-xs font-bold text-white">DR</div>
+      </div>
+    </header>
+
+    <!-- Content area -->
+    <main class="flex-1 overflow-y-auto p-6 space-y-6">
+
+      <!-- ═══════════════ OVERVIEW ═══════════════ -->
+      <div id="tab-overview" class="space-y-6 fade-in">
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Grupos Ativos</p>
+              <svg class="h-4 w-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path stroke-linecap="round" d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <p class="text-3xl font-bold text-slate-900 dark:text-slate-100 kpi-value" id="kpi-grupos">0</p>
+            <p class="text-xs text-slate-400 mt-1">de 8 grupos monitorados</p>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Mensagens Hoje</p>
+              <svg class="h-4 w-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <p class="text-3xl font-bold text-slate-900 dark:text-slate-100 kpi-value" id="kpi-msgs">0</p>
+            <p class="text-xs text-emerald-500 mt-1 font-medium">↑ 12% vs. ontem · meta: 900</p>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Coordenadores</p>
+              <svg class="h-4 w-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="text-3xl font-bold text-slate-900 dark:text-slate-100 kpi-value" id="kpi-coord">0</p>
+            <p class="text-xs text-slate-400 mt-1">94% de engajamento médio</p>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Alertas Não Lidos</p>
+              <svg class="h-4 w-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path stroke-linecap="round" d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <p class="text-3xl font-bold text-slate-900 dark:text-slate-100 kpi-value" id="kpi-alertas">0</p>
+            <p class="text-xs text-amber-500 mt-1 font-medium">1 alto · 1 médio · 0 críticos</p>
+          </div>
+        </div>
+
+        <!-- Termômetro + Feed Ao Vivo -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+          <!-- Termômetro da Campanha -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h2 class="text-base font-bold text-slate-900 dark:text-slate-100">Termômetro da Campanha</h2>
+                <p class="text-xs text-slate-400 mt-0.5">Saúde geral · atualizado agora</p>
+              </div>
+              <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full">Saudável</span>
+            </div>
+            <div class="flex items-center gap-6">
+              <!-- Gauge SVG -->
+              <div class="relative flex-shrink-0">
+                <svg viewBox="0 0 120 120" class="w-32 h-32">
+                  <circle cx="60" cy="60" r="46" fill="none" stroke="#f1f5f9" stroke-width="11" class="gauge-track"/>
+                  <circle cx="60" cy="60" r="46" fill="none" stroke="#22c55e" stroke-width="11"
+                    stroke-dasharray="213 76" stroke-linecap="round"
+                    transform="rotate(-90 60 60)" class="gauge-ring" id="gauge-ring"/>
+                  <text x="60" y="55" text-anchor="middle" font-size="24" font-weight="900" fill="#22c55e" id="gauge-num">74</text>
+                  <text x="60" y="68" text-anchor="middle" font-size="9" fill="#94a3b8">de 100</text>
+                  <text x="60" y="80" text-anchor="middle" font-size="8" fill="#22c55e" font-weight="700">ÓTIMO</text>
+                </svg>
+              </div>
+              <!-- Componentes -->
+              <div class="flex-1 space-y-2.5">
+                <div>
+                  <div class="flex justify-between text-xs mb-1"><span class="text-slate-500">Sentimento</span><span class="font-bold text-emerald-600">84%</span></div>
+                  <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full"><div class="h-1.5 bg-emerald-500 rounded-full adv-bar" style="width:84%"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs mb-1"><span class="text-slate-500">Engajamento</span><span class="font-bold text-emerald-600">79%</span></div>
+                  <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full"><div class="h-1.5 bg-emerald-500 rounded-full adv-bar" style="width:79%"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs mb-1"><span class="text-slate-500">Cadastros</span><span class="font-bold text-blue-600">66%</span></div>
+                  <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full"><div class="h-1.5 bg-blue-500 rounded-full adv-bar" style="width:66%"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs mb-1"><span class="text-slate-500">Cobertura territorial</span><span class="font-bold text-amber-500">24%</span></div>
+                  <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full"><div class="h-1.5 bg-amber-400 rounded-full adv-bar" style="width:24%"></div></div>
+                </div>
+                <p class="text-[10px] text-slate-400 pt-1 leading-relaxed">⚠ Cobertura territorial é o principal gap — expandir para +6 RAs aumenta a nota para ~88.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Central de Comando — Feed Ao Vivo -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md overflow-hidden">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h2 class="text-base font-bold text-slate-900 dark:text-slate-100">Central de Comando</h2>
+                <p class="text-xs text-slate-400 mt-0.5">Feed ao vivo de todos os grupos</p>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="relative flex h-2 w-2"><span class="pulse-ring absolute inline-flex h-full w-full rounded-full bg-emerald-400"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
+                <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Ao Vivo</span>
+              </div>
+            </div>
+            <div id="live-feed" class="space-y-2.5"></div>
+          </div>
+        </div>
+
+        <!-- Meta de Votos -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+          <div class="flex items-start justify-between mb-5">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">Meta de Votos — Eleições 2026</h2>
+              <p class="text-sm text-slate-400 mt-0.5">Quórum estimado para eleição no 1º turno · Câmara Legislativa do DF</p>
+            </div>
+            <span class="text-xs font-bold bg-blue-600 text-white px-3 py-1.5 rounded-full">8,3% da meta</span>
+          </div>
+
+          <!-- Barra de progresso -->
+          <div class="relative h-5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-2">
+            <div class="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full transition-all duration-1000" style="width:8.3%"></div>
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+              <span class="text-[10px] font-bold text-white" style="display:none">1.247</span>
+            </div>
+          </div>
+          <div class="flex justify-between text-[10px] text-slate-400 mb-5">
+            <span>0</span>
+            <span class="font-semibold text-blue-600">1.247 mapeados</span>
+            <span class="font-bold text-slate-600 dark:text-slate-300">Meta: 15.000</span>
+          </div>
+
+          <!-- Três métricas -->
+          <div class="grid grid-cols-3 gap-4 mb-5">
+            <div class="text-center bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-100 dark:border-blue-800">
+              <p class="text-2xl font-black text-blue-600 kpi-value" id="kpi-apoiadores">0</p>
+              <p class="text-xs text-slate-500 mt-1">apoiadores mapeados</p>
+              <p class="text-[10px] text-blue-500 mt-0.5 font-medium">em 8 regiões do DF</p>
+            </div>
+            <div class="text-center bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4 border border-amber-100 dark:border-amber-800">
+              <p class="text-2xl font-black text-amber-600">15.000</p>
+              <p class="text-xs text-slate-500 mt-1">votos necessários</p>
+              <p class="text-[10px] text-amber-500 mt-0.5 font-medium">estimativa 1º turno</p>
+            </div>
+            <div class="text-center bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-700">
+              <p class="text-2xl font-black text-slate-500">13.753</p>
+              <p class="text-xs text-slate-500 mt-1">faltam mapear</p>
+              <p class="text-[10px] text-emerald-500 mt-0.5 font-medium">↑ 47 novos/semana</p>
+            </div>
+          </div>
+
+          <!-- Projeção IA -->
+          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-100 dark:border-blue-800 rounded-xl p-4">
+            <div class="flex items-start gap-3">
+              <div class="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-blue-700 dark:text-blue-300 mb-1">Projeção de IA — ritmo atual</p>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">No ritmo atual de <strong class="text-slate-800 dark:text-slate-200">47 cadastros/semana</strong>, a meta será atingida dentro do prazo eleitoral — mas com margem estreita. Para garantir folga e alcançar o quórum antes do recesso de campanha: abrir coordenação em <span class="text-amber-600 font-semibold">Planaltina, Ceilândia Norte e Santa Maria</span> — sem cabo eleitoral ativo, essas 3 regiões sozinhas representam ~4.200 votos potenciais não mapeados. Uma carreata em cada uma nos próximos 30 dias pode acelerar o ritmo para 90+ cadastros/semana.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfico de sentimento -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+          <div class="flex items-start justify-between mb-6">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">Sentimento ao Longo do Tempo</h2>
+              <p class="text-sm text-slate-400 mt-0.5">Média diária de sentimento positivo nos últimos 7 dias</p>
+            </div>
+            <span class="text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 px-3 py-1.5 rounded-full">+22 pts na semana</span>
+          </div>
+          <div class="relative h-52">
+            <svg viewBox="0 0 700 190" class="w-full h-full" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#22c55e" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#22c55e" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <line x1="40" y1="10" x2="700" y2="10" stroke="currentColor" stroke-width=".5" stroke-dasharray="4" class="text-slate-200 dark:text-slate-700"/>
+              <line x1="40" y1="50" x2="700" y2="50" stroke="currentColor" stroke-width=".5" stroke-dasharray="4" class="text-slate-200 dark:text-slate-700"/>
+              <line x1="40" y1="90" x2="700" y2="90" stroke="currentColor" stroke-width=".5" stroke-dasharray="4" class="text-slate-200 dark:text-slate-700"/>
+              <line x1="40" y1="130" x2="700" y2="130" stroke="currentColor" stroke-width=".5" stroke-dasharray="4" class="text-slate-200 dark:text-slate-700"/>
+              <text x="36" y="13"  font-size="10" fill="#94a3b8" text-anchor="end">100%</text>
+              <text x="36" y="53"  font-size="10" fill="#94a3b8" text-anchor="end">80%</text>
+              <text x="36" y="93"  font-size="10" fill="#94a3b8" text-anchor="end">60%</text>
+              <text x="36" y="133" font-size="10" fill="#94a3b8" text-anchor="end">40%</text>
+              <!-- data: 62,67,71,69,75,80,84 → y = 150-(val/100*140) -->
+              <!-- 62→63.2, 67→56.2, 71→50.6, 69→53.4, 75→45, 80→38, 84→32.4 -->
+              <polygon points="40,190 40,63.2 143,56.2 246,50.6 349,53.4 452,45 555,38 658,32.4 658,190" fill="url(#areaGrad)"/>
+              <polyline points="40,63.2 143,56.2 246,50.6 349,53.4 452,45 555,38 658,32.4" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+              <circle cx="40"  cy="63.2" r="4" fill="#22c55e" stroke="white" stroke-width="1.5"/>
+              <circle cx="143" cy="56.2" r="4" fill="#22c55e" stroke="white" stroke-width="1.5"/>
+              <circle cx="246" cy="50.6" r="4" fill="#22c55e" stroke="white" stroke-width="1.5"/>
+              <circle cx="349" cy="53.4" r="4" fill="#22c55e" stroke="white" stroke-width="1.5"/>
+              <circle cx="452" cy="45"   r="4" fill="#22c55e" stroke="white" stroke-width="1.5"/>
+              <circle cx="555" cy="38"   r="4" fill="#22c55e" stroke="white" stroke-width="1.5"/>
+              <circle cx="658" cy="32.4" r="5" fill="#22c55e" stroke="white" stroke-width="2"/>
+              <!-- valor atual tooltip -->
+              <rect x="620" y="12" width="52" height="18" rx="4" fill="#22c55e"/>
+              <text x="646" y="24" font-size="11" fill="white" font-weight="bold" text-anchor="middle">84%</text>
+              <text x="40"  y="178" font-size="11" fill="#94a3b8" text-anchor="middle">Seg</text>
+              <text x="143" y="178" font-size="11" fill="#94a3b8" text-anchor="middle">Ter</text>
+              <text x="246" y="178" font-size="11" fill="#94a3b8" text-anchor="middle">Qua</text>
+              <text x="349" y="178" font-size="11" fill="#94a3b8" text-anchor="middle">Qui</text>
+              <text x="452" y="178" font-size="11" fill="#94a3b8" text-anchor="middle">Sex</text>
+              <text x="555" y="178" font-size="11" fill="#94a3b8" text-anchor="middle">Sáb</text>
+              <text x="658" y="178" font-size="11" fill="#22c55e" font-weight="bold" text-anchor="middle">Dom</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Charts linha 2 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Donut alertas -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-1">Alertas por Severidade</h2>
+            <p class="text-sm text-slate-400 mb-5">Distribuição dos alertas ativos por nível</p>
+            <div class="flex items-center gap-8">
+              <svg viewBox="0 0 120 120" class="w-36 h-36 flex-shrink-0 -rotate-90">
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#f1f5f9" stroke-width="20"/>
+                <!-- alto(1): 90deg = 70.69 de 282.74 -->
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#f97316" stroke-width="20" stroke-dasharray="70.69 212.06" stroke-dashoffset="0"/>
+                <!-- medio(2): 180deg -->
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#eab308" stroke-width="20" stroke-dasharray="141.37 141.37" stroke-dashoffset="-70.69"/>
+                <!-- baixo(1): 90deg -->
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#94a3b8" stroke-width="20" stroke-dasharray="70.69 212.06" stroke-dashoffset="-212.06"/>
+              </svg>
+              <div class="flex-1 space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-500 flex-shrink-0"></span><span class="text-sm text-slate-600 dark:text-slate-400">Crítico</span></div>
+                  <span class="font-bold text-sm text-slate-800 dark:text-slate-200">0</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-orange-500 flex-shrink-0"></span><span class="text-sm text-slate-600 dark:text-slate-400">Alto</span></div>
+                  <span class="font-bold text-sm text-slate-800 dark:text-slate-200">1</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-yellow-500 flex-shrink-0"></span><span class="text-sm text-slate-600 dark:text-slate-400">Médio</span></div>
+                  <span class="font-bold text-sm text-slate-800 dark:text-slate-200">2</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-400 flex-shrink-0"></span><span class="text-sm text-slate-600 dark:text-slate-400">Baixo</span></div>
+                  <span class="font-bold text-sm text-slate-800 dark:text-slate-200">1</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Engajamento por grupo -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-1">Engajamento por Grupo</h2>
+            <p class="text-sm text-slate-400 mb-5">Sentimento positivo médio por grupo monitorado</p>
+            <div class="space-y-3.5">
+              <div><div class="flex justify-between text-xs mb-1.5"><span class="font-medium text-slate-700 dark:text-slate-300">Ala Norte</span><span class="text-emerald-600 font-semibold">84%</span></div><div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-2 bg-emerald-500 rounded-full" style="width:84%"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1.5"><span class="font-medium text-slate-700 dark:text-slate-300">Ceilândia Sul</span><span class="text-emerald-600 font-semibold">79%</span></div><div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-2 bg-emerald-500 rounded-full" style="width:79%"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1.5"><span class="font-medium text-slate-700 dark:text-slate-300">Taguatinga Central</span><span class="text-emerald-600 font-semibold">77%</span></div><div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-2 bg-emerald-500 rounded-full" style="width:77%"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1.5"><span class="font-medium text-slate-700 dark:text-slate-300">Samambaia Forte</span><span class="text-blue-600 font-semibold">72%</span></div><div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-2 bg-blue-500 rounded-full" style="width:72%"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1.5"><span class="font-medium text-slate-700 dark:text-slate-300">Recanto das Emas</span><span class="text-blue-600 font-semibold">68%</span></div><div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-2 bg-blue-500 rounded-full" style="width:68%"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1.5"><span class="font-medium text-slate-700 dark:text-slate-300">Sobradinho</span><span class="text-amber-600 font-semibold">41%</span></div><div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-2 bg-amber-500 rounded-full" style="width:41%"></div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tópicos em Ascensão + Palavras de Alerta -->
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+
+          <!-- Word cloud -->
+          <div class="lg:col-span-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h2 class="text-base font-bold text-slate-900 dark:text-slate-100">Tópicos em Ascensão</h2>
+                <p class="text-xs text-slate-400 mt-0.5">Palavras mais citadas nas últimas 24h · 8 grupos</p>
+              </div>
+              <span class="text-[10px] font-bold bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-2.5 py-1 rounded-full">847 msgs analisadas</span>
+            </div>
+            <div class="flex flex-wrap gap-x-3 gap-y-2 items-baseline leading-loose">
+              <span class="font-black text-blue-600 cursor-default hover:opacity-80 transition-opacity" style="font-size:28px">adesivaço</span>
+              <span class="font-black text-slate-700 dark:text-slate-200 cursor-default hover:opacity-80 transition-opacity" style="font-size:22px">Dep. [Nome]</span>
+              <span class="font-bold text-purple-600 cursor-default hover:opacity-80 transition-opacity" style="font-size:18px">reunião</span>
+              <span class="font-bold text-emerald-600 cursor-default hover:opacity-80 transition-opacity" style="font-size:17px">cadastro</span>
+              <span class="font-bold text-blue-500 cursor-default hover:opacity-80 transition-opacity" style="font-size:16px">carreata</span>
+              <span class="font-semibold text-teal-600 cursor-default hover:opacity-80 transition-opacity" style="font-size:14px">voluntário</span>
+              <span class="font-semibold text-green-600 cursor-default hover:opacity-80 transition-opacity" style="font-size:14px">Ceilândia</span>
+              <span class="font-semibold text-slate-500 cursor-default hover:opacity-80 transition-opacity" style="font-size:13px">comitê</span>
+              <span class="font-semibold text-slate-500 cursor-default hover:opacity-80 transition-opacity" style="font-size:12px">sábado</span>
+              <span class="font-medium text-amber-600 cursor-default hover:opacity-80 transition-opacity" style="font-size:12px">panfleto</span>
+              <span class="font-semibold text-red-500 cursor-default hover:opacity-80 transition-opacity" style="font-size:11px" title="Adversário detectado">Borges ⚠</span>
+              <span class="font-medium text-slate-400 cursor-default hover:opacity-80 transition-opacity" style="font-size:11px">CLN 110</span>
+              <span class="font-medium text-slate-400 cursor-default hover:opacity-80 transition-opacity" style="font-size:10px">QNM 28</span>
+              <span class="font-medium text-slate-400 cursor-default hover:opacity-80 transition-opacity" style="font-size:10px">SGAN 912</span>
+            </div>
+            <p class="text-[10px] text-red-500 font-semibold mt-3">⚠ "Borges" detectado em 9 menções — monitorar em Inteligência</p>
+          </div>
+
+          <!-- Ranking de tópicos -->
+          <div class="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-md">
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Top 7 — variação 24h</h3>
+            <div class="space-y-2.5">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-slate-400 w-4">1</span>
+                <span class="flex-1 text-xs font-semibold text-slate-700 dark:text-slate-300">adesivaço</span>
+                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded">↑ 340%</span>
+                <span class="text-[10px] text-slate-400">127</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-slate-400 w-4">2</span>
+                <span class="flex-1 text-xs font-semibold text-slate-700 dark:text-slate-300">carreata</span>
+                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded">↑ 280%</span>
+                <span class="text-[10px] text-slate-400">54</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-slate-400 w-4">3</span>
+                <span class="flex-1 text-xs font-semibold text-slate-700 dark:text-slate-300">cadastro</span>
+                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded">↑ 123%</span>
+                <span class="text-[10px] text-slate-400">76</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-slate-400 w-4">4</span>
+                <span class="flex-1 text-xs font-semibold text-slate-700 dark:text-slate-300">voluntário</span>
+                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded">↑ 67%</span>
+                <span class="text-[10px] text-slate-400">48</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-slate-400 w-4">5</span>
+                <span class="flex-1 text-xs font-semibold text-slate-700 dark:text-slate-300">reunião</span>
+                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded">↑ 45%</span>
+                <span class="text-[10px] text-slate-400">89</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-slate-400 w-4">6</span>
+                <span class="flex-1 text-xs font-semibold text-amber-600">panfleto</span>
+                <span class="text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-1.5 py-0.5 rounded">↑ novo</span>
+                <span class="text-[10px] text-slate-400">18</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-slate-400 w-4">7</span>
+                <span class="flex-1 text-xs font-semibold text-red-500">Borges ⚠</span>
+                <span class="text-[10px] font-bold text-red-500 bg-red-50 dark:bg-red-900/30 px-1.5 py-0.5 rounded">↑ novo</span>
+                <span class="text-[10px] text-slate-400">9</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ═══════════════ BUSCA INTELIGENTE ═══════════════ -->
+      <div id="tab-busca" class="hidden space-y-5 fade-in">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+          <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-1">Busca Inteligente de Palavras-Chave</h2>
+          <p class="text-sm text-slate-400 mb-4">Filtre mensagens de todos os grupos em tempo real — depois analise com IA</p>
+          <div class="relative">
+            <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
+            <input id="search-input" type="text" placeholder="Ex: adesivaço, reunião, carreata, comitê..." oninput="onSearchInput(this.value)"
+              class="w-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 rounded-xl pl-10 pr-4 py-3 text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+            <div id="search-spinner" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2">
+              <svg class="animate-spin h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+            </div>
+          </div>
+          <div id="search-meta" class="hidden mt-3 flex items-center gap-2">
+            <span id="search-count-text" class="text-xs text-slate-500"></span>
+            <span id="search-count-badge" class="text-[10px] font-bold bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full"></span>
+          </div>
+        </div>
+
+        <!-- Sugestões -->
+        <div id="search-suggestions" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-md">
+          <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-3">Sugestões de busca:</p>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="quickSearch('adesivaço')"  class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-3.5 py-1.5 rounded-full transition-colors font-medium">adesivaço</button>
+            <button onclick="quickSearch('reunião')"    class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-3.5 py-1.5 rounded-full transition-colors font-medium">reunião</button>
+            <button onclick="quickSearch('carreata')"   class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-3.5 py-1.5 rounded-full transition-colors font-medium">carreata</button>
+            <button onclick="quickSearch('comitê')"     class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-3.5 py-1.5 rounded-full transition-colors font-medium">comitê</button>
+            <button onclick="quickSearch('voluntário')" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-3.5 py-1.5 rounded-full transition-colors font-medium">voluntário</button>
+            <button onclick="quickSearch('deputado')"   class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 px-3.5 py-1.5 rounded-full transition-colors font-medium">deputado</button>
+          </div>
+        </div>
+
+        <!-- Botão IA (aparece quando há resultados) -->
+        <div id="ai-trigger" class="hidden">
+          <button onclick="runAI()" class="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold text-sm py-3.5 rounded-xl shadow-md transition-all hover:shadow-lg hover:scale-[1.01] active:scale-[.99]">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            Analisar com Inteligência Artificial
+          </button>
+        </div>
+
+        <!-- Card de análise IA -->
+        <div id="ai-card" class="hidden slide-up bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/60 dark:to-indigo-950/60 border border-blue-200 dark:border-blue-800 rounded-xl p-6 shadow-md">
+          <div class="flex items-center gap-2.5 mb-5">
+            <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
+              <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-blue-900 dark:text-blue-100">Análise de Inteligência Artificial</p>
+              <p class="text-xs text-blue-600 dark:text-blue-400" id="ai-search-term"></p>
+            </div>
+            <span class="ml-auto text-[10px] font-bold uppercase tracking-widest bg-blue-600 text-white px-2.5 py-1 rounded-full">IA</span>
+          </div>
+
+          <!-- Loading -->
+          <div id="ai-loading" class="flex items-center gap-3 py-4">
+            <div class="flex gap-1.5">
+              <div class="w-2 h-2 bg-blue-500 rounded-full dot-bounce"></div>
+              <div class="w-2 h-2 bg-blue-500 rounded-full dot-bounce"></div>
+              <div class="w-2 h-2 bg-blue-500 rounded-full dot-bounce"></div>
+            </div>
+            <span class="text-sm text-blue-700 dark:text-blue-300">Processando análise semântica...</span>
+          </div>
+
+          <!-- Resultado -->
+          <div id="ai-result" class="hidden space-y-5">
+            <div>
+              <p class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-2">Resumo da análise</p>
+              <p id="ai-resumo" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed typing"></p>
+            </div>
+            <div>
+              <p class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-2">Sentimento detectado</p>
+              <div class="flex items-center gap-3">
+                <div class="flex-1 h-3 bg-blue-100 dark:bg-blue-900/40 rounded-full overflow-hidden">
+                  <div id="ai-bar" class="h-3 rounded-full transition-all duration-1000 ease-out" style="width:0%"></div>
+                </div>
+                <span id="ai-sentiment-label" class="text-sm font-bold min-w-max"></span>
+              </div>
+            </div>
+            <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+              <p class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-2">⚡ Recomendação estratégica</p>
+              <p id="ai-recomendacao" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resultados -->
+        <div id="search-results" class="space-y-3"></div>
+      </div>
+
+      <!-- ═══════════════ GRUPOS ═══════════════ -->
+      <div id="tab-grupos" class="hidden fade-in">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-md overflow-hidden">
+          <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">Grupos WhatsApp Monitorados</h2>
+            <p class="text-sm text-slate-400 mt-0.5">7 de 8 grupos ativos · monitoramento em tempo real</p>
+          </div>
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+              <tr>
+                <th class="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-6 py-3">Grupo</th>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3 hidden md:table-cell">Membros</th>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Msgs Hoje</th>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+              <tr onclick="openModal('Ala Norte')" class="hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer"><td class="px-6 py-3.5 font-medium text-slate-800 dark:text-slate-200">Ala Norte – Asa Norte / Lago Norte <svg class="inline w-3 h-3 text-slate-300 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 5l7 7-7 7"/></svg></td><td class="px-4 py-3.5 text-center text-slate-500 hidden md:table-cell">48</td><td class="px-4 py-3.5 text-center text-slate-500 hidden lg:table-cell">127</td><td class="px-4 py-3.5 text-center"><span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Ativo</span></td></tr>
+              <tr onclick="openModal('Taguatinga Central')" class="hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer"><td class="px-6 py-3.5 font-medium text-slate-800 dark:text-slate-200">Taguatinga Central – Mobilização <svg class="inline w-3 h-3 text-slate-300 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 5l7 7-7 7"/></svg></td><td class="px-4 py-3.5 text-center text-slate-500 hidden md:table-cell">62</td><td class="px-4 py-3.5 text-center text-slate-500 hidden lg:table-cell">98</td><td class="px-4 py-3.5 text-center"><span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Ativo</span></td></tr>
+              <tr onclick="openModal('Samambaia Forte')" class="hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer"><td class="px-6 py-3.5 font-medium text-slate-800 dark:text-slate-200">Samambaia Forte – Campanha 2026 <svg class="inline w-3 h-3 text-slate-300 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 5l7 7-7 7"/></svg></td><td class="px-4 py-3.5 text-center text-slate-500 hidden md:table-cell">55</td><td class="px-4 py-3.5 text-center text-slate-500 hidden lg:table-cell">143</td><td class="px-4 py-3.5 text-center"><span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Ativo</span></td></tr>
+              <tr onclick="openModal('Recanto das Emas')" class="hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer"><td class="px-6 py-3.5 font-medium text-slate-800 dark:text-slate-200">Recanto das Emas – Liderança <svg class="inline w-3 h-3 text-slate-300 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 5l7 7-7 7"/></svg></td><td class="px-4 py-3.5 text-center text-slate-500 hidden md:table-cell">41</td><td class="px-4 py-3.5 text-center text-slate-500 hidden lg:table-cell">74</td><td class="px-4 py-3.5 text-center"><span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Ativo</span></td></tr>
+              <tr onclick="openModal('Gama Mobiliza')" class="hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer"><td class="px-6 py-3.5 font-medium text-slate-800 dark:text-slate-200">Gama Mobiliza – Coordenadores <svg class="inline w-3 h-3 text-slate-300 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 5l7 7-7 7"/></svg></td><td class="px-4 py-3.5 text-center text-slate-500 hidden md:table-cell">37</td><td class="px-4 py-3.5 text-center text-slate-500 hidden lg:table-cell">89</td><td class="px-4 py-3.5 text-center"><span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Ativo</span></td></tr>
+              <tr onclick="openModal('Sobradinho')" class="hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer"><td class="px-6 py-3.5 font-medium text-slate-800 dark:text-slate-200">Sobradinho / Planaltina Norte <svg class="inline w-3 h-3 text-slate-300 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 5l7 7-7 7"/></svg></td><td class="px-4 py-3.5 text-center text-slate-500 hidden md:table-cell">33</td><td class="px-4 py-3.5 text-center text-slate-500 hidden lg:table-cell">12</td><td class="px-4 py-3.5 text-center"><span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Inativo</span></td></tr>
+              <tr onclick="openModal('Ceilândia Sul')" class="hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer"><td class="px-6 py-3.5 font-medium text-slate-800 dark:text-slate-200">Ceilândia Sul – Base Política <svg class="inline w-3 h-3 text-slate-300 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 5l7 7-7 7"/></svg></td><td class="px-4 py-3.5 text-center text-slate-500 hidden md:table-cell">58</td><td class="px-4 py-3.5 text-center text-slate-500 hidden lg:table-cell">156</td><td class="px-4 py-3.5 text-center"><span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Ativo</span></td></tr>
+              <tr onclick="openModal('Águas Claras')" class="hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors cursor-pointer"><td class="px-6 py-3.5 font-medium text-slate-800 dark:text-slate-200">Águas Claras – Coordenadores <svg class="inline w-3 h-3 text-slate-300 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 5l7 7-7 7"/></svg></td><td class="px-4 py-3.5 text-center text-slate-500 hidden md:table-cell">29</td><td class="px-4 py-3.5 text-center text-slate-500 hidden lg:table-cell">45</td><td class="px-4 py-3.5 text-center"><span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Ativo</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══════════════ INTELIGÊNCIA ADVERSARIAL ═══════════════ -->
+      <div id="tab-inteligencia" class="hidden space-y-6 fade-in">
+
+        <!-- Banner de alerta -->
+        <div class="bg-gradient-to-r from-red-600 to-rose-700 rounded-xl p-5 text-white shadow-md flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          </div>
+          <div>
+            <p class="font-bold text-base mb-1">3 menções de adversários detectadas nos seus próprios grupos nas últimas 24h</p>
+            <p class="text-red-100 text-sm leading-relaxed">Apoiadores da sua base estão comentando movimentações de candidatos concorrentes no território. O sistema rastreou cada ocorrência, identificou os grupos de maior risco e gerou recomendação tática para cada uma.</p>
+          </div>
+        </div>
+
+        <!-- Comparativo candidato vs adversários -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+          <!-- Seu candidato -->
+          <div class="lg:col-span-1 bg-white dark:bg-slate-900 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-5 shadow-md">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">DR</div>
+              <div>
+                <p class="text-sm font-bold text-slate-800 dark:text-slate-100">Dep. [Nome]</p>
+                <p class="text-[10px] text-blue-600 font-semibold">Seu candidato</p>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-slate-500">Menções totais</span>
+                <span class="text-lg font-black text-blue-600">847</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-slate-500">Sentimento positivo</span>
+                <span class="text-sm font-bold text-emerald-600">84%</span>
+              </div>
+              <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full"><div class="h-2 bg-emerald-500 rounded-full adv-bar" style="width:84%"></div></div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-slate-500">Grupos onde é citado</span>
+                <span class="text-sm font-bold text-blue-600">8 de 8</span>
+              </div>
+              <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                <p class="text-[10px] text-emerald-600 font-semibold">↑ Presença forte em todas as regiões monitoradas</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Adversários detectados -->
+          <div class="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-md">
+            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
+              <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path stroke-linecap="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              Adversários detectados nos seus grupos
+            </h3>
+            <div class="space-y-4">
+
+              <!-- Adversário 1 -->
+              <div class="border border-slate-100 dark:border-slate-800 rounded-xl p-4 bg-red-50/50 dark:bg-red-900/10">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300">PB</div>
+                    <div>
+                      <p class="text-sm font-bold text-slate-800 dark:text-slate-100">Dr. Paulo Borges</p>
+                      <p class="text-[10px] text-slate-400">Concorrente direto · Ceilândia / Taguatinga</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 px-2.5 py-1 rounded-full">⚠ Alto risco</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 mb-2 text-center">
+                  <div class="bg-white dark:bg-slate-800 rounded-lg p-2"><p class="text-sm font-black text-red-600">14</p><p class="text-[10px] text-slate-400">nos seus grupos</p></div>
+                  <div class="bg-white dark:bg-slate-800 rounded-lg p-2"><p class="text-sm font-black text-slate-700 dark:text-slate-200">23</p><p class="text-[10px] text-slate-400">total detectado</p></div>
+                  <div class="bg-white dark:bg-slate-800 rounded-lg p-2"><p class="text-sm font-black text-amber-600">61%</p><p class="text-[10px] text-slate-400">positivo</p></div>
+                </div>
+                <div class="h-1.5 bg-red-100 dark:bg-red-900/30 rounded-full"><div class="h-1.5 bg-red-500 rounded-full adv-bar" style="width:61%"></div></div>
+              </div>
+
+              <!-- Adversário 2 -->
+              <div class="border border-slate-100 dark:border-slate-800 rounded-xl p-4 bg-orange-50/50 dark:bg-orange-900/10">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300">MD</div>
+                    <div>
+                      <p class="text-sm font-bold text-slate-800 dark:text-slate-100">Márcia Diniz</p>
+                      <p class="text-[10px] text-slate-400">Concorrente · Samambaia / Recanto</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-400 px-2.5 py-1 rounded-full">Monitorar</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 mb-2 text-center">
+                  <div class="bg-white dark:bg-slate-800 rounded-lg p-2"><p class="text-sm font-black text-orange-600">6</p><p class="text-[10px] text-slate-400">nos seus grupos</p></div>
+                  <div class="bg-white dark:bg-slate-800 rounded-lg p-2"><p class="text-sm font-black text-slate-700 dark:text-slate-200">11</p><p class="text-[10px] text-slate-400">total detectado</p></div>
+                  <div class="bg-white dark:bg-slate-800 rounded-lg p-2"><p class="text-sm font-black text-emerald-600">44%</p><p class="text-[10px] text-slate-400">positivo</p></div>
+                </div>
+                <div class="h-1.5 bg-orange-100 dark:bg-orange-900/30 rounded-full"><div class="h-1.5 bg-orange-400 rounded-full adv-bar" style="width:44%"></div></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensagens flagradas -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-md overflow-hidden">
+          <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">Mensagens Flagradas — Menção a Adversários</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Monitoramento automático — últimas 24h</p>
+            </div>
+            <span class="text-xs font-bold bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 px-3 py-1.5 rounded-full">3 novos</span>
+          </div>
+          <div class="divide-y divide-slate-100 dark:divide-slate-800">
+
+            <div class="threat-card p-5 hover:bg-red-50/30 dark:hover:bg-red-900/10 transition-colors">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="text-[10px] font-bold bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 px-2 py-0.5 rounded-full">Alto Risco</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">Ceilândia Sul · Grupos WhatsApp</span>
+                    <span class="text-[10px] text-slate-400 ml-auto">hoje, 14:22</span>
+                  </div>
+                  <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">"menina vi o Borges ontem lá no QNM 28 hein... tava de carro com assessora distribuindo cesta básica de porta em porta. ficou umas 3h lá. perguntei pro dono do mercado e disseram que ele aparece toda semana. mas a gente tá bem né Fernanda?"</p>
+                  <p class="text-[10px] text-slate-400 mt-1.5">— Rosana M. · Ceilândia Sul</p>
+                </div>
+              </div>
+              <div class="mt-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+                <p class="text-[10px] font-bold text-amber-700 dark:text-amber-400 mb-1">IA Recomenda:</p>
+                <p class="text-xs text-slate-600 dark:text-slate-400">Fernanda Costa deve intensificar o casa a casa no QNM 28 esta semana — pelo menos 3 quadras por dia. Agendar visita presencial do candidato à feira do QNM 2 nos próximos 5 dias para contrabalançar a presença adversarial antes que o eleitorado flutuante do setor se decida.</p>
+              </div>
+            </div>
+
+            <div class="threat-card med p-5 hover:bg-orange-50/30 dark:hover:bg-orange-900/10 transition-colors">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="text-[10px] font-bold bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-400 px-2 py-0.5 rounded-full">Médio Risco</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">Samambaia Forte · Grupos WhatsApp</span>
+                    <span class="text-[10px] text-slate-400 ml-auto">hoje, 09:41</span>
+                  </div>
+                  <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">"oi gente, vi no instagram da Márcia Diniz que ela tá aqui em Samambaia toda semana. alguém sabe se ela vai fazer carreata por aqui? tô com um pouco de medo dela conquistar o pessoal do setor que a gente ainda não foi..."</p>
+                  <p class="text-[10px] text-slate-400 mt-1.5">— Cláudio V. · Samambaia Forte</p>
+                </div>
+              </div>
+              <div class="mt-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                <p class="text-[10px] font-bold text-blue-700 dark:text-blue-400 mb-1">IA Recomenda:</p>
+                <p class="text-xs text-slate-600 dark:text-slate-400">Samambaia já apresenta queda de 8 pontos no sentimento. Prioridade: agendar evento do candidato na região antes do adversário consolide presença.</p>
+              </div>
+            </div>
+
+            <div class="threat-card med p-5 hover:bg-orange-50/30 dark:hover:bg-orange-900/10 transition-colors">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="text-[10px] font-bold bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-400 px-2 py-0.5 rounded-full">Médio Risco</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">Asa Norte Unida · Grupos WhatsApp</span>
+                    <span class="text-[10px] text-slate-400 ml-auto">ontem, 19:05</span>
+                  </div>
+                  <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">"passou o Borges aqui no meu bloco hoje hein Ricardo. panfleto bonito, devo dizer. mas pode ficar tranquilo, não troco o dep por ninguém não rsrs. só fiquei curioso porque nunca tinha visto ele por aqui na 110"</p>
+                  <p class="text-[10px] text-slate-400 mt-1.5">— Marcos T. · Ala Norte</p>
+                </div>
+              </div>
+              <div class="mt-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-3">
+                <p class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 mb-1">IA Recomenda:</p>
+                <p class="text-xs text-slate-600 dark:text-slate-400">Sentimento ainda favorável neste grupo (84%). Manter ritmo atual de ativação. Monitorar se o volume de panfletos do adversário aumentar na CLN 110.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Análise Estratégica IA -->
+        <div class="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/60 dark:to-blue-950/60 border border-indigo-200 dark:border-indigo-800 rounded-xl p-6 shadow-md">
+          <div class="flex items-start gap-3 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center flex-shrink-0">
+              <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-indigo-900 dark:text-indigo-200">Análise Estratégica — Cenário Adversarial</p>
+              <p class="text-xs text-indigo-500 dark:text-indigo-400">Gerada há 18 minutos · baseada em 847 mensagens</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+            <div class="bg-white/70 dark:bg-slate-900/50 rounded-xl p-4">
+              <p class="font-bold text-red-600 mb-2 text-[11px] uppercase tracking-wide">⚠ Ameaça Principal</p>
+              <p>Borges opera com distribuição de cesta básica e panfleto no QNM 28 e CLN 110 — exatamente onde estão dois dos seus grupos mais fortes. Estratégia de rua sistemática com assessoria estruturada. Risco de erosão de 8–12% no sentimento em 2 semanas se não houver contra-ofensiva de presença.</p>
+            </div>
+            <div class="bg-white/70 dark:bg-slate-900/50 rounded-xl p-4">
+              <p class="font-bold text-amber-600 mb-2 text-[11px] uppercase tracking-wide">📌 Vulnerabilidade</p>
+              <p>Samambaia caiu 8 pontos em 48h e Recanto mostra sentimento abaixo de 65% — territórios onde Márcia Diniz está mais ativa segundo as próprias mensagens dos grupos. Janela de intervenção: 10–15 dias antes que o eleitorado flutuante se defina. Prioridade: evento do candidato em Samambaia na próxima semana.</p>
+            </div>
+            <div class="bg-white/70 dark:bg-slate-900/50 rounded-xl p-4">
+              <p class="font-bold text-emerald-600 mb-2 text-[11px] uppercase tracking-wide">✅ Vantagem competitiva</p>
+              <p>Asa Norte e Lago Norte com sentimento acima de 82% e zero menções relevantes a adversários — fortaleza consolidada. A rede de cabos eleitorais de Ricardo Alves (Ala Norte) é a mais estruturada da campanha e pode servir de modelo para expandir para Sobradinho. Manter frequência sem reforço adicional por ora.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ═══════════════ MAPA POLÍTICO ═══════════════ -->
+      <div id="tab-mapa" class="hidden space-y-6 fade-in">
+
+        <!-- KPIs do mapa -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-md text-center">
+            <p class="text-3xl font-black text-emerald-600">8</p>
+            <p class="text-xs text-slate-500 mt-1">regiões cobertas</p>
+            <p class="text-[10px] text-emerald-500 font-medium mt-0.5">de 33 RAs do DF</p>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-800/40 rounded-xl p-5 shadow-md text-center">
+            <p class="text-3xl font-black text-amber-500">25</p>
+            <p class="text-xs text-slate-500 mt-1">sem coordenador</p>
+            <p class="text-[10px] text-amber-500 font-medium mt-0.5">~180k eleitores expostos</p>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-800/40 rounded-xl p-5 shadow-md text-center">
+            <p class="text-3xl font-black text-blue-600">1.247</p>
+            <p class="text-xs text-slate-500 mt-1">apoiadores mapeados</p>
+            <p class="text-[10px] text-blue-500 font-medium mt-0.5">↑ 47 esta semana</p>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-md text-center">
+            <p class="text-3xl font-black text-slate-700 dark:text-slate-200">74%</p>
+            <p class="text-xs text-slate-500 mt-1">sentimento médio</p>
+            <p class="text-[10px] text-emerald-500 font-medium mt-0.5">nas regiões ativas</p>
+          </div>
+        </div>
+
+        <!-- Regiões com monitoramento ativo -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-md overflow-hidden">
+          <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">Regiões com Monitoramento Ativo</h2>
+              <p class="text-sm text-slate-400 mt-0.5">8 regiões · 363 membros de grupo · sentimento colorido por intensidade</p>
+            </div>
+            <div class="flex items-center gap-3 text-[10px] font-semibold text-slate-400">
+              <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span>Forte</span>
+              <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-blue-400 inline-block"></span>Médio</span>
+              <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-amber-400 inline-block"></span>Fraco</span>
+              <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-red-500 inline-block"></span>Alerta</span>
+            </div>
+          </div>
+          <div class="p-5 grid grid-cols-2 md:grid-cols-4 gap-3">
+
+            <!-- Ala Norte / Asa Norte -->
+            <div class="relative rounded-xl overflow-hidden border-2 border-emerald-200 dark:border-emerald-800">
+              <div class="absolute top-0 left-0 right-0 h-1.5 bg-emerald-500"></div>
+              <div class="p-4 pt-4">
+                <div class="flex items-start justify-between mb-2">
+                  <p class="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">Asa Norte<br><span class="text-[10px] font-normal text-slate-400">Lago Norte</span></p>
+                  <span class="text-sm font-black text-emerald-600">84%</span>
+                </div>
+                <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full mb-3"><div class="h-1.5 bg-emerald-500 rounded-full" style="width:84%"></div></div>
+                <div class="grid grid-cols-2 gap-1 text-[10px] text-slate-500">
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">127</span> msgs</div>
+                  <div><span class="font-semibold text-emerald-600">47</span> cad.</div>
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">48</span> membros</div>
+                  <div><span class="font-semibold text-blue-600">Ricardo A.</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ceilândia Sul -->
+            <div class="relative rounded-xl overflow-hidden border-2 border-emerald-200 dark:border-emerald-800">
+              <div class="absolute top-0 left-0 right-0 h-1.5 bg-emerald-500"></div>
+              <div class="p-4 pt-4">
+                <div class="flex items-start justify-between mb-2">
+                  <p class="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">Ceilândia<br><span class="text-[10px] font-normal text-slate-400">QNM 28 / Norte</span></p>
+                  <span class="text-sm font-black text-emerald-600">79%</span>
+                </div>
+                <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full mb-3"><div class="h-1.5 bg-emerald-500 rounded-full" style="width:79%"></div></div>
+                <div class="grid grid-cols-2 gap-1 text-[10px] text-slate-500">
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">156</span> msgs</div>
+                  <div><span class="font-semibold text-emerald-600">38</span> cad.</div>
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">58</span> membros</div>
+                  <div><span class="font-semibold text-blue-600">Fernanda C.</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Taguatinga -->
+            <div class="relative rounded-xl overflow-hidden border-2 border-emerald-200 dark:border-emerald-800">
+              <div class="absolute top-0 left-0 right-0 h-1.5 bg-emerald-500"></div>
+              <div class="p-4 pt-4">
+                <div class="flex items-start justify-between mb-2">
+                  <p class="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">Taguatinga<br><span class="text-[10px] font-normal text-slate-400">P. do Relógio</span></p>
+                  <span class="text-sm font-black text-emerald-600">77%</span>
+                </div>
+                <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full mb-3"><div class="h-1.5 bg-emerald-500 rounded-full" style="width:77%"></div></div>
+                <div class="grid grid-cols-2 gap-1 text-[10px] text-slate-500">
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">98</span> msgs</div>
+                  <div><span class="font-semibold text-emerald-600">31</span> cad.</div>
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">62</span> membros</div>
+                  <div><span class="font-semibold text-blue-600">Ana L.</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Samambaia -->
+            <div class="relative rounded-xl overflow-hidden border-2 border-emerald-200 dark:border-emerald-800">
+              <div class="absolute top-0 left-0 right-0 h-1.5 bg-emerald-400"></div>
+              <div class="p-4 pt-4">
+                <div class="flex items-start justify-between mb-2">
+                  <p class="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">Samambaia<br><span class="text-[10px] font-normal text-slate-400">P Sul / P Norte</span></p>
+                  <span class="text-sm font-black text-emerald-600">72%</span>
+                </div>
+                <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full mb-3"><div class="h-1.5 bg-emerald-400 rounded-full" style="width:72%"></div></div>
+                <div class="grid grid-cols-2 gap-1 text-[10px] text-slate-500">
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">143</span> msgs</div>
+                  <div><span class="font-semibold text-emerald-600">29</span> cad.</div>
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">55</span> membros</div>
+                  <div><span class="font-semibold text-blue-600">Carlos M.</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gama -->
+            <div class="relative rounded-xl overflow-hidden border-2 border-blue-200 dark:border-blue-800">
+              <div class="absolute top-0 left-0 right-0 h-1.5 bg-blue-400"></div>
+              <div class="p-4 pt-4">
+                <div class="flex items-start justify-between mb-2">
+                  <p class="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">Gama<br><span class="text-[10px] font-normal text-slate-400">Setor Leste</span></p>
+                  <span class="text-sm font-black text-blue-600">68%</span>
+                </div>
+                <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full mb-3"><div class="h-1.5 bg-blue-400 rounded-full" style="width:68%"></div></div>
+                <div class="grid grid-cols-2 gap-1 text-[10px] text-slate-500">
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">89</span> msgs</div>
+                  <div><span class="font-semibold text-emerald-600">22</span> cad.</div>
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">37</span> membros</div>
+                  <div><span class="font-semibold text-blue-600">Juliana S.</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recanto das Emas -->
+            <div class="relative rounded-xl overflow-hidden border-2 border-blue-200 dark:border-blue-800">
+              <div class="absolute top-0 left-0 right-0 h-1.5 bg-blue-400"></div>
+              <div class="p-4 pt-4">
+                <div class="flex items-start justify-between mb-2">
+                  <p class="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">Recanto<br><span class="text-[10px] font-normal text-slate-400">das Emas</span></p>
+                  <span class="text-sm font-black text-blue-600">64%</span>
+                </div>
+                <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full mb-3"><div class="h-1.5 bg-blue-400 rounded-full" style="width:64%"></div></div>
+                <div class="grid grid-cols-2 gap-1 text-[10px] text-slate-500">
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">74</span> msgs</div>
+                  <div><span class="font-semibold text-emerald-600">18</span> cad.</div>
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">41</span> membros</div>
+                  <div><span class="font-semibold text-blue-600">Marcos P.</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Águas Claras -->
+            <div class="relative rounded-xl overflow-hidden border-2 border-amber-200 dark:border-amber-800">
+              <div class="absolute top-0 left-0 right-0 h-1.5 bg-amber-400"></div>
+              <div class="p-4 pt-4">
+                <div class="flex items-start justify-between mb-2">
+                  <p class="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">Águas Claras<br><span class="text-[10px] font-normal text-slate-400">Metrô ALS 1</span></p>
+                  <span class="text-sm font-black text-amber-600">58%</span>
+                </div>
+                <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full mb-3"><div class="h-1.5 bg-amber-400 rounded-full" style="width:58%"></div></div>
+                <div class="grid grid-cols-2 gap-1 text-[10px] text-slate-500">
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">45</span> msgs</div>
+                  <div><span class="font-semibold text-emerald-600">9</span> cad.</div>
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">29</span> membros</div>
+                  <div><span class="font-semibold text-blue-600">Paulo H.</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sobradinho ALERTA -->
+            <div class="relative rounded-xl overflow-hidden border-2 border-red-300 dark:border-red-700 bg-red-50/50 dark:bg-red-900/10">
+              <div class="absolute top-0 left-0 right-0 h-1.5 bg-red-500"></div>
+              <div class="p-4 pt-4">
+                <div class="flex items-start justify-between mb-2">
+                  <p class="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">Sobradinho<br><span class="text-[10px] font-semibold text-red-500">⚠ 72h inativo</span></p>
+                  <span class="text-sm font-black text-red-500">41%</span>
+                </div>
+                <div class="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full mb-3"><div class="h-1.5 bg-red-500 rounded-full" style="width:41%"></div></div>
+                <div class="grid grid-cols-2 gap-1 text-[10px] text-slate-500">
+                  <div><span class="font-semibold text-red-500">12</span> msgs</div>
+                  <div><span class="font-semibold text-slate-400">2</span> cad.</div>
+                  <div><span class="font-semibold text-slate-700 dark:text-slate-300">33</span> membros</div>
+                  <div><span class="font-semibold text-red-500">Tatiana R.</span></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Regiões sem cobertura — OPORTUNIDADE -->
+        <div class="bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-800/50 rounded-xl shadow-md overflow-hidden">
+          <div class="p-5 border-b border-amber-100 dark:border-amber-800/50 bg-amber-50/50 dark:bg-amber-900/10 flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                <svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                Regiões Sem Cobertura — Oportunidade de Expansão
+              </h2>
+              <p class="text-sm text-slate-400 mt-0.5">Regiões do DF sem coordenador ativo · potencial estimado de <span class="text-amber-600 font-semibold">+8.400 votos</span></p>
+            </div>
+          </div>
+          <div class="p-5 grid grid-cols-2 md:grid-cols-3 gap-3">
+
+            <div class="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-4 relative">
+              <div class="flex items-start justify-between mb-1">
+                <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Planaltina</p>
+                <span class="text-[10px] font-bold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 px-2 py-0.5 rounded-full">Alta prioridade</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mb-3">~52.000 eleitores registrados · região populosa sem presença</p>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></div>
+                <p class="text-[10px] text-slate-400">Sem coordenador ativo</p>
+              </div>
+              <p class="text-xs font-semibold text-amber-600 mt-2">Potencial: ~1.800 votos</p>
+            </div>
+
+            <div class="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-4">
+              <div class="flex items-start justify-between mb-1">
+                <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Ceilândia Norte</p>
+                <span class="text-[10px] font-bold bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 px-2 py-0.5 rounded-full">Alta prioridade</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mb-3">Complementar à Ceilândia Sul · QNN e QNO sem cobertura</p>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></div>
+                <p class="text-[10px] text-slate-400">Sem coordenador ativo</p>
+              </div>
+              <p class="text-xs font-semibold text-amber-600 mt-2">Potencial: ~1.600 votos</p>
+            </div>
+
+            <div class="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-4">
+              <div class="flex items-start justify-between mb-1">
+                <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Santa Maria</p>
+                <span class="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-full">Média prioridade</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mb-3">Sul do DF · população de classe C/D · boa receptividade histórica</p>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></div>
+                <p class="text-[10px] text-slate-400">Sem coordenador ativo</p>
+              </div>
+              <p class="text-xs font-semibold text-amber-600 mt-2">Potencial: ~1.200 votos</p>
+            </div>
+
+            <div class="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-4">
+              <div class="flex items-start justify-between mb-1">
+                <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Lago Norte / Sul</p>
+                <span class="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-full">Média prioridade</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mb-3">Eleitorado AB · alta renda · mobilização diferente mas relevante</p>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></div>
+                <p class="text-[10px] text-slate-400">Sem coordenador ativo</p>
+              </div>
+              <p class="text-xs font-semibold text-amber-600 mt-2">Potencial: ~900 votos</p>
+            </div>
+
+            <div class="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-4">
+              <div class="flex items-start justify-between mb-1">
+                <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Guará / Candangolândia</p>
+                <span class="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-full">Média prioridade</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mb-3">Região central do DF · próximo de Taguatinga · fácil expansão</p>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></div>
+                <p class="text-[10px] text-slate-400">Sem coordenador ativo</p>
+              </div>
+              <p class="text-xs font-semibold text-amber-600 mt-2">Potencial: ~700 votos</p>
+            </div>
+
+            <div class="rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 p-4 flex flex-col items-center justify-center text-center bg-slate-50/50 dark:bg-slate-800/30">
+              <p class="text-2xl font-black text-slate-400">+20</p>
+              <p class="text-xs font-semibold text-slate-500 mt-1">outras regiões</p>
+              <p class="text-[10px] text-slate-400 mt-1">sem cobertura ainda mapeadas</p>
+              <p class="text-xs font-bold text-blue-600 mt-2">~2.100 votos potenciais</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ RANKING ═══════════════ -->
+      <div id="tab-ranking" class="hidden space-y-6 fade-in">
+
+        <!-- Legenda de pontuação -->
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl px-5 py-3.5 flex flex-wrap gap-x-6 gap-y-2">
+          <p class="text-xs font-bold text-blue-700 dark:text-blue-300 w-full mb-0.5">Como a pontuação é calculada:</p>
+          <span class="text-xs text-slate-600 dark:text-slate-400"><span class="font-semibold text-emerald-600">+20 pts</span> · cadastro em adesivaço/carreata</span>
+          <span class="text-xs text-slate-600 dark:text-slate-400"><span class="font-semibold text-blue-600">+15 pts</span> · cadastro em reunião</span>
+          <span class="text-xs text-slate-600 dark:text-slate-400"><span class="font-semibold text-purple-600">+5 pts</span> · mensagem no grupo</span>
+          <span class="text-xs text-slate-600 dark:text-slate-400"><span class="font-semibold text-amber-600">+50 pts</span> · evento organizado</span>
+        </div>
+
+        <!-- Pódio -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-800/40 rounded-xl p-5 shadow-md text-center">
+            <div class="w-12 h-12 rounded-full medal-gold mx-auto flex items-center justify-center text-xl font-black text-white mb-3 shadow-lg">1</div>
+            <div class="w-11 h-11 rounded-full bg-blue-600 mx-auto flex items-center justify-center text-sm font-bold text-white mb-2">RA</div>
+            <p class="text-sm font-bold text-slate-800 dark:text-slate-100">Ricardo Alves</p>
+            <p class="text-xs text-slate-400 mb-3">Ala Norte</p>
+            <p class="text-2xl font-bold text-slate-900 dark:text-slate-100">3.240</p>
+            <p class="text-xs text-slate-400 mb-3">pontos</p>
+            <div class="text-left space-y-1.5 border-t border-slate-100 dark:border-slate-800 pt-3">
+              <div class="flex justify-between text-xs"><span class="text-slate-500">Cad. eventos</span><span class="font-semibold text-emerald-600">47</span></div>
+              <div class="flex justify-between text-xs"><span class="text-slate-500">Cad. reuniões</span><span class="font-semibold text-blue-600">31</span></div>
+              <div class="flex justify-between text-xs"><span class="text-slate-500">Mensagens</span><span class="font-semibold text-slate-600 dark:text-slate-400">342</span></div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-md text-center">
+            <div class="w-12 h-12 rounded-full medal-silver mx-auto flex items-center justify-center text-xl font-black text-white mb-3 shadow-lg">2</div>
+            <div class="w-11 h-11 rounded-full bg-blue-600 mx-auto flex items-center justify-center text-sm font-bold text-white mb-2">FC</div>
+            <p class="text-sm font-bold text-slate-800 dark:text-slate-100">Fernanda Costa</p>
+            <p class="text-xs text-slate-400 mb-3">Ceilândia Sul</p>
+            <p class="text-2xl font-bold text-slate-900 dark:text-slate-100">3.010</p>
+            <p class="text-xs text-slate-400 mb-3">pontos</p>
+            <div class="text-left space-y-1.5 border-t border-slate-100 dark:border-slate-800 pt-3">
+              <div class="flex justify-between text-xs"><span class="text-slate-500">Cad. eventos</span><span class="font-semibold text-emerald-600">38</span></div>
+              <div class="flex justify-between text-xs"><span class="text-slate-500">Cad. reuniões</span><span class="font-semibold text-blue-600">27</span></div>
+              <div class="flex justify-between text-xs"><span class="text-slate-500">Mensagens</span><span class="font-semibold text-slate-600 dark:text-slate-400">318</span></div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-orange-200 dark:border-orange-900/40 rounded-xl p-5 shadow-md text-center">
+            <div class="w-12 h-12 rounded-full medal-bronze mx-auto flex items-center justify-center text-xl font-black text-white mb-3 shadow-lg">3</div>
+            <div class="w-11 h-11 rounded-full bg-blue-600 mx-auto flex items-center justify-center text-sm font-bold text-white mb-2">AL</div>
+            <p class="text-sm font-bold text-slate-800 dark:text-slate-100">Ana Lima</p>
+            <p class="text-xs text-slate-400 mb-3">Taguatinga Central</p>
+            <p class="text-2xl font-bold text-slate-900 dark:text-slate-100">2.870</p>
+            <p class="text-xs text-slate-400 mb-3">pontos</p>
+            <div class="text-left space-y-1.5 border-t border-slate-100 dark:border-slate-800 pt-3">
+              <div class="flex justify-between text-xs"><span class="text-slate-500">Cad. eventos</span><span class="font-semibold text-emerald-600">31</span></div>
+              <div class="flex justify-between text-xs"><span class="text-slate-500">Cad. reuniões</span><span class="font-semibold text-blue-600">24</span></div>
+              <div class="flex justify-between text-xs"><span class="text-slate-500">Mensagens</span><span class="font-semibold text-slate-600 dark:text-slate-400">287</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabela completa -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-md overflow-hidden">
+          <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">Ranking de Coordenadores</h2>
+            <p class="text-sm text-slate-400 mt-0.5">Pontuação = cadastros em eventos (×20) + cadastros em reuniões (×15) + mensagens (×5) + eventos organizados (×50)</p>
+          </div>
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+              <tr>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-3 py-3 w-10">#</th>
+                <th class="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Coordenador</th>
+                <th class="text-center text-[11px] font-semibold text-emerald-500 uppercase tracking-wider px-3 py-3 hidden md:table-cell">Cad. Evento</th>
+                <th class="text-center text-[11px] font-semibold text-blue-500 uppercase tracking-wider px-3 py-3 hidden md:table-cell">Cad. Reunião</th>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-3 py-3 hidden lg:table-cell">Msgs</th>
+                <th class="text-right text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Pontos</th>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-3 py-3 hidden lg:table-cell">Tend.</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+              <!-- 1 Ricardo -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                <td class="px-3 py-3.5 text-center"><span class="w-6 h-6 rounded-full medal-gold inline-flex items-center justify-center text-xs font-bold text-white">1</span></td>
+                <td class="px-4 py-3.5"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-[11px] font-bold text-blue-700 dark:text-blue-300">RA</div><div><span class="font-semibold text-slate-800 dark:text-slate-200 block">Ricardo Alves</span><span class="text-[10px] text-slate-400">Ala Norte</span></div></div></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-emerald-600">47</span></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-blue-600">31</span></td>
+                <td class="px-3 py-3.5 text-center text-slate-500 hidden lg:table-cell">342</td>
+                <td class="px-4 py-3.5 text-right font-bold text-slate-800 dark:text-slate-200">3.240</td>
+                <td class="px-3 py-3.5 text-center hidden lg:table-cell"><svg class="w-4 h-4 trend-up inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="m18 15-6-6-6 6"/></svg></td>
+              </tr>
+              <!-- 2 Fernanda -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                <td class="px-3 py-3.5 text-center"><span class="w-6 h-6 rounded-full medal-silver inline-flex items-center justify-center text-xs font-bold text-white">2</span></td>
+                <td class="px-4 py-3.5"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-[11px] font-bold text-blue-700 dark:text-blue-300">FC</div><div><span class="font-semibold text-slate-800 dark:text-slate-200 block">Fernanda Costa</span><span class="text-[10px] text-slate-400">Ceilândia Sul</span></div></div></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-emerald-600">38</span></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-blue-600">27</span></td>
+                <td class="px-3 py-3.5 text-center text-slate-500 hidden lg:table-cell">318</td>
+                <td class="px-4 py-3.5 text-right font-bold text-slate-800 dark:text-slate-200">3.010</td>
+                <td class="px-3 py-3.5 text-center hidden lg:table-cell"><svg class="w-4 h-4 trend-up inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="m18 15-6-6-6 6"/></svg></td>
+              </tr>
+              <!-- 3 Ana -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                <td class="px-3 py-3.5 text-center"><span class="w-6 h-6 rounded-full medal-bronze inline-flex items-center justify-center text-xs font-bold text-white">3</span></td>
+                <td class="px-4 py-3.5"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-[11px] font-bold text-blue-700 dark:text-blue-300">AL</div><div><span class="font-semibold text-slate-800 dark:text-slate-200 block">Ana Lima</span><span class="text-[10px] text-slate-400">Taguatinga Central</span></div></div></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-emerald-600">31</span></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-blue-600">24</span></td>
+                <td class="px-3 py-3.5 text-center text-slate-500 hidden lg:table-cell">287</td>
+                <td class="px-4 py-3.5 text-right font-bold text-slate-800 dark:text-slate-200">2.870</td>
+                <td class="px-3 py-3.5 text-center hidden lg:table-cell"><svg class="w-4 h-4 trend-up inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="m18 15-6-6-6 6"/></svg></td>
+              </tr>
+              <!-- 4 Juliana -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                <td class="px-3 py-3.5 text-center text-slate-400 font-bold">4</td>
+                <td class="px-4 py-3.5"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-[11px] font-bold text-blue-700 dark:text-blue-300">JS</div><div><span class="font-semibold text-slate-800 dark:text-slate-200 block">Juliana Santos</span><span class="text-[10px] text-slate-400">Gama Mobiliza</span></div></div></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-emerald-600">22</span></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-blue-600">19</span></td>
+                <td class="px-3 py-3.5 text-center text-slate-500 hidden lg:table-cell">265</td>
+                <td class="px-4 py-3.5 text-right font-bold text-slate-800 dark:text-slate-200">2.390</td>
+                <td class="px-3 py-3.5 text-center hidden lg:table-cell"><svg class="w-4 h-4 trend-flat inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M5 12h14"/></svg></td>
+              </tr>
+              <!-- 5 Marcos -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                <td class="px-3 py-3.5 text-center text-slate-400 font-bold">5</td>
+                <td class="px-4 py-3.5"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-[11px] font-bold text-blue-700 dark:text-blue-300">MP</div><div><span class="font-semibold text-slate-800 dark:text-slate-200 block">Marcos Pereira</span><span class="text-[10px] text-slate-400">Recanto das Emas</span></div></div></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-emerald-600">18</span></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-blue-600">14</span></td>
+                <td class="px-3 py-3.5 text-center text-slate-500 hidden lg:table-cell">241</td>
+                <td class="px-4 py-3.5 text-right font-bold text-slate-800 dark:text-slate-200">2.075</td>
+                <td class="px-3 py-3.5 text-center hidden lg:table-cell"><svg class="w-4 h-4 trend-up inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="m18 15-6-6-6 6"/></svg></td>
+              </tr>
+              <!-- 6 Carlos -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                <td class="px-3 py-3.5 text-center text-slate-400 font-bold">6</td>
+                <td class="px-4 py-3.5"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-[11px] font-bold text-blue-700 dark:text-blue-300">CM</div><div><span class="font-semibold text-slate-800 dark:text-slate-200 block">Carlos Mota</span><span class="text-[10px] text-slate-400">Samambaia Forte</span></div></div></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-emerald-600">29</span></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-blue-600">8</span></td>
+                <td class="px-3 py-3.5 text-center text-slate-500 hidden lg:table-cell">198</td>
+                <td class="px-4 py-3.5 text-right font-bold text-slate-800 dark:text-slate-200">1.990</td>
+                <td class="px-3 py-3.5 text-center hidden lg:table-cell"><svg class="w-4 h-4 trend-flat inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M5 12h14"/></svg></td>
+              </tr>
+              <!-- 7 Paulo -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                <td class="px-3 py-3.5 text-center text-slate-400 font-bold">7</td>
+                <td class="px-4 py-3.5"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-[11px] font-bold text-blue-700 dark:text-blue-300">PH</div><div><span class="font-semibold text-slate-800 dark:text-slate-200 block">Paulo Henrique</span><span class="text-[10px] text-slate-400">Águas Claras</span></div></div></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-emerald-600">9</span></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-blue-600">6</span></td>
+                <td class="px-3 py-3.5 text-center text-slate-500 hidden lg:table-cell">156</td>
+                <td class="px-4 py-3.5 text-right font-bold text-slate-800 dark:text-slate-200">1.350</td>
+                <td class="px-3 py-3.5 text-center hidden lg:table-cell"><svg class="w-4 h-4 trend-down inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="m6 9 6 6 6-6"/></svg></td>
+              </tr>
+              <!-- 8 Tatiana -->
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors bg-red-50/30 dark:bg-red-900/5">
+                <td class="px-3 py-3.5 text-center text-slate-400 font-bold">8</td>
+                <td class="px-4 py-3.5"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/40 flex items-center justify-center text-[11px] font-bold text-red-600 dark:text-red-400">TR</div><div><span class="font-semibold text-slate-800 dark:text-slate-200 block">Tatiana Rodrigues</span><span class="text-[10px] text-red-400">Sobradinho · Inativo</span></div></div></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-slate-400">2</span></td>
+                <td class="px-3 py-3.5 text-center hidden md:table-cell"><span class="font-bold text-slate-400">1</span></td>
+                <td class="px-3 py-3.5 text-center text-slate-500 hidden lg:table-cell">87</td>
+                <td class="px-4 py-3.5 text-right font-bold text-slate-400">655</td>
+                <td class="px-3 py-3.5 text-center hidden lg:table-cell"><svg class="w-4 h-4 trend-down inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="m6 9 6 6 6-6"/></svg></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══════════════ ALERTAS ═══════════════ -->
+      <!-- ═══════════════ AGENDA & IMPACTO ═══════════════ -->
+      <div id="tab-agenda" class="hidden space-y-6 fade-in">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-violet-600 to-purple-700 rounded-xl p-6 text-white shadow-md">
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-violet-200 text-xs font-semibold uppercase tracking-widest mb-1">Inteligência de Campo</p>
+              <h2 class="text-2xl font-black mb-1">Agenda × Engajamento</h2>
+              <p class="text-violet-200 text-sm">Cada evento organizado pela campanha gera um impacto mensurável nos grupos. O sistema compara o engajamento antes e depois automaticamente.</p>
+            </div>
+            <div class="text-right flex-shrink-0">
+              <p class="text-3xl font-black">+63%</p>
+              <p class="text-violet-200 text-xs">↑ engajamento médio<br>nos dias de evento</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfico de engajamento com marcadores de eventos -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">Mensagens por Dia × Eventos</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Últimos 10 dias — picos marcam dias de evento da campanha</p>
+            </div>
+            <div class="flex items-center gap-4 text-[10px]">
+              <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-violet-500 inline-block"></span>Volume de msgs</span>
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 bg-violet-500/20 border border-violet-500 rounded-sm inline-block"></span>Evento</span>
+              <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-violet-400 inline-block" style="border-top:2px dashed #a78bfa"></span>Projeção</span>
+            </div>
+          </div>
+          <div class="relative h-56">
+            <svg viewBox="0 0 720 210" class="w-full h-full" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="agendaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.3"/>
+                  <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <!-- Gridlines -->
+              <line x1="40" y1="20"  x2="700" y2="20"  stroke="currentColor" stroke-width=".5" stroke-dasharray="4" class="text-slate-200 dark:text-slate-700"/>
+              <line x1="40" y1="65"  x2="700" y2="65"  stroke="currentColor" stroke-width=".5" stroke-dasharray="4" class="text-slate-200 dark:text-slate-700"/>
+              <line x1="40" y1="110" x2="700" y2="110" stroke="currentColor" stroke-width=".5" stroke-dasharray="4" class="text-slate-200 dark:text-slate-700"/>
+              <line x1="40" y1="155" x2="700" y2="155" stroke="currentColor" stroke-width=".5" stroke-dasharray="4" class="text-slate-200 dark:text-slate-700"/>
+              <!-- Y labels -->
+              <text x="36" y="23"  font-size="9" fill="#94a3b8" text-anchor="end">140</text>
+              <text x="36" y="68"  font-size="9" fill="#94a3b8" text-anchor="end">105</text>
+              <text x="36" y="113" font-size="9" fill="#94a3b8" text-anchor="end">70</text>
+              <text x="36" y="158" font-size="9" fill="#94a3b8" text-anchor="end">35</text>
+              <!-- Evento markers (fundo) -->
+              <!-- Dia 3: Reunião coordenadores x=218 -->
+              <rect x="193" y="20" width="50" height="170" fill="#7c3aed" opacity="0.07" rx="2"/>
+              <text x="218" y="16" font-size="8" fill="#7c3aed" font-weight="700" text-anchor="middle">Reunião</text>
+              <!-- Dia 7: Adesivaço CLN 110 x=482 -->
+              <rect x="457" y="20" width="50" height="170" fill="#7c3aed" opacity="0.12" rx="2"/>
+              <text x="482" y="16" font-size="8" fill="#7c3aed" font-weight="700" text-anchor="middle">Adesivaço</text>
+              <!-- Área preenchida (até dia 9 sólido) -->
+              <polygon points="40,190 40,127 113,116 218,75 291,103 364,110 437,95 482,36 555,82 628,98 628,190" fill="url(#agendaGrad)"/>
+              <!-- Linha sólida até dia 9 -->
+              <polyline points="40,127 113,116 218,75 291,103 364,110 437,95 482,36 555,82 628,98" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+              <!-- Linha tracejada (dia 9→10 projeção) -->
+              <line x1="628" y1="98" x2="700" y2="44" stroke="#a78bfa" stroke-width="2" stroke-dasharray="6 3"/>
+              <!-- Pontos de dados -->
+              <circle cx="40"  cy="127" r="3.5" fill="#7c3aed" stroke="white" stroke-width="1.5"/>
+              <circle cx="113" cy="116" r="3.5" fill="#7c3aed" stroke="white" stroke-width="1.5"/>
+              <circle cx="218" cy="75"  r="5"   fill="#7c3aed" stroke="white" stroke-width="2"/>
+              <circle cx="291" cy="103" r="3.5" fill="#7c3aed" stroke="white" stroke-width="1.5"/>
+              <circle cx="364" cy="110" r="3.5" fill="#7c3aed" stroke="white" stroke-width="1.5"/>
+              <circle cx="437" cy="95"  r="3.5" fill="#7c3aed" stroke="white" stroke-width="1.5"/>
+              <circle cx="482" cy="36"  r="5"   fill="#7c3aed" stroke="white" stroke-width="2"/>
+              <circle cx="555" cy="82"  r="3.5" fill="#7c3aed" stroke="white" stroke-width="1.5"/>
+              <circle cx="628" cy="98"  r="3.5" fill="#7c3aed" stroke="white" stroke-width="1.5"/>
+              <!-- Projeção ponto -->
+              <circle cx="700" cy="44"  r="4" fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="3 2"/>
+              <!-- Tooltip evento dia 3 -->
+              <rect x="170" y="62" width="58" height="16" rx="3" fill="#7c3aed"/>
+              <text x="199" y="73" font-size="9" fill="white" font-weight="700" text-anchor="middle">95 msgs</text>
+              <!-- Tooltip evento dia 7 -->
+              <rect x="459" y="23" width="66" height="16" rx="3" fill="#7c3aed"/>
+              <text x="492" y="34" font-size="9" fill="white" font-weight="700" text-anchor="middle">127 msgs 🔥</text>
+              <!-- Tooltip projeção -->
+              <rect x="662" y="30" width="56" height="16" rx="3" fill="#a78bfa"/>
+              <text x="690" y="41" font-size="9" fill="white" font-weight="600" text-anchor="middle">~120 prev.</text>
+              <!-- X labels -->
+              <text x="40"  y="200" font-size="9" fill="#94a3b8" text-anchor="middle">Seg 31</text>
+              <text x="113" y="200" font-size="9" fill="#94a3b8" text-anchor="middle">Ter 1</text>
+              <text x="218" y="200" font-size="9" fill="#7c3aed" font-weight="700" text-anchor="middle">Qua 2</text>
+              <text x="291" y="200" font-size="9" fill="#94a3b8" text-anchor="middle">Qui 3</text>
+              <text x="364" y="200" font-size="9" fill="#94a3b8" text-anchor="middle">Sex 4</text>
+              <text x="437" y="200" font-size="9" fill="#94a3b8" text-anchor="middle">Sáb 5</text>
+              <text x="482" y="200" font-size="9" fill="#7c3aed" font-weight="700" text-anchor="middle">Dom 6</text>
+              <text x="555" y="200" font-size="9" fill="#94a3b8" text-anchor="middle">Seg 7</text>
+              <text x="628" y="200" font-size="9" fill="#94a3b8" text-anchor="middle">Ter 8</text>
+              <text x="700" y="200" font-size="9" fill="#a78bfa" font-weight="700" text-anchor="middle">Qua 9 ▶</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Histórico de eventos com impacto medido -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-md overflow-hidden">
+          <div class="p-5 border-b border-slate-100 dark:border-slate-800">
+            <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">Histórico — Impacto Medido por Evento</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Comparativo de atividade 48h antes vs 48h após cada evento</p>
+          </div>
+          <div class="divide-y divide-slate-100 dark:divide-slate-800">
+
+            <!-- Evento 1: Adesivaço CLN 110 -->
+            <div class="p-5 hover:bg-violet-50/30 dark:hover:bg-violet-900/10 transition-colors">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-violet-600 flex flex-col items-center justify-center text-white flex-shrink-0">
+                  <span class="text-[10px] font-bold leading-none">Dom</span>
+                  <span class="text-lg font-black leading-none">6</span>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <div>
+                      <p class="text-sm font-bold text-slate-800 dark:text-slate-100">Adesivaço — CLN 110 Bloco C, Asa Norte</p>
+                      <p class="text-xs text-slate-400">Organizado por Ricardo Alves · 14h00 · 83 participantes</p>
+                    </div>
+                    <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 px-2.5 py-1 rounded-full flex-shrink-0">+118% msgs</span>
+                  </div>
+                  <div class="grid grid-cols-4 gap-3">
+                    <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-3 text-center">
+                      <p class="text-xs text-slate-400 mb-1">Antes</p>
+                      <p class="text-sm font-bold text-slate-600 dark:text-slate-300">58 msgs/dia</p>
+                    </div>
+                    <div class="bg-violet-50 dark:bg-violet-900/20 rounded-lg p-3 text-center border border-violet-200 dark:border-violet-800">
+                      <p class="text-xs text-violet-500 mb-1">No dia</p>
+                      <p class="text-sm font-black text-violet-700 dark:text-violet-300">127 msgs</p>
+                    </div>
+                    <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-3 text-center">
+                      <p class="text-xs text-emerald-500 mb-1">Cadastros</p>
+                      <p class="text-sm font-bold text-emerald-700 dark:text-emerald-300">+31 novos</p>
+                    </div>
+                    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-center">
+                      <p class="text-xs text-blue-500 mb-1">Sentimento</p>
+                      <p class="text-sm font-bold text-blue-700 dark:text-blue-300">76% → 87%</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Evento 2: Reunião de coordenadores -->
+            <div class="p-5 hover:bg-violet-50/30 dark:hover:bg-violet-900/10 transition-colors">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-blue-600 flex flex-col items-center justify-center text-white flex-shrink-0">
+                  <span class="text-[10px] font-bold leading-none">Qua</span>
+                  <span class="text-lg font-black leading-none">2</span>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <div>
+                      <p class="text-sm font-bold text-slate-800 dark:text-slate-100">Reunião de Coordenadores — SGAN 912 Bloco D</p>
+                      <p class="text-xs text-slate-400">Coordenação central · 10h00 · 8 coordenadores presentes</p>
+                    </div>
+                    <span class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 px-2.5 py-1 rounded-full flex-shrink-0">+63% msgs</span>
+                  </div>
+                  <div class="grid grid-cols-4 gap-3">
+                    <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-3 text-center">
+                      <p class="text-xs text-slate-400 mb-1">Antes</p>
+                      <p class="text-sm font-bold text-slate-600 dark:text-slate-300">52 msgs/dia</p>
+                    </div>
+                    <div class="bg-violet-50 dark:bg-violet-900/20 rounded-lg p-3 text-center border border-violet-200 dark:border-violet-800">
+                      <p class="text-xs text-violet-500 mb-1">No dia</p>
+                      <p class="text-sm font-black text-violet-700 dark:text-violet-300">95 msgs</p>
+                    </div>
+                    <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-3 text-center">
+                      <p class="text-xs text-emerald-500 mb-1">Cadastros</p>
+                      <p class="text-sm font-bold text-emerald-700 dark:text-emerald-300">+18 novos</p>
+                    </div>
+                    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-center">
+                      <p class="text-xs text-blue-500 mb-1">Sentimento</p>
+                      <p class="text-sm font-bold text-blue-700 dark:text-blue-300">71% → 79%</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Evento 3: Carreata Ceilândia (projetado) -->
+            <div class="p-5 bg-violet-50/40 dark:bg-violet-900/10 border-l-4 border-violet-400">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-violet-400 flex flex-col items-center justify-center text-white flex-shrink-0">
+                  <span class="text-[10px] font-bold leading-none">Qua</span>
+                  <span class="text-lg font-black leading-none">9</span>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <div>
+                      <p class="text-sm font-bold text-slate-800 dark:text-slate-100">Carreata — Ceilândia Norte / QNM 28 <span class="text-violet-500 text-[10px] font-bold ml-1">AMANHÃ</span></p>
+                      <p class="text-xs text-slate-400">Organizado por Fernanda Costa · 16h00 · 60+ confirmados</p>
+                    </div>
+                    <span class="text-xs font-bold bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-400 px-2.5 py-1 rounded-full flex-shrink-0">Projeção IA</span>
+                  </div>
+                  <div class="grid grid-cols-4 gap-3">
+                    <div class="bg-white dark:bg-slate-800 rounded-lg p-3 text-center border border-violet-200 dark:border-violet-800">
+                      <p class="text-xs text-slate-400 mb-1">Atual</p>
+                      <p class="text-sm font-bold text-slate-600 dark:text-slate-300">76 msgs/dia</p>
+                    </div>
+                    <div class="bg-violet-100 dark:bg-violet-900/30 rounded-lg p-3 text-center border border-violet-300 dark:border-violet-700">
+                      <p class="text-xs text-violet-500 mb-1">Previsto</p>
+                      <p class="text-sm font-black text-violet-700 dark:text-violet-300">~120 msgs</p>
+                    </div>
+                    <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-3 text-center opacity-70">
+                      <p class="text-xs text-emerald-500 mb-1">Esperado</p>
+                      <p class="text-sm font-bold text-emerald-700 dark:text-emerald-300">+25–35 cad.</p>
+                    </div>
+                    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-center opacity-70">
+                      <p class="text-xs text-blue-500 mb-1">Sentimento</p>
+                      <p class="text-sm font-bold text-blue-700 dark:text-blue-300">79% → ~88%</p>
+                    </div>
+                  </div>
+                  <p class="text-[10px] text-violet-600 dark:text-violet-400 font-semibold mt-2.5">✨ IA: Baseado nos 2 eventos anteriores, a carreata deve gerar o maior pico de engajamento da campanha até agora. Recomenda-se reforçar captação de cadastros durante o evento.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- KPIs de impacto geral -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-md text-center">
+            <p class="text-3xl font-black text-violet-600">3</p>
+            <p class="text-xs text-slate-500 mt-1">eventos realizados</p>
+            <p class="text-[10px] text-emerald-500 font-medium mt-0.5">+1 amanhã</p>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-md text-center">
+            <p class="text-3xl font-black text-emerald-600">+63%</p>
+            <p class="text-xs text-slate-500 mt-1">engajamento médio</p>
+            <p class="text-[10px] text-slate-400 font-medium mt-0.5">nos dias de evento</p>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-md text-center">
+            <p class="text-3xl font-black text-blue-600">49</p>
+            <p class="text-xs text-slate-500 mt-1">cadastros em eventos</p>
+            <p class="text-[10px] text-blue-500 font-medium mt-0.5">média: 16,3/evento</p>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-md text-center">
+            <p class="text-3xl font-black text-slate-700 dark:text-slate-200">+11 pts</p>
+            <p class="text-xs text-slate-500 mt-1">sentimento médio</p>
+            <p class="text-[10px] text-emerald-500 font-medium mt-0.5">após cada evento</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="tab-alertas" class="hidden fade-in">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-md overflow-hidden">
+          <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">Alertas de Crise</h2>
+              <p class="text-sm text-slate-400 mt-0.5" id="alertas-meta">2 não lidos · 4 no total</p>
+            </div>
+          </div>
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+              <tr>
+                <th class="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-6 py-3">Severidade</th>
+                <th class="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Mensagem</th>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Status</th>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Hora</th>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Ação</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+              <tr id="alert-row-1" class="alert-row hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                <td class="px-6 py-4"><span class="text-xs font-bold px-2.5 py-1.5 rounded-full bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-400">Alto</span></td>
+                <td class="px-4 py-4 max-w-xs"><p class="font-semibold text-slate-800 dark:text-slate-200 mb-0.5">Sobradinho — 72h sem atividade · coordenadora sem resposta</p><p class="text-xs text-slate-400 leading-relaxed">Tatiana Rodrigues não responde desde segunda-feira. Zero cadastros em 5 dias. Adversário Borges ativo na região. Território em risco de perda de cobertura.</p></td>
+                <td class="px-4 py-4 text-center"><span id="alert-badge-1" class="text-xs font-bold px-2.5 py-1.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400">Novo</span></td>
+                <td class="px-4 py-4 text-center text-slate-400 text-xs">16:20</td>
+                <td class="px-4 py-4 text-center"><button onclick="resolveAlert(1)" id="alert-btn-1" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors border border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/30 px-3 py-1.5 rounded-lg">Resolver</button></td>
+              </tr>
+              <tr id="alert-row-2" class="alert-row hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                <td class="px-6 py-4"><span class="text-xs font-bold px-2.5 py-1.5 rounded-full bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400">Médio</span></td>
+                <td class="px-4 py-4 max-w-xs"><p class="font-semibold text-slate-800 dark:text-slate-200 mb-0.5">Ceilândia Sul — volume 3× acima da média · verificar origem</p><p class="text-xs text-slate-400 leading-relaxed">156 mensagens hoje vs. média de 52. Pode ser mobilização pré-evento (positivo) ou desinformação circulando. Fernanda Costa deve confirmar origem do pico.</p></td>
+                <td class="px-4 py-4 text-center"><span id="alert-badge-2" class="text-xs font-bold px-2.5 py-1.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400">Novo</span></td>
+                <td class="px-4 py-4 text-center text-slate-400 text-xs">14:30</td>
+                <td class="px-4 py-4 text-center"><button onclick="resolveAlert(2)" id="alert-btn-2" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors border border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/30 px-3 py-1.5 rounded-lg">Resolver</button></td>
+              </tr>
+              <tr id="alert-row-3" class="alert-row resolved hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                <td class="px-6 py-4"><span class="text-xs font-bold px-2.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500">Baixo</span></td>
+                <td class="px-4 py-4 max-w-xs"><p class="font-semibold text-slate-800 dark:text-slate-200 mb-0.5">Evento detectado — Adesivaço CLN 110 com presença do candidato</p><p class="text-xs text-slate-400 leading-relaxed">Ricardo Alves convocou para amanhã 14h. 87 interações em 2h — recorde da semana. 24 cadastros de presença confirmados. Engajamento orgânico acima do normal.</p></td>
+                <td class="px-4 py-4 text-center"><span class="text-xs font-bold px-2.5 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400">Lido</span></td>
+                <td class="px-4 py-4 text-center text-slate-400 text-xs">08:35</td>
+                <td class="px-4 py-4 text-center"><span class="text-xs text-slate-400">—</span></td>
+              </tr>
+              <tr id="alert-row-4" class="alert-row resolved hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                <td class="px-6 py-4"><span class="text-xs font-bold px-2.5 py-1.5 rounded-full bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400">Médio</span></td>
+                <td class="px-4 py-4 max-w-xs"><p class="font-semibold text-slate-800 dark:text-slate-200 mb-0.5">Samambaia — sentimento caiu 8 pts em 48h · possível influência adversarial</p><p class="text-xs text-slate-400 leading-relaxed">Queda coincide com aumento de menções à Márcia Diniz na região. Carlos Mota sinalizou dificuldade de engajamento. Recomenda-se evento presencial na próxima semana.</p></td>
+                <td class="px-4 py-4 text-center"><span class="text-xs font-bold px-2.5 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400">Lido</span></td>
+                <td class="px-4 py-4 text-center text-slate-400 text-xs">07:10</td>
+                <td class="px-4 py-4 text-center"><span class="text-xs text-slate-400">—</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══════════════ RELATÓRIO DO DIA ═══════════════ -->
+      <div id="tab-relatorio" class="hidden space-y-6 fade-in">
+
+        <!-- Header do relatório -->
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl p-6 text-white shadow-md">
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-blue-200 text-xs font-semibold uppercase tracking-widest mb-1">Relatório Executivo</p>
+              <h2 class="text-2xl font-bold" id="relatorio-data"></h2>
+              <p class="text-blue-200 text-sm mt-1">Compilado às <span id="relatorio-hora"></span> · 8 grupos monitorados</p>
+            </div>
+            <div class="bg-white/10 rounded-xl px-4 py-3 text-center">
+              <p class="text-3xl font-black">84%</p>
+              <p class="text-blue-200 text-xs mt-0.5">sentimento geral</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resumo do dia -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v14a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2"/></svg>
+            Destaques do Dia
+          </h3>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800 rounded-xl p-4 text-center">
+              <p class="text-3xl font-black text-emerald-600">847</p>
+              <p class="text-xs text-slate-500 mt-1">mensagens capturadas</p>
+              <p class="text-[10px] text-emerald-600 font-semibold mt-0.5">↑ 12% vs. ontem</p>
+            </div>
+            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl p-4 text-center">
+              <p class="text-3xl font-black text-blue-600">7</p>
+              <p class="text-xs text-slate-500 mt-1">grupos ativos</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">1 com baixa atividade</p>
+            </div>
+            <div class="bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800 rounded-xl p-4 text-center">
+              <p class="text-3xl font-black text-purple-600">12</p>
+              <p class="text-xs text-slate-500 mt-1">eventos mencionados</p>
+              <p class="text-[10px] text-purple-600 font-semibold mt-0.5">3 confirmados amanhã</p>
+            </div>
+            <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800 rounded-xl p-4 text-center">
+              <p class="text-3xl font-black text-amber-600">2</p>
+              <p class="text-xs text-slate-500 mt-1">alertas gerados</p>
+              <p class="text-[10px] text-amber-600 font-semibold mt-0.5">0 críticos</p>
+            </div>
+          </div>
+
+          <div class="border-t border-slate-100 dark:border-slate-800 pt-5">
+            <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-3">Análise de IA — Resumo executivo do dia</h4>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Campanha em aceleração nítida, com padrão positivo consistente em 6 dos 8 grupos. O dado mais relevante do dia é a correlação direta entre presença anunciada do candidato e engajamento: o simples anúncio de que o <strong class="text-slate-800 dark:text-slate-200">Dep. [Nome] vai ao adesivaço de sábado</strong> gerou 87 interações espontâneas em menos de 2 horas — o maior pico de engajamento orgânico da semana. <strong class="text-slate-800 dark:text-slate-200">Ricardo Alves (Ala Norte)</strong> opera com disciplina de cabo eleitoral sênior e responde por 18% das interações totais do dia. <strong class="text-slate-800 dark:text-slate-200">Fernanda Costa (Ceilândia Sul)</strong> mantém o maior volume diário, mas precisa de atenção: presença adversarial de Paulo Borges detectada no QNM 28 ontem — território que ela cobre. Ponto crítico: <span class="text-red-600 font-semibold">Sobradinho com 72h de silêncio e coordenadora sem resposta</span> — esse grupo pode perder território para adversários se não houver intervenção antes do adesivaço de amanhã. Recomendação imediata: ligar para Tatiana Rodrigues ainda hoje à noite.
+            </p>
+          </div>
+        </div>
+
+        <!-- Performance por grupo -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-md overflow-hidden">
+          <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">Performance por Grupo</h3>
+            <p class="text-sm text-slate-400 mt-0.5">Resumo de atividade e sentimento de cada grupo hoje</p>
+          </div>
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+              <tr>
+                <th class="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-6 py-3">Grupo</th>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Msgs</th>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3 hidden md:table-cell">Sentimento</th>
+                <th class="text-center text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-4 py-3">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-3 font-medium text-slate-800 dark:text-slate-200">Ceilândia Sul – Base Política</td><td class="px-4 py-3 text-center text-slate-600 dark:text-slate-400 font-semibold">156</td><td class="px-4 py-3 hidden md:table-cell"><div class="flex items-center gap-2 justify-center"><div class="w-16 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width:79%"></div></div><span class="text-xs text-emerald-600 font-semibold">79%</span></div></td><td class="px-4 py-3 text-center"><span class="text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-full">Excelente</span></td></tr>
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-3 font-medium text-slate-800 dark:text-slate-200">Samambaia Forte – Campanha</td><td class="px-4 py-3 text-center text-slate-600 dark:text-slate-400 font-semibold">143</td><td class="px-4 py-3 hidden md:table-cell"><div class="flex items-center gap-2 justify-center"><div class="w-16 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width:72%"></div></div><span class="text-xs text-emerald-600 font-semibold">72%</span></div></td><td class="px-4 py-3 text-center"><span class="text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-full">Excelente</span></td></tr>
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-3 font-medium text-slate-800 dark:text-slate-200">Ala Norte – Asa Norte / Lago Norte</td><td class="px-4 py-3 text-center text-slate-600 dark:text-slate-400 font-semibold">127</td><td class="px-4 py-3 hidden md:table-cell"><div class="flex items-center gap-2 justify-center"><div class="w-16 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width:84%"></div></div><span class="text-xs text-emerald-600 font-semibold">84%</span></div></td><td class="px-4 py-3 text-center"><span class="text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-full">Excelente</span></td></tr>
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-3 font-medium text-slate-800 dark:text-slate-200">Taguatinga Central – Mobilização</td><td class="px-4 py-3 text-center text-slate-600 dark:text-slate-400 font-semibold">98</td><td class="px-4 py-3 hidden md:table-cell"><div class="flex items-center gap-2 justify-center"><div class="w-16 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width:77%"></div></div><span class="text-xs text-emerald-600 font-semibold">77%</span></div></td><td class="px-4 py-3 text-center"><span class="text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-full">Excelente</span></td></tr>
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-3 font-medium text-slate-800 dark:text-slate-200">Gama Mobiliza – Coordenadores</td><td class="px-4 py-3 text-center text-slate-600 dark:text-slate-400 font-semibold">89</td><td class="px-4 py-3 hidden md:table-cell"><div class="flex items-center gap-2 justify-center"><div class="w-16 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:68%"></div></div><span class="text-xs text-blue-600 font-semibold">68%</span></div></td><td class="px-4 py-3 text-center"><span class="text-xs font-semibold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-full">Bom</span></td></tr>
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-3 font-medium text-slate-800 dark:text-slate-200">Recanto das Emas – Liderança</td><td class="px-4 py-3 text-center text-slate-600 dark:text-slate-400 font-semibold">74</td><td class="px-4 py-3 hidden md:table-cell"><div class="flex items-center gap-2 justify-center"><div class="w-16 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:64%"></div></div><span class="text-xs text-blue-600 font-semibold">64%</span></div></td><td class="px-4 py-3 text-center"><span class="text-xs font-semibold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-full">Bom</span></td></tr>
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-3 font-medium text-slate-800 dark:text-slate-200">Águas Claras – Coordenadores</td><td class="px-4 py-3 text-center text-slate-600 dark:text-slate-400 font-semibold">45</td><td class="px-4 py-3 hidden md:table-cell"><div class="flex items-center gap-2 justify-center"><div class="w-16 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-amber-500 rounded-full" style="width:58%"></div></div><span class="text-xs text-amber-600 font-semibold">58%</span></div></td><td class="px-4 py-3 text-center"><span class="text-xs font-semibold text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-2 py-1 rounded-full">Regular</span></td></tr>
+              <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 bg-red-50/30 dark:bg-red-900/10"><td class="px-6 py-3 font-medium text-slate-800 dark:text-slate-200">Sobradinho / Planaltina Norte</td><td class="px-4 py-3 text-center text-slate-600 dark:text-slate-400 font-semibold">12</td><td class="px-4 py-3 hidden md:table-cell"><div class="flex items-center gap-2 justify-center"><div class="w-16 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-red-500 rounded-full" style="width:41%"></div></div><span class="text-xs text-red-500 font-semibold">41%</span></div></td><td class="px-4 py-3 text-center"><span class="text-xs font-semibold text-red-600 bg-red-50 dark:bg-red-900/30 px-2 py-1 rounded-full">⚠ Atenção</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Agenda de amanhã -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-md">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Agenda de Amanhã
+          </h3>
+          <div class="space-y-3">
+            <div class="flex items-start gap-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl">
+              <div class="text-center flex-shrink-0 w-12">
+                <p class="text-sm font-black text-blue-700 dark:text-blue-300">08h00</p>
+                <div class="w-px h-full bg-blue-200 mx-auto mt-1"></div>
+              </div>
+              <div>
+                <p class="text-sm font-bold text-slate-800 dark:text-slate-200">Adesivaço — Ceilândia Norte</p>
+                <p class="text-xs text-slate-500 mt-0.5">Concentração frente ao Mercado Central da QNM 2 · Coord: Fernanda Costa</p>
+                <span class="text-[10px] font-semibold bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full mt-1.5 inline-block">Confirmado · 23 participantes</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800 rounded-xl">
+              <div class="text-center flex-shrink-0 w-12">
+                <p class="text-sm font-black text-purple-700 dark:text-purple-300">10h00</p>
+              </div>
+              <div>
+                <p class="text-sm font-bold text-slate-800 dark:text-slate-200">Carreata — Taguatinga / Samambaia</p>
+                <p class="text-xs text-slate-500 mt-0.5">Saída da Praça do Relógio – Taguatinga · Rota até o P Norte de Samambaia</p>
+                <span class="text-[10px] font-semibold bg-purple-100 dark:bg-purple-800 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full mt-1.5 inline-block">Previsto · 40–60 veículos</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800 rounded-xl">
+              <div class="text-center flex-shrink-0 w-12">
+                <p class="text-sm font-black text-emerald-700 dark:text-emerald-300">18h30</p>
+              </div>
+              <div>
+                <p class="text-sm font-bold text-slate-800 dark:text-slate-200">Reunião de coordenadores — Comitê Central</p>
+                <p class="text-xs text-slate-500 mt-0.5">SGAN 912, Bloco D · Pauta: estratégia de expansão territorial e distribuição de materiais</p>
+                <span class="text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full mt-1.5 inline-block">Confirmado · 8 coordenadores</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ MODAL DE GRUPO ═══════════════════════════════ -->
+<div id="modal-overlay" class="modal-overlay hidden" onclick="closeModal()"></div>
+<div id="modal-panel" class="modal-panel hidden">
+  <div style="position:sticky;top:0;background:inherit;border-bottom:1px solid #e2e8f0;padding:16px 20px;display:flex;align-items:center;gap:12px;z-index:10;">
+    <button onclick="closeModal()" style="width:32px;height:32px;border-radius:8px;background:#f1f5f9;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#64748b;flex-shrink:0;">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <div>
+      <p id="modal-grupo-nome" style="font-size:14px;font-weight:700;color:#0f172a;margin:0;"></p>
+      <p id="modal-grupo-meta" style="font-size:11px;color:#64748b;margin:2px 0 0;"></p>
+    </div>
+  </div>
+
+  <!-- Stats do grupo -->
+  <div id="modal-stats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 20px;border-bottom:1px solid #e2e8f0;"></div>
+
+  <!-- Mensagens do grupo -->
+  <div style="padding:16px 20px;">
+    <p style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin:0 0 14px;">Mensagens de hoje</p>
+    <div id="modal-msgs"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ SCRIPT ═══════════════════════════════ -->
+<script>
+// ── MENSAGENS (autênticas — contexto Brasília) ────────────────────────────────
+const MSGS = [
+  { grupo:'Ala Norte', coord:'Ricardo Alves', av:'RA', texto:'gente!! adesivaço amanhã 8h30 na CLN 110 bloco C — em frente ao Bretas. quem puder aparecer 7h30 me ajuda a montar a estrutura. preciso de braços!! cadastra no link fixado pra garantir o kit 👆 sem cadastro não tem camiseta', hora:'07:48', eng:24 },
+  { grupo:'Taguatinga Central', coord:'Ana Lima', av:'AL', texto:'Pessoal, reunião de cabos eleitorais CONFIRMADA amanhã 18h no comitê — QI 5 conj. 4, Taguatinga Sul. Pauta: divisão de setores por quadra e estratégia de casa a casa pra outubro. Líderes de quadra: presença OBRIGATÓRIA. Confirma aqui e cadastra no form pra eu fechar a lista', hora:'08:15', eng:31 },
+  { grupo:'Samambaia Forte', coord:'Carlos Mota', av:'CM', texto:'turma do P Sul — concentração sábado 7h na QN 521 pra adesivaço na feira!! quem tem van ou carro grande me chama no privado HOJE, preciso fechar logística de material. cadastro de presença no link do grupo, sem cadastro não recebe kit ⚠️', hora:'09:02', eng:19 },
+  { grupo:'Ceilândia Sul', coord:'Fernanda Costa', av:'FC', texto:'CHEGOU O MATERIAL NOVO!! 🎉🎉 camisetas, botons e o santinho atualizado do Dep. [Nome] tão no comitê na QNM 28 conj. 7. passa buscar hoje até 20h ou sábado cedo. coordenador de quadra: pega no mínimo 200 santinhos e 50 adesivos cada', hora:'09:47', eng:42 },
+  { grupo:'Ala Norte', coord:'Ricardo Alves', av:'RA', texto:'PESSOAL!!!!! O DEP. [NOME] VAI VIR PESSOALMENTE NO ADESIVAÇO DE SÁBADO NA 110 NORTE 🔥🔥🔥 mobiliza TUDO que vc tiver — família, vizinho, amigo, colega de trabalho. quero LOTAR aquela calçada. compartilha no grupo de família AGORA!!', hora:'10:05', eng:87 },
+  { grupo:'Ceilândia Sul', coord:'Fernanda Costa', av:'FC', texto:'quem ainda nao confirmou pra sexta me chama no privado. tô fechando a escala de cabo eleitoral por setor hoje à noite. preciso saber quem cobre QNM 18, QNM 24 e QNM 28. quem confirmar hoje tem prioridade de horário e recebe o kit em casa', hora:'10:33', eng:17 },
+  { grupo:'Recanto das Emas', coord:'Marcos Pereira', av:'MP', texto:'GENTE QUE ADESIVAÇO FOI ESSE DOMINGO 😭❤️ fizemos contato com mais de 400 moradores só na Etapa 1!! povo receptivo demais. distribuímos TODO o santinho e adesivo que tinhamos. preciso de reposição de material urgente pro próximo fim de semana', hora:'10:58', eng:38 },
+  { grupo:'Taguatinga Central', coord:'Ana Lima', av:'AL', texto:'Carreata sábado 10h — saída Praça do Relógio, concentração 9h30 pra organizar a fila de carros. precisamos de 40 veículos no mínimo. quem confirmar veículo hoje eu já mando a rota definida. me chama no privado com modelo e cor do carro 🚗', hora:'11:10', eng:27 },
+  { grupo:'Ala Norte', coord:'Ricardo Alves', av:'RA', texto:'informação reservada pra coordenação: pesquisa interna mostrou +4,2 pontos na Asa Norte em 2 semanas de trabalho!! Lago Norte subiu 3 pontos. o Dep. [Nome] ficou muito feliz e mandou agradecer o esforço de todos 💪 vamos manter o ritmo que tá dando resultado', hora:'12:00', eng:63 },
+  { grupo:'Gama Mobiliza', coord:'Juliana Santos', av:'JS', texto:'Confirmada reunião com lideranças comunitárias quinta 19h no salão da Assoc. de Moradores do Setor Leste. quem tiver pauta local pra levar pro Dep. [Nome] me manda até quarta — ele vai querer ouvir a comunidade pessoalmente. cadastro no link fixado 👆', hora:'12:05', eng:22 },
+  { grupo:'Samambaia Forte', coord:'Carlos Mota', av:'CM', texto:'PRAZO de cadastro pro adesivaço de domingo ENCERRA HOJE AO MEIO-DIA. clica no link agora. nao me venha reclamar depois que não ganhou camiseta 😅 sem cadastro, sem kit, sem adesivo — simples assim', hora:'12:12', eng:18 },
+  { grupo:'Ceilândia Sul', coord:'Fernanda Costa', av:'FC', texto:'gente amanhã adesivaço na Ceilândia Norte 8h!! concentração em frente ao Mercadão da QNM 2. o Dep. [Nome] PODE aparecer de surpresa então quero todo mundo apresentável lá!! agua e protetor solar por conta de cada um rs 😂', hora:'13:30', eng:35 },
+  { grupo:'Gama Mobiliza', coord:'Juliana Santos', av:'JS', texto:'reunião de alinhamento sábado 9h no comitê do Gama 📍 SCIA Quadra 8 conj. B — antes da carreata. 30 minutos só pra fechar rota e dividir os grupos. confirma presença AQUI senão eu vou ligar pra cada um 😅', hora:'14:45', eng:11 },
+  { grupo:'Recanto das Emas', coord:'Marcos Pereira', av:'MP', texto:'COORDENADORES DO RECANTO — reunião URGENTE amanhã 7h30, antes do adesivaço. tô preocupado com a movimentação que tá acontecendo no setor centro. precisa de resposta rápida da coordenação. confirma presença aqui agora por favor', hora:'15:55', eng:29 },
+  { grupo:'Ala Norte', coord:'Ricardo Alves', av:'RA', texto:'depois da carreata de sábado o Dep. [Nome] vai bater papo com os coordenadores no comitê — CLN 304 Bloco D. TODOS os cabos eleitorais da Asa Norte ficam. é nossa chance de falar direto com ele sobre o que tá funcionando antes da reta final 💼', hora:'16:30', eng:56 },
+  { grupo:'Gama Mobiliza', coord:'Juliana Santos', av:'JS', texto:'boa notícia pro grupo!! pesquisa interna deu +3 pontos no Gama comparado à semana passada 📈 setor Leste subindo mais rápido — o casa a casa tá funcionando. quem tá fazendo a caminhada certinho tá colhendo resultado. bora manter o ritmo!!', hora:'17:00', eng:44 },
+  { grupo:'Taguatinga Central', coord:'Ana Lima', av:'AL', texto:'material impresso pra retirada no comitê ATÉ 19H HOJE. chegaram os panfletos novos, adesivos e o santinho atualizado do Dep. [Nome]. coordenador de quadra pega NO MÍNIMO 200 unidades — quem não buscar hoje fica sem pra o fim de semana', hora:'18:15', eng:33 },
+  { grupo:'Águas Claras', coord:'Paulo Henrique', av:'PH', texto:'galera de Águas Claras — adesivaço sábado 9h no metrô ALS 1!! preciso de pelo menos 8 cabos eleitorais. o Dep. [Nome] falou que pode aparecer depois das 10h se a gente mostrar força!! cadastra no link pra eu saber quantos kits levar 👆', hora:'18:45', eng:14 },
+  { grupo:'Samambaia Forte', coord:'Carlos Mota', av:'CM', texto:'CONSEGUI o clube do P Norte pra emprestar som e gerador pro domingo!! agora preciso de alguém com caminhonete pra buscar tudo na QR 508 sábado à tarde. sem isso o evento não tem som. me chama no privado URGENTE 🙏', hora:'19:20', eng:26 },
+  { grupo:'Ceilândia Sul', coord:'Fernanda Costa', av:'FC', texto:'preciso de reforço de voluntários no comitê domingo de manhã!! quem mora perto da QNM 28 e pode aparecer 7h30, se manifesta aqui. são só 2 horinhas mas são muito importantes. quem ajudar entra automaticamente no cadastro de apoiadores do Dep. [Nome] 💙', hora:'19:30', eng:21 },
+]
+
+// ── DADOS DOS GRUPOS (para modal) ────────────────────────────────────────────
+const GRUPOS_DATA = {
+  'Ala Norte': { membros:48, msgs:127, sentimento:84, coord:'Ricardo Alves', av:'RA', status:'Ativo',
+    resumo:'Grupo-âncora da campanha. Ricardo Alves opera com disciplina de cabo eleitoral sênior — convocações com 48h de antecedência, confirmação de presença, escala por setor. Taxa de retorno de convocação: 89%. 47 cadastros de evento esta semana. CLN 110 e Lago Norte consolidadas como fortaleza do candidato.' },
+  'Ceilândia Sul': { membros:58, msgs:156, sentimento:79, coord:'Fernanda Costa', av:'FC', status:'Ativo',
+    resumo:'Maior volume diário da campanha. Fernanda Costa tem forte vínculo com a liderança comunitária do QNM 28. Pico de atividade 13h–16h (horário do comércio local). 38 cadastros confirmados. ATENÇÃO: presença adversarial (Borges) detectada no QNM 28 — necessita contra-ofensiva de presença nos próximos 5 dias.' },
+  'Samambaia Forte': { membros:55, msgs:143, sentimento:72, coord:'Carlos Mota', av:'CM', status:'Ativo',
+    resumo:'Grupo em crescimento. Carlos Mota gerencia bem a logística de campo mas tem dificuldade em fechar cadastros de reunião — média 4,1 vs. 7,8 dos grupos de topo. P Sul e P Norte bem cobertos. Parceria com clube local é diferencial estratégico de infraestrutura. 29 cadastros de evento.' },
+  'Taguatinga Central': { membros:62, msgs:98, sentimento:77, coord:'Ana Lima', av:'AL', status:'Ativo',
+    resumo:'Grupo mais organizado documentalmente da campanha. Ana Lima usa o sistema com consistência — pauta de reunião com 48h de antecedência, confirmação de presença e relatório pós-evento. Carreata da Praça do Relógio com 40 veículos confirmados. Taxa de confirmação de convocação: 94%.' },
+  'Gama Mobiliza': { membros:37, msgs:89, sentimento:68, coord:'Juliana Santos', av:'JS', status:'Ativo',
+    resumo:'Crescimento consistente pelo trabalho de casa a casa no Setor Leste. Juliana Santos conecta bem com lideranças de associações de moradores — estratégia correta para território com eleitorado comunitário. 22 cadastros de reunião. Potencial subutilizado no Setor Central do Gama.' },
+  'Recanto das Emas': { membros:41, msgs:74, sentimento:64, coord:'Marcos Pereira', av:'MP', status:'Ativo',
+    resumo:'Adesivaço na Etapa 1 foi o maior evento de campo da campanha — 400+ contatos numa única ação. Marcos Pereira tem forte capacidade de mobilização presencial mas dificuldade de documentação digital. 18 cadastros de reunião. Situação no setor centro requer intervenção coordenada com a coordenação geral.' },
+  'Águas Claras': { membros:29, msgs:45, sentimento:58, coord:'Paulo Henrique', av:'PH', status:'Ativo',
+    resumo:'Menor grupo em volume, mas território estratégico por perfil de eleitorado (classe média, metrô). Paulo Henrique ainda em fase de estruturação da rede de cabos eleitorais. 9 cadastros para adesivaço de sábado. Crescimento depende diretamente de visita presencial do candidato à região.' },
+  'Sobradinho': { membros:33, msgs:12, sentimento:41, coord:'Tatiana Rodrigues', av:'TR', status:'Inativo',
+    resumo:'CRÍTICO: 72h sem atividade. Tatiana Rodrigues não responde desde segunda-feira — histórico sugere sobrecarga ou desmotivação. Zero cadastros nos últimos 5 dias. Território sem cobertura de campo ativa. Alerta gerado às 16h20 — coordenação central deve ligar HOJE antes do adesivaço de amanhã.' },
+}
+
+// ── TEMPLATES DE ANÁLISE IA ───────────────────────────────────────────────────
+const AI_TEMPLATES = {
+  'adesivaço': {
+    resumo: 'Detectei padrão de alta mobilização em 6 dos 8 grupos para eventos de rua. Volume de mensagens com o termo cresceu 38% em 3 dias — aceleração típica de pré-evento com presença confirmada do candidato. Ala Norte e Ceilândia Sul concentram 71% das convocações com taxa de confirmação estimada em 76%. Samambaia mostra demanda reprimida: Carlos Mota convocou 3× mas registrou baixa confirmação de presença.',
+    sentimento: { label: 'Muito Positivo — 87%', valor: 87, cor: '#22c55e' },
+    recomendacao: 'Prioridade imediata: Samambaia Forte está com convocação sem resposta adequada — possível problema de liderança local ou concorrência de agenda. Sugiro que a coordenação central ligue diretamente para os cabos eleitorais de P Sul até amanhã cedo. Em Sobradinho, sem evento de rua há 12 dias — território em risco de "esfriar" antes da reta final eleitoral.',
+  },
+  'reunião': {
+    resumo: '9 convocações de reunião identificadas nos últimos 4 dias. Taxa de confirmação média: 76%. Taguatinga Central se destaca com pauta documentada e convocação com antecedência — padrão que os demais grupos deveriam replicar. Gama Mobiliza tem o melhor aproveitamento de reuniões para captação de cadastros: 8 por reunião vs. 4,2 da média geral.',
+    sentimento: { label: 'Neutro — 71%', valor: 71, cor: '#3b82f6' },
+    recomendacao: 'Padronizar modelo de convocação com 48h de antecedência para todos os grupos — Ala Norte e Taguatinga já fazem isso e têm 40% mais presença nas reuniões. Detectei fragmentação de pautas em 4 grupos distintos que deveriam estar alinhadas. Recomendo reunião unificada mensal do candidato com todos os coordenadores: dados mostram aumento de engajamento por 3 semanas após esse tipo de encontro.',
+  },
+  'carreata': {
+    resumo: 'Carreata confirmada com engajamento espontâneo acima do esperado — 40 veículos sem push intenso de convocação, resultado de rede bem estruturada. Taguatinga Central é o epicentro da mobilização. Detectei baixa adesão de Recanto das Emas e Gama Mobiliza: ambos sinalizaram participação mas sem número concreto de veículos confirmados ainda.',
+    sentimento: { label: 'Muito Positivo — 91%', valor: 91, cor: '#22c55e' },
+    recomendacao: 'Confirmar rota com a coordenação da carreata com 24h de antecedência e garantir cobertura de imprensa no ponto de maior concentração. Coordenar Gama e Recanto com ponto de encontro único antes do percurso principal — unir as frotas aumenta impacto visual e gera registro fotográfico mais forte. Recanto tem histórico de baixa adesão em carreata — Marcos e Juliana precisam alinhar logística hoje.',
+  },
+  'comitê': {
+    resumo: 'Comitê central citado em 12 mensagens como principal polo logístico da campanha. Distribuição de material (kits, camisetas, santinhos) é o tema mais mencionado, com gargalo claro no horário de atendimento — detectei 5 mensagens com reclamação de fila ou item esgotado. Coordenadores precisam buscar material com prazo de 48h de antecedência ao evento.',
+    sentimento: { label: 'Neutro — 66%', valor: 66, cor: '#f59e0b' },
+    recomendacao: 'Ampliar horário do comitê ou criar pontos de retirada descentralizados — Ceilândia Sul e Samambaia Forte ficam distantes e coordenadores perdem tempo de campo em deslocamento. Considerar sistema de delivery de material para cabos eleitorais com confirmação de evento: quem cadastra o evento recebe o kit entregue. Reduz gargalo e aumenta cadastros.',
+  },
+  'voluntário': {
+    resumo: 'Demanda por voluntários está 22% acima da capacidade declarada — sinal de campanha aquecida mas com risco de burn-out dos cabos eleitorais ativos. Ceilândia Sul e Ala Norte concentram 68% dos voluntários ativos identificados. Samambaia e Sobradinho têm lacunas críticas: menos de 3 cabos eleitorais ativos por setor.',
+    sentimento: { label: 'Positivo — 78%', valor: 78, cor: '#22c55e' },
+    recomendacao: 'Criar ação de recrutamento direcionada para Sobradinho — grupo com maior potencial e menor base de voluntários ativos. Usar coordenadores de Ala Norte como referência de onboarding. Importante: voluntário que se cadastra mas não aparece em evento gera dado falso de cobertura — implementar confirmação de presença obrigatória 24h antes de cada ação.',
+  },
+  'deputado': {
+    resumo: 'Nome do candidato citado em 8 mensagens com sentimento 93% positivo — maior índice registrado no sistema. Grupos respondem 3× mais rápido quando há menção de presença do candidato. Engajamento sobe em média 40% nas 48h após aparição confirmada. ATENÇÃO: há compromisso público de presença no adesivaço de sábado — expectativa alta nos grupos.',
+    sentimento: { label: 'Muito Positivo — 93%', valor: 93, cor: '#22c55e' },
+    recomendacao: 'ATENÇÃO: cancelamento de presença anunciada gera crise de confiança nos coordenadores — efeito negativo de até -15 pontos de sentimento nas 24h seguintes. Se houver imprevisibilidade de agenda, comunicar com 4h+ de antecedência e oferecer data alternativa imediata. Aparições-surpresa têm 40% mais impacto que as anunciadas — estratégia recomendada para Águas Claras, grupo que precisa de estímulo urgente.',
+  },
+}
+
+const AI_DEFAULT = {
+  resumo: 'Analisando padrões de comunicação nos 8 grupos monitorados. Detectei engajamento acima da média nos últimos 2 dias com correlação positiva entre frequência de mensagens e intensidade de eventos de campo. Grupos que realizaram adesivaço ou reunião nos últimos 3 dias mostram sentimento 18% superior à média geral.',
+  sentimento: { label: 'Positivo — 79%', valor: 79, cor: '#22c55e' },
+  recomendacao: 'Grupos com menor atividade (Sobradinho e Águas Claras) precisam de intervenção antes do fim de semana. Sobradinho: contato direto com Tatiana ainda hoje. Águas Claras: agendar visita do candidato — dados mostram que presença física do deputado é o principal gatilho de engajamento nesse território específico.',
+}
+
+// ── ESTADO ────────────────────────────────────────────────────────────────────
+const TABS = ['overview','busca','grupos','inteligencia','mapa','ranking','agenda','alertas','relatorio']
+let searchTimer = null
+let currentSearch = ''
+let alertsResolved = 0
+
+// ── NAVEGAÇÃO ─────────────────────────────────────────────────────────────────
+function setTab(id) {
+  TABS.forEach(t => {
+    const el  = document.getElementById('tab-'+t)
+    const nav = document.getElementById('nav-'+t)
+    if (el)  el.classList.toggle('hidden', t !== id)
+    if (nav) {
+      nav.classList.toggle('active', t === id)
+      const txtEl = nav.querySelector('span:not(.ml-auto)')
+      if (t === id) {
+        nav.style.color = 'white'
+      } else {
+        nav.style.color = ''
+      }
+    }
+  })
+  if (id === 'busca') setTimeout(() => document.getElementById('search-input')?.focus(), 80)
+}
+
+// ── LIVE FEED ────────────────────────────────────────────────────────────────
+const LIVE_FEED_MSGS = [
+  { grupo:'Ala Norte',          cor:'#2563eb', remetente:'Ricardo A.',  texto:'PESSOAL!! DEP. [NOME] CONFIRMADO NO ADESIVAÇO DE SÁBADO NA CLN 110 🔥🔥 mobiliza todo mundo!!', tempo:'agora' },
+  { grupo:'Ceilândia Sul',      cor:'#16a34a', remetente:'Fernanda C.', texto:'23 cadastros hoje!! quase batemos a meta da semana. bora fechar 30 até sexta 💪', tempo:'2 min' },
+  { grupo:'Taguatinga Central', cor:'#7c3aed', remetente:'Ana L.',      texto:'comitê confirmado no QI 5 conj. 4 pra reunião de quinta 18h. confirma presença aqui pessoal', tempo:'4 min' },
+  { grupo:'Samambaia Forte',    cor:'#d97706', remetente:'Carlos M.',   texto:'PRAZO de cadastro pro adesivaço de domingo ENCERRA HOJE AO MEIO-DIA. clica no link!!', tempo:'6 min' },
+  { grupo:'Recanto das Emas',   cor:'#0891b2', remetente:'Marcos P.',   texto:'400 contatos no adesivaço de domingo!! povo receptivo demais. preciso de mais santinho urgente', tempo:'8 min' },
+  { grupo:'Gama Mobiliza',      cor:'#059669', remetente:'Juliana S.',  texto:'pesquisa interna: +3 pontos no Gama essa semana 📈 o casa a casa tá funcionando!! bora manter', tempo:'11 min' },
+  { grupo:'Ceilândia Sul',      cor:'#16a34a', remetente:'Fernanda C.', texto:'adesivaço na QNM 2 amanhã 8h!! o Dep. [Nome] pode aparecer de surpresa. quero todo mundo lá!!', tempo:'14 min' },
+  { grupo:'Taguatinga Central', cor:'#7c3aed', remetente:'Ana L.',      texto:'carreata confirmada sábado 10h — saída Praça do Relógio. 40 veículos confirmados até agora 🚗', tempo:'17 min' },
+  { grupo:'Ala Norte',          cor:'#2563eb', remetente:'Ricardo A.',  texto:'depois da carreata o dep. bate papo com os coordenadores no comitê da 304 Norte. TODOS ficam!!', tempo:'20 min' },
+  { grupo:'Águas Claras',       cor:'#6366f1', remetente:'Paulo H.',    texto:'adesivaço sábado 9h metrô ALS 1 — preciso de 8 cabos eleitorais. dep pode aparecer depois das 10h!!', tempo:'23 min' },
+]
+
+let liveFeedIdx = 0
+function renderLiveFeed() {
+  const container = document.getElementById('live-feed')
+  if (!container) return
+  container.innerHTML = ''
+  const isDark = document.documentElement.classList.contains('dark')
+  const bg     = isDark ? '#0f172a' : '#f8fafc'
+  const border = isDark ? '#1e293b' : '#e2e8f0'
+  const txt    = isDark ? '#cbd5e1' : '#334155'
+  const sub    = isDark ? '#64748b' : '#94a3b8'
+
+  // Mostra 5 mensagens a partir de liveFeedIdx (circular)
+  for (let i = 0; i < 5; i++) {
+    const msg = LIVE_FEED_MSGS[(liveFeedIdx + i) % LIVE_FEED_MSGS.length]
+    const div = document.createElement('div')
+    div.className = 'feed-enter'
+    div.style.cssText = `background:${bg};border:1px solid ${border};border-radius:10px;padding:10px 12px;display:flex;align-items:flex-start;gap:10px;`
+    div.style.animationDelay = (i * 50) + 'ms'
+    div.innerHTML = `
+      <div style="width:6px;height:6px;border-radius:50%;background:${msg.cor};flex-shrink:0;margin-top:5px;"></div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
+          <span style="font-size:10px;font-weight:700;color:${msg.cor};">${escHtml(msg.grupo)}</span>
+          <span style="font-size:10px;color:${sub};">· ${escHtml(msg.remetente)}</span>
+          <span style="font-size:10px;color:${sub};margin-left:auto;">${escHtml(msg.tempo)}</span>
+        </div>
+        <p style="font-size:11px;color:${txt};line-height:1.4;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escHtml(msg.texto)}</p>
+      </div>`
+    container.appendChild(div)
+  }
+  liveFeedIdx = (liveFeedIdx + 1) % LIVE_FEED_MSGS.length
+}
+
+// ── BUSCA ─────────────────────────────────────────────────────────────────────
+function onSearchInput(val) {
+  currentSearch = val
+  clearTimeout(searchTimer)
+
+  if (!val.trim()) {
+    document.getElementById('search-spinner').classList.add('hidden')
+    document.getElementById('search-suggestions').classList.remove('hidden')
+    document.getElementById('search-results').innerHTML = ''
+    document.getElementById('search-meta').classList.add('hidden')
+    document.getElementById('ai-trigger').classList.add('hidden')
+    hideAI()
+    return
+  }
+
+  document.getElementById('search-suggestions').classList.add('hidden')
+  document.getElementById('search-spinner').classList.remove('hidden')
+
+  searchTimer = setTimeout(() => {
+    document.getElementById('search-spinner').classList.add('hidden')
+    renderSearch(val)
+  }, 350)
+}
+
+function renderSearch(val) {
+  const term = val.toLowerCase()
+  const found = MSGS.filter(m =>
+    m.texto.toLowerCase().includes(term) ||
+    m.coord.toLowerCase().includes(term) ||
+    m.grupo.toLowerCase().includes(term)
+  )
+
+  const meta    = document.getElementById('search-meta')
+  const countTx = document.getElementById('search-count-text')
+  const countBg = document.getElementById('search-count-badge')
+  const trigger = document.getElementById('ai-trigger')
+  const results = document.getElementById('search-results')
+
+  meta.classList.remove('hidden')
+  if (found.length === 0) {
+    countTx.textContent = 'Nenhum resultado para "' + escHtml(val) + '"'
+    countBg.textContent = ''
+    trigger.classList.add('hidden')
+    results.innerHTML = '<div class="text-center py-12 text-slate-400"><p class="text-sm">Tente outra palavra-chave.</p></div>'
+    hideAI()
+    return
+  }
+
+  const grupos = new Set(found.map(r => r.grupo)).size
+  countTx.textContent = `${found.length} mensagem${found.length > 1 ? 's' : ''} encontrada${found.length > 1 ? 's' : ''}`
+  countBg.textContent = `em ${grupos} grupo${grupos > 1 ? 's' : ''}`
+  trigger.classList.remove('hidden')
+  hideAI()
+
+  results.innerHTML = found.map(r => `
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-md slide-up hover:border-blue-200 dark:hover:border-blue-700 transition-colors">
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">${escHtml(r.av)}</div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center flex-wrap gap-2 mb-1.5">
+            <span class="text-sm font-bold text-slate-800 dark:text-slate-200">${escHtml(r.coord)}</span>
+            <span class="text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 px-2 py-0.5 rounded-full">${escHtml(r.grupo)}</span>
+            <span class="text-xs text-slate-400 ml-auto">${r.hora}</span>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">${highlight(r.texto, val)}</p>
+          <p class="text-[11px] text-slate-400 mt-2">👍 ${r.eng} interações</p>
+        </div>
+      </div>
+    </div>
+  `).join('')
+}
+
+function quickSearch(term) {
+  const inp = document.getElementById('search-input')
+  inp.value = term
+  onSearchInput(term)
+}
+
+// ── ANÁLISE IA ────────────────────────────────────────────────────────────────
+function runAI() {
+  const card    = document.getElementById('ai-card')
+  const loading = document.getElementById('ai-loading')
+  const result  = document.getElementById('ai-result')
+  const termEl  = document.getElementById('ai-search-term')
+  const trigger = document.getElementById('ai-trigger')
+
+  trigger.classList.add('hidden')
+  card.classList.remove('hidden')
+  loading.classList.remove('hidden')
+  result.classList.add('hidden')
+  termEl.textContent = `Analisando "${currentSearch}" em 8 grupos...`
+
+  // Scroll para o card
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+  setTimeout(() => {
+    loading.classList.add('hidden')
+    result.classList.remove('hidden')
+
+    const key = Object.keys(AI_TEMPLATES).find(k => currentSearch.toLowerCase().includes(k))
+    const data = key ? AI_TEMPLATES[key] : AI_DEFAULT
+
+    // Typewriter no resumo
+    const resumoEl = document.getElementById('ai-resumo')
+    resumoEl.classList.add('typing')
+    typeWriter(resumoEl, data.resumo, 18, () => {
+      resumoEl.classList.remove('typing')
+    })
+
+    // Barra de sentimento
+    setTimeout(() => {
+      const bar   = document.getElementById('ai-bar')
+      const label = document.getElementById('ai-sentiment-label')
+      bar.style.backgroundColor = data.sentimento.cor
+      bar.style.width = data.sentimento.valor + '%'
+      label.textContent = data.sentimento.label
+      label.style.color = data.sentimento.cor
+    }, 400)
+
+    // Typewriter na recomendação
+    setTimeout(() => {
+      const recEl = document.getElementById('ai-recomendacao')
+      typeWriter(recEl, data.recomendacao, 14)
+    }, 800)
+
+  }, 1600)
+}
+
+function hideAI() {
+  document.getElementById('ai-card').classList.add('hidden')
+}
+
+function typeWriter(el, text, speed, cb) {
+  let i = 0
+  el.textContent = ''
+  const t = setInterval(() => {
+    if (i < text.length) { el.textContent += text[i++] }
+    else { clearInterval(t); if (cb) cb() }
+  }, speed)
+}
+
+// ── ALERTAS ───────────────────────────────────────────────────────────────────
+function resolveAlert(id) {
+  const row   = document.getElementById('alert-row-' + id)
+  const badge = document.getElementById('alert-badge-' + id)
+  const btn   = document.getElementById('alert-btn-' + id)
+  row.classList.add('resolved')
+  badge.textContent = 'Resolvido'
+  badge.className = 'text-xs font-bold px-2.5 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400'
+  btn.textContent = '✓ Ok'
+  btn.disabled = true
+  btn.className = 'text-xs font-semibold text-slate-400 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg cursor-not-allowed'
+  alertsResolved++
+  const remaining = 2 - alertsResolved
+  document.getElementById('alertas-meta').textContent =
+    remaining > 0 ? `${remaining} não lido${remaining > 1 ? 's' : ''} · 4 no total` : 'Todos os alertas resolvidos · 4 no total'
+}
+
+// ── DARK MODE ─────────────────────────────────────────────────────────────────
+let dark = false
+function toggleDark() {
+  dark = !dark
+  document.documentElement.classList.toggle('dark', dark)
+  document.getElementById('dark-label').textContent = dark ? 'Modo Claro' : 'Modo Escuro'
+  const icon = document.getElementById('dark-icon')
+  icon.innerHTML = dark
+    ? '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25M18.773 18.773l-1.591-1.591M12 18.75V21M6.64 18.773 5.049 20.364M3 12H.75M6.64 5.227 5.049 3.636M12 12a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>'
+    : '<path stroke-linecap="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+}
+
+// ── KPI COUNTER ───────────────────────────────────────────────────────────────
+function animateCounter(id, target, duration) {
+  const el = document.getElementById(id)
+  if (!el) return
+  const start = performance.now()
+  const tick = (now) => {
+    const progress = Math.min((now - start) / duration, 1)
+    const ease = 1 - Math.pow(1 - progress, 3) // ease-out cubic
+    el.textContent = Math.round(ease * target)
+    if (progress < 1) requestAnimationFrame(tick)
+  }
+  requestAnimationFrame(tick)
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+}
+
+function highlight(text, term) {
+  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return escHtml(text).replace(new RegExp(escaped, 'gi'), m => `<mark>${m}</mark>`)
+}
+
+// ── LOGIN ─────────────────────────────────────────────────────────────────────
+function doLogin() {
+  const btn = document.getElementById('login-btn')
+  btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Autenticando...'
+  btn.disabled = true
+  setTimeout(() => {
+    document.getElementById('login-screen').style.transition = 'opacity .5s ease'
+    document.getElementById('login-screen').style.opacity = '0'
+    setTimeout(() => {
+      document.getElementById('login-screen').style.display = 'none'
+      const app = document.getElementById('app')
+      app.classList.remove('hidden')
+      app.style.opacity = '0'
+      app.style.transition = 'opacity .4s ease'
+      requestAnimationFrame(() => { app.style.opacity = '1' })
+      initDashboard()
+    }, 500)
+  }, 1200)
+}
+
+// ── MODAL DE GRUPO ────────────────────────────────────────────────────────────
+function openModal(nome) {
+  const d = GRUPOS_DATA[nome]
+  if (!d) return
+
+  const overlay = document.getElementById('modal-overlay')
+  const panel   = document.getElementById('modal-panel')
+  overlay.classList.remove('hidden')
+  panel.classList.remove('hidden')
+  panel.classList.add('modal-panel-enter')
+  document.body.style.overflow = 'hidden'
+
+  const isDark = document.documentElement.classList.contains('dark')
+  const bg     = isDark ? '#0f172a' : '#f8fafc'
+  const border = isDark ? '#1e293b' : '#e2e8f0'
+  const txt    = isDark ? '#e2e8f0' : '#1e293b'
+  const txtSub = isDark ? '#94a3b8' : '#64748b'
+
+  document.getElementById('modal-grupo-nome').textContent = nome
+  document.getElementById('modal-grupo-meta').textContent =
+    `${d.membros} membros · ${d.msgs} msgs hoje · Coord: ${d.coord}`
+
+  const sentColor = d.sentimento >= 75 ? '#16a34a' : d.sentimento >= 60 ? '#2563eb' : d.sentimento >= 45 ? '#d97706' : '#dc2626'
+  const sentLabel = d.sentimento >= 75 ? 'Excelente' : d.sentimento >= 60 ? 'Bom' : d.sentimento >= 45 ? 'Regular' : 'Crítico'
+
+  const statCard = (value, label, color) => `
+    <div style="background:${bg};border:1px solid ${border};border-radius:12px;padding:12px;text-align:center;">
+      <p style="font-size:24px;font-weight:900;color:${color || txt};margin:0 0 2px;">${value}</p>
+      <p style="font-size:11px;color:${txtSub};margin:0;">${label}</p>
+    </div>`
+
+  document.getElementById('modal-stats').innerHTML =
+    statCard(d.msgs, 'msgs hoje', txt) +
+    statCard(d.sentimento + '%', sentLabel, sentColor) +
+    statCard(d.membros, 'membros', txt)
+
+  const grupoMsgs = MSGS.filter(m => m.grupo === nome || m.grupo.startsWith(nome.split(' ')[0]))
+
+  const msgCards = grupoMsgs.length > 0 ? grupoMsgs.map(m => `
+    <div style="background:${bg};border:1px solid ${border};border-radius:12px;padding:14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;">${escHtml(m.av)}</div>
+        <span style="font-size:12px;font-weight:700;color:${txt};">${escHtml(m.coord)}</span>
+        <span style="margin-left:auto;font-size:11px;color:${txtSub};">${m.hora}</span>
+      </div>
+      <p style="font-size:12px;color:${isDark?'#cbd5e1':'#475569'};line-height:1.6;margin:0 0 6px;">${escHtml(m.texto)}</p>
+      <p style="font-size:11px;color:${txtSub};margin:0;">👍 ${m.eng} interações</p>
+    </div>
+  `).join('') : `<p style="font-size:13px;color:${txtSub};text-align:center;padding:32px 0;">Nenhuma mensagem registrada hoje.</p>`
+
+  document.getElementById('modal-msgs').innerHTML = `
+    <div style="background:${isDark?'#1e3a5f':'#eff6ff'};border:1px solid ${isDark?'#1e40af':'#bfdbfe'};border-radius:12px;padding:14px;margin-bottom:14px;">
+      <p style="font-size:11px;font-weight:700;color:${isDark?'#93c5fd':'#1d4ed8'};margin:0 0 6px;text-transform:uppercase;letter-spacing:.05em;">Resumo do grupo</p>
+      <p style="font-size:12px;color:${isDark?'#cbd5e1':'#475569'};line-height:1.6;margin:0;">${escHtml(d.resumo)}</p>
+    </div>
+    ${msgCards}
+  `
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.add('hidden')
+  document.getElementById('modal-panel').classList.add('hidden')
+  document.body.style.overflow = ''
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+function initDashboard() {
+  const now = new Date()
+  document.getElementById('date-display').textContent =
+    now.toLocaleDateString('pt-BR', { weekday:'long', day:'2-digit', month:'long', year:'numeric' })
+
+  // Animar KPIs ao carregar
+  setTimeout(() => {
+    animateCounter('kpi-grupos', 7, 800)
+    animateCounter('kpi-coord', 8, 900)
+    animateCounter('kpi-alertas', 2, 600)
+  }, 200)
+  setTimeout(() => {
+    animateCounter('kpi-msgs', 847, 1200)
+    animateCounter('kpi-apoiadores', 1247, 1100)
+  }, 100)
+
+  // Live feed
+  renderLiveFeed()
+  setInterval(renderLiveFeed, 4000)
+
+  // Relatório
+  document.getElementById('relatorio-data').textContent =
+    now.toLocaleDateString('pt-BR', { weekday:'long', day:'2-digit', month:'long' })
+  document.getElementById('relatorio-hora').textContent =
+    now.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' })
+}
+</script>
+</body>
+</html>

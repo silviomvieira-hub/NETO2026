@@ -1884,6 +1884,122 @@
                 </div>
             </div>
 
+            <!-- RADAR ELEITORAL: TERMÔMETRO DA CAMPANHA + FEED AO VIVO -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <!-- Termômetro da Campanha -->
+                <div class="card" style="padding: 20px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-weight: 700; font-size: 1.1rem;">Termômetro da Campanha</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">Saúde geral · atualizado agora</div>
+                        </div>
+                        <span style="font-size: 0.7rem; background: var(--green); color: #000; padding: 4px 12px; border-radius: 20px; font-weight: 700;">Saudável</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <!-- Gauge SVG -->
+                        <div style="flex-shrink: 0;">
+                            <svg viewBox="0 0 120 120" style="width: 120px; height: 120px;">
+                                <circle cx="60" cy="60" r="46" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="11"/>
+                                <circle cx="60" cy="60" r="46" fill="none" stroke="var(--green)" stroke-width="11"
+                                    stroke-dasharray="213 76" stroke-linecap="round"
+                                    transform="rotate(-90 60 60)" style="transition: stroke-dasharray 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s;"/>
+                                <text x="60" y="55" text-anchor="middle" font-size="24" font-weight="900" fill="var(--green)" style="font-family: Poppins;">74</text>
+                                <text x="60" y="68" text-anchor="middle" font-size="9" fill="var(--text-muted)" style="font-family: Poppins;">de 100</text>
+                                <text x="60" y="80" text-anchor="middle" font-size="8" fill="var(--green)" font-weight="700" style="font-family: Poppins;">ÓTIMO</text>
+                            </svg>
+                        </div>
+                        <!-- Barras de Componentes -->
+                        <div style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;"><span>Sentimento</span><span style="font-weight: 700; color: var(--green);">84%</span></div>
+                                <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;"><div style="height: 100%; background: var(--green); width: 84%; border-radius: 3px; transition: width 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s;"></div></div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;"><span>Engajamento</span><span style="font-weight: 700; color: var(--green);">79%</span></div>
+                                <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;"><div style="height: 100%; background: var(--green); width: 79%; border-radius: 3px; transition: width 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s;"></div></div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;"><span>Cadastros</span><span style="font-weight: 700; color: var(--cyan);">66%</span></div>
+                                <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;"><div style="height: 100%; background: var(--cyan); width: 66%; border-radius: 3px; transition: width 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s;"></div></div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;"><span>Cobertura Territorial</span><span style="font-weight: 700; color: var(--gold);">24%</span></div>
+                                <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;"><div style="height: 100%; background: var(--gold); width: 24%; border-radius: 3px; transition: width 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s;"></div></div>
+                            </div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">⚠ Cobertura territorial é o principal gap — expandir para +6 RAs aumenta a nota para ~88.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Central de Comando — Feed Ao Vivo -->
+                <div class="card" style="padding: 20px; display: flex; flex-direction: column;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                        <div>
+                            <div style="font-weight: 700; font-size: 1.1rem;">Central de Comando</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">Feed ao vivo de todos os grupos</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="display: inline-flex; height: 8px; width: 8px;"><span style="animation: pulse 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite; display: inline-flex; height: 100%; width: 100%; border-radius: 50%; background: var(--green); opacity: 0.75;"></span></span>
+                            <span style="font-size: 0.7rem; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 0.5px;">Ao Vivo</span>
+                        </div>
+                    </div>
+                    <div id="radar-live-feed" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; max-height: 280px;"></div>
+                </div>
+            </div>
+
+            <!-- META DE VOTOS -->
+            <div class="card" style="padding: 20px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: start; justify-content: space-between; margin-bottom: 15px;">
+                    <div>
+                        <div style="font-weight: 700; font-size: 1.3rem;">Meta de Votos — Eleições 2026</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Quórum estimado para eleição no 1º turno · Câmara Legislativa do DF</div>
+                    </div>
+                    <span style="font-size: 0.7rem; background: var(--cyan); color: #000; padding: 6px 14px; border-radius: 20px; font-weight: 700;">8,3% da meta</span>
+                </div>
+
+                <!-- Barra de Progresso -->
+                <div style="margin-bottom: 15px;">
+                    <div style="height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-bottom: 8px;">
+                        <div style="height: 100%; background: linear-gradient(90deg, var(--cyan), var(--green)); width: 8.3%; border-radius: 10px; transition: width 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
+                        <span>0</span>
+                        <span style="font-weight: 700; color: var(--cyan);">1.247 mapeados</span>
+                        <span style="font-weight: 700; color: var(--text);">Meta: 15.000</span>
+                    </div>
+                </div>
+
+                <!-- Três Métricas -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 15px;">
+                    <div style="text-align: center; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); border-radius: 12px; padding: 12px;">
+                        <div style="font-size: 1.8rem; font-weight: 900; color: var(--cyan);">1.247</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">apoiadores mapeados</div>
+                        <div style="font-size: 0.7rem; color: var(--cyan); margin-top: 3px; font-weight: 600;">em 8 regiões do DF</div>
+                    </div>
+                    <div style="text-align: center; background: rgba(255,214,0,0.1); border: 1px solid rgba(255,214,0,0.3); border-radius: 12px; padding: 12px;">
+                        <div style="font-size: 1.8rem; font-weight: 900; color: var(--gold);">15.000</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">votos necessários</div>
+                        <div style="font-size: 0.7rem; color: var(--gold); margin-top: 3px; font-weight: 600;">estimativa 1º turno</div>
+                    </div>
+                    <div style="text-align: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px;">
+                        <div style="font-size: 1.8rem; font-weight: 900; color: var(--text);">13.753</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">faltam mapear</div>
+                        <div style="font-size: 0.7rem; color: var(--green); margin-top: 3px; font-weight: 600;">↑ 47 novos/semana</div>
+                    </div>
+                </div>
+
+                <!-- Projeção IA -->
+                <div style="background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.3); border-radius: 12px; padding: 12px;">
+                    <div style="display: flex; align-items: start; gap: 10px;">
+                        <div style="width: 28px; height: 28px; border-radius: 8px; background: var(--cyan); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem;">⚡</div>
+                        <div>
+                            <div style="font-weight: 700; color: var(--cyan); font-size: 0.9rem; margin-bottom: 4px;">Projeção IA Helena</div>
+                            <div style="font-size: 0.85rem; color: var(--text); line-height: 1.4;">Mantendo ritmo de 47 novos apoiadores/semana, meta de 15.000 será atingida em <strong style="color: var(--gold);">~25 semanas</strong> (até meados de setembro). Recomendação: acelerar mapeamento em Ceilândia (+34% engajamento em educação) e Taguatinga (+8% positivo).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="section-title">🎂 Aniversariantes do Dia</h2>
             <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 20px;">
                 <div class="birthday-card">
@@ -2215,6 +2331,96 @@
                     <p style="font-size: 0.9rem; margin-bottom: 10px;">Análise cruzada de redes sociais, notícias e dados de campo revela: <strong>candidato rival está investindo pesado em Samambaia nas últimas 72h</strong> (aumento de 340% em menções patrocinadas). Janela de ação: <span style="color:var(--gold);">5 dias</span> antes que o posicionamento se consolide.</p>
                     <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Referências: Lakoff (framing), Penn (micro-targeting), Shapiro (timing eleitoral)</div>
                     <span class="badge badge-success">Gerar plano de ação</span>
+                </div>
+            </div>
+
+            <!-- INTELIGÊNCIA ADVERSARIAL -->
+            <h2 class="section-title">🔴 Inteligência Adversarial</h2>
+
+            <!-- Banner de Alerta -->
+            <div style="background: linear-gradient(135deg, rgba(255,82,82,0.2), rgba(255,145,0,0.1)); border-left: 4px solid var(--red); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: start; gap: 12px;">
+                    <div style="font-size: 1.5rem; margin-top: -2px;">⚠️</div>
+                    <div>
+                        <div style="font-weight: 700; color: var(--red); font-size: 1rem; margin-bottom: 4px;">3 menções de adversários detectadas nas últimas 24h</div>
+                        <div style="font-size: 0.9rem; color: var(--text); line-height: 1.4;">Nos seus grupos de campanha, apoiadores estão citando nomes de candidatos concorrentes. O sistema identificou padrões que exigem atenção estratégica imediata.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparativo Candidato vs Adversários -->
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-bottom: 20px;">
+                <!-- Seu Candidato -->
+                <div class="card" style="border: 2px solid var(--cyan); background: rgba(0,229,255,0.05);">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
+                        <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--cyan); display: flex; align-items: center; justify-content: center; color: #000; font-weight: 700; font-size: 0.8rem;">NR</div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.95rem;">Neto Rodrigues</div>
+                            <div style="font-size: 0.75rem; color: var(--cyan); font-weight: 600;">Seu candidato</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;"><span>Menções totais</span><span style="font-weight: 700; color: var(--cyan);">847</span></div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;"><span>Sentimento positivo</span><span style="font-weight: 700; color: var(--green);">84%</span></div>
+                            <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px;"><div style="height: 100%; background: var(--green); width: 84%; border-radius: 3px;"></div></div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 2px;"><span>Grupos onde é citado</span><span style="font-weight: 700; color: var(--cyan);">8 de 8</span></div>
+                            <div style="font-size: 0.75rem; color: var(--green); margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.1);">↑ Presença forte em todas as regiões monitoradas</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adversários Detectados -->
+                <div class="card" style="padding: 20px;">
+                    <div style="font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 1rem;">👁️</span>
+                        <span>Adversários detectados nos seus grupos</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <!-- Adversário 1 -->
+                        <div style="border-left: 4px solid var(--red); border-radius: 8px; padding: 12px; background: rgba(255,82,82,0.08);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(255,82,82,0.3); display: flex; align-items: center; justify-content: center; color: var(--red); font-weight: 700; font-size: 0.75rem;">PB</div>
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 0.9rem;">Dr. Paulo Borges</div>
+                                        <div style="font-size: 0.7rem; color: var(--text-muted);">Concorrente direto · Ceilândia</div>
+                                    </div>
+                                </div>
+                                <span style="font-size: 0.7rem; background: rgba(255,82,82,0.3); color: var(--red); padding: 4px 8px; border-radius: 12px; font-weight: 700;">⚠️ Alto risco</span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; font-size: 0.75rem; text-align: center;">
+                                <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px;"><div style="font-weight: 900; color: var(--red); font-size: 1.1rem;">14</div><div style="color: var(--text-muted);">nos seus grupos</div></div>
+                                <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px;"><div style="font-weight: 900; color: var(--text); font-size: 1.1rem;">23</div><div style="color: var(--text-muted);">total detectado</div></div>
+                                <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px;"><div style="font-weight: 900; color: var(--gold); font-size: 1.1rem;">61%</div><div style="color: var(--text-muted);">positivo</div></div>
+                            </div>
+                            <div style="height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px;"><div style="height: 100%; background: var(--red); width: 61%; border-radius: 3px;"></div></div>
+                        </div>
+
+                        <!-- Adversário 2 -->
+                        <div style="border-left: 4px solid var(--orange); border-radius: 8px; padding: 12px; background: rgba(255,145,0,0.08);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(255,145,0,0.3); display: flex; align-items: center; justify-content: center; color: var(--orange); font-weight: 700; font-size: 0.75rem;">MD</div>
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 0.9rem;">Márcia Diniz</div>
+                                        <div style="font-size: 0.7rem; color: var(--text-muted);">Concorrente · Samambaia</div>
+                                    </div>
+                                </div>
+                                <span style="font-size: 0.7rem; background: rgba(255,145,0,0.3); color: var(--orange); padding: 4px 8px; border-radius: 12px; font-weight: 700;">⚠️ Monitorar</span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; font-size: 0.75rem; text-align: center;">
+                                <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px;"><div style="font-weight: 900; color: var(--orange); font-size: 1.1rem;">6</div><div style="color: var(--text-muted);">nos seus grupos</div></div>
+                                <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px;"><div style="font-weight: 900; color: var(--text); font-size: 1.1rem;">11</div><div style="color: var(--text-muted);">total detectado</div></div>
+                                <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px;"><div style="font-weight: 900; color: var(--green); font-size: 1.1rem;">44%</div><div style="color: var(--text-muted);">positivo</div></div>
+                            </div>
+                            <div style="height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px;"><div style="height: 100%; background: var(--orange); width: 44%; border-radius: 3px;"></div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -4397,7 +4603,107 @@ ${JSON.stringify(dados, null, 2)}
             }
         });
 
+        // ===== RADAR ELEITORAL: FEED AO VIVO =====
+        const radarFeedData = [
+            { avatar: '👨', nome: 'Lucas Almeida', grupo: 'Neto Ceilândia Central', msg: 'Novo apoiador cadastrado! 🎯', time: 'agora', sentimento: '😊' },
+            { avatar: '👩', nome: 'Marina Costa', grupo: 'Neto Ceilândia Central', msg: 'Reunião com lideranças conseguiu 5 contatos', time: '2 min', sentimento: '🤩' },
+            { avatar: '👨', nome: 'Felipe Ribeiro', grupo: 'Neto Taguatinga Mobilização', msg: 'Material distribuído: 200 santinhos em Taguatinga', time: '5 min', sentimento: '👍' },
+            { avatar: '👩', nome: 'Juliana Mendes', grupo: 'Neto Samambaia Ação', msg: 'Grupo ganhou 12 membros novos esta semana', time: '8 min', sentimento: '⭐' },
+            { avatar: '👨', nome: 'Roberto Gomes', grupo: 'Neto Gama Comunidade', msg: 'Evento confirmado para sábado às 14h', time: '12 min', sentimento: '🎉' },
+            { avatar: '👩', nome: 'Beatriz Silva', grupo: 'Neto Sobradinho Educação', msg: 'Escola confirmada para visita do candidato', time: '15 min', sentimento: '✨' },
+        ];
+
+        function populateRadarFeed() {
+            const feedContainer = document.getElementById('radar-live-feed');
+            if (!feedContainer) return;
+
+            feedContainer.innerHTML = '';
+            radarFeedData.forEach((item, idx) => {
+                const feedItem = document.createElement('div');
+                feedItem.style.cssText = `
+                    display: flex; gap: 10px; padding: 10px; border-radius: 8px;
+                    background: rgba(0,230,118,0.05); border-left: 3px solid var(--green);
+                    animation: fadeInUp 0.4s ease both;
+                    animation-delay: ${idx * 0.1}s;
+                `;
+                feedItem.innerHTML = `
+                    <div style="font-size: 1.5rem; flex-shrink: 0;">${item.avatar}</div>
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 2px;">
+                            <span style="font-weight: 700; font-size: 0.85rem;">${item.nome}</span>
+                            <span style="font-size: 0.65rem; color: var(--text-muted);">${item.grupo}</span>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text); margin-bottom: 4px;">${item.msg}</div>
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <span style="font-size: 0.7rem; color: var(--text-muted);">${item.time}</span>
+                            <span style="font-size: 1rem;">${item.sentimento}</span>
+                        </div>
+                    </div>
+                `;
+                feedContainer.appendChild(feedItem);
+            });
+
+            // Auto-scroll to bottom
+            feedContainer.scrollTop = feedContainer.scrollHeight;
+        }
+
+        // Simulate new feed items every 8 seconds
+        function startRadarFeedUpdates() {
+            setInterval(() => {
+                const newMessages = [
+                    { avatar: '👨', nome: 'João Silva', grupo: 'Neto Plano Piloto Elite', msg: 'Candidato visitou nosso bairro — grande recepção! 🙌', time: 'agora', sentimento: '🔥' },
+                    { avatar: '👩', nome: 'Sandra Oliveira', grupo: 'Neto Taguatinga Mobilização', msg: 'Conseguimos 8 novos eleitores em uma hora', time: 'agora', sentimento: '💪' },
+                    { avatar: '👨', nome: 'Ricardo Santos', grupo: 'Neto Ceilândia Central', msg: 'Podcast sobre propostas foi ouvido 150x', time: 'agora', sentimento: '📻' },
+                ];
+
+                const newItem = newMessages[Math.floor(Math.random() * newMessages.length)];
+                const feedContainer = document.getElementById('radar-live-feed');
+                if (feedContainer && feedContainer.children.length > 0) {
+                    // Remove oldest item
+                    feedContainer.children[0].style.animation = 'fadeOut 0.3s ease';
+                    setTimeout(() => feedContainer.children[0]?.remove(), 300);
+                }
+
+                const feedItem = document.createElement('div');
+                feedItem.style.cssText = `
+                    display: flex; gap: 10px; padding: 10px; border-radius: 8px;
+                    background: rgba(0,230,118,0.08); border-left: 3px solid var(--green);
+                    animation: feedSlide 0.35s cubic-bezier(0.16,1,0.3,1) both;
+                `;
+                feedItem.innerHTML = `
+                    <div style="font-size: 1.5rem; flex-shrink: 0;">${newItem.avatar}</div>
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 2px;">
+                            <span style="font-weight: 700; font-size: 0.85rem;">${newItem.nome}</span>
+                            <span style="font-size: 0.65rem; color: var(--text-muted);">${newItem.grupo}</span>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text); margin-bottom: 4px;">${newItem.msg}</div>
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <span style="font-size: 0.7rem; color: var(--text-muted);">${newItem.time}</span>
+                            <span style="font-size: 1rem;">${newItem.sentimento}</span>
+                        </div>
+                    </div>
+                `;
+                feedContainer.appendChild(feedItem);
+                feedContainer.scrollTop = feedContainer.scrollHeight;
+            }, 8000);
+        }
+
         // ===== WOW EFFECTS =====
+
+        // Add feedSlide animation to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes feedSlide {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; transform: translateY(-20px); }
+            }
+        `;
+        document.head.appendChild(style);
 
         // 1. Animated number counters
         function animateCounters() {
@@ -4554,6 +4860,12 @@ ${JSON.stringify(dados, null, 2)}
                     typewriterEffect(briefing, fullText, 15);
                 }
             }, 800);
+
+            // Populate Radar Feed
+            setTimeout(() => {
+                populateRadarFeed();
+                startRadarFeedUpdates();
+            }, 500);
 
             // Start toast notifications
             startToasts();

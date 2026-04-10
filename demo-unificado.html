@@ -1808,12 +1808,23 @@
 
     <!-- HEADER -->
     <header class="header">
-        <div style="flex: 1;">
-            <span class="header-title" id="headerTitle">📊 Dashboard</span>
-            <div class="phase-bar" id="phaseBar" style="display:none; margin-top: 8px;">
-                <div class="phase-item active">Pré-campanha (ativa)</div>
-                <div class="phase-item">Campanha</div>
-                <div class="phase-item">2º turno</div>
+        <div style="flex: 1; display: flex; align-items: center; gap: 20px;">
+            <div style="flex: 1;">
+                <span class="header-title" id="headerTitle">📊 Dashboard</span>
+                <div class="phase-bar" id="phaseBar" style="display:none; margin-top: 8px;">
+                    <div class="phase-item active">Pré-campanha (ativa)</div>
+                    <div class="phase-item">Campanha</div>
+                    <div class="phase-item">2º turno</div>
+                </div>
+            </div>
+            <!-- Busca Inteligente Global -->
+            <div style="flex: 0 0 280px; position: relative;">
+                <input id="globalSearch" type="text" placeholder="🔍 Buscar dados..."
+                    style="width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: var(--text); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem;"
+                    oninput="performGlobalSearch(this.value)"
+                />
+                <div id="searchResults" style="position: absolute; top: 100%; right: 0; width: 100%; max-height: 300px; overflow-y: auto; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; margin-top: 4px; z-index: 1000; display: none;">
+                </div>
             </div>
         </div>
         <div class="header-actions">
@@ -4600,6 +4611,64 @@ ${JSON.stringify(dados, null, 2)}
             if (helenaConfig.model) {
                 const st = document.getElementById('helenaStatusText');
                 if (st) st.textContent = helenaConfig.model.split('/').pop();
+            }
+        });
+
+        // ===== BUSCA INTELIGENTE GLOBAL =====
+        const searchableData = {
+            'Marina Costa': { type: 'Coordenadora', region: 'Ceilândia', icon: '👩' },
+            'Felipe Ribeiro': { type: 'Coordenador', region: 'Taguatinga', icon: '👨' },
+            'Juliana Mendes': { type: 'Coordenadora', region: 'Samambaia', icon: '👩' },
+            'Roberto Gomes': { type: 'Coordenador', region: 'Gama', icon: '👨' },
+            'Beatriz Silva': { type: 'Coordenadora', region: 'Sobradinho', icon: '👩' },
+            'Lucas Almeida': { type: 'Apoiador', region: 'Plano Piloto', icon: '👨' },
+            'Ceilândia': { type: 'Região (RA)', icon: '🏙️', stats: 'visitada · 487 membros' },
+            'Taguatinga': { type: 'Região (RA)', icon: '🏙️', stats: 'visitada · 356 membros' },
+            'Samambaia': { type: 'Região (RA)', icon: '🏙️', stats: 'atenção · 289 membros' },
+            'Gama': { type: 'Região (RA)', icon: '🏙️', stats: 'visitada · 142 membros' },
+            'Sobradinho': { type: 'Região (RA)', icon: '🏙️', stats: 'visitada · 98 membros' },
+            'Educação': { type: 'Demanda', icon: '🎓', stats: '12 abertas' },
+            'Saúde': { type: 'Demanda', icon: '🏥', stats: '8 abertas' },
+            'Transporte': { type: 'Demanda', icon: '🚗', stats: '15 abertas' },
+            'Segurança': { type: 'Demanda', icon: '🚨', stats: '5 abertas' },
+        };
+
+        function performGlobalSearch(query) {
+            const resultsDiv = document.getElementById('searchResults');
+            if (!query.trim()) {
+                resultsDiv.style.display = 'none';
+                return;
+            }
+
+            const results = Object.entries(searchableData).filter(([key]) =>
+                key.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<div style="padding: 12px; color: var(--text-muted); font-size: 0.85rem;">Nenhum resultado encontrado</div>';
+                resultsDiv.style.display = 'block';
+                return;
+            }
+
+            resultsDiv.innerHTML = results.map(([name, data]) => `
+                <div onclick="alert('Detalhes: ${name} — ${data.type}')" style="padding: 10px 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 10px;"
+                    onmouseover="this.style.background='rgba(0,230,118,0.1)'" onmouseout="this.style.background='transparent'">
+                    <span style="font-size: 1.2rem;">${data.icon}</span>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 0.9rem;">${name}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">${data.type}${data.stats ? ' · ' + data.stats : ''}</div>
+                    </div>
+                </div>
+            `).join('');
+            resultsDiv.style.display = 'block';
+        }
+
+        // Fechar dropdown quando clicar fora
+        document.addEventListener('click', (e) => {
+            const searchInput = document.getElementById('globalSearch');
+            const resultsDiv = document.getElementById('searchResults');
+            if (searchInput && resultsDiv && !searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+                resultsDiv.style.display = 'none';
             }
         });
 

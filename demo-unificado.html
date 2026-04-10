@@ -2435,6 +2435,83 @@
                 </div>
             </div>
 
+            <!-- GRÁFICO DE SENTIMENTO -->
+            <h2 class="section-title">📈 Sentimento da Campanha (7 dias)</h2>
+            <div class="card" style="padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <div style="font-weight: 700; font-size: 1rem;">Tendência de Sentimento</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Análise semanal de menções positivas/negativas</div>
+                    </div>
+                    <span style="font-size: 0.7rem; background: var(--green); color: #000; padding: 4px 12px; border-radius: 20px; font-weight: 700;">↑ +8%</span>
+                </div>
+                <svg viewBox="0 0 700 300" style="width: 100%; height: 280px; margin: 15px 0;">
+                    <!-- Grid background -->
+                    <defs>
+                        <linearGradient id="sentimentGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color: var(--green); stop-opacity: 0.3"/>
+                            <stop offset="100%" style="stop-color: var(--green); stop-opacity: 0"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Y axis labels -->
+                    <text x="30" y="15" style="font-size: 11px; fill: var(--text-muted); font-family: Poppins;">100%</text>
+                    <text x="30" y="155" style="font-size: 11px; fill: var(--text-muted); font-family: Poppins;">50%</text>
+                    <text x="30" y="295" style="font-size: 11px; fill: var(--text-muted); font-family: Poppins;">0%</text>
+
+                    <!-- Grid lines -->
+                    <line x1="45" y1="20" x2="680" y2="20" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                    <line x1="45" y1="150" x2="680" y2="150" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                    <line x1="45" y1="280" x2="680" y2="280" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+                    <!-- Axis -->
+                    <line x1="45" y1="20" x2="45" y2="280" stroke="var(--border)" stroke-width="1"/>
+                    <line x1="45" y1="280" x2="680" y2="280" stroke="var(--border)" stroke-width="1"/>
+
+                    <!-- Area chart -->
+                    <path d="M 55 140 L 125 100 L 195 110 L 265 80 L 335 60 L 405 85 L 475 50 L 545 70 L 615 40 L 680 35 L 680 280 L 55 280 Z" fill="url(#sentimentGradient)"/>
+
+                    <!-- Line chart -->
+                    <polyline points="55,140 125,100 195,110 265,80 335,60 405,85 475,50 545,70 615,40 680,35"
+                        fill="none" stroke="var(--green)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <!-- Data points -->
+                    <circle cx="55" cy="140" r="4" fill="var(--green)" stroke="var(--bg)" stroke-width="2"/>
+                    <circle cx="125" cy="100" r="4" fill="var(--green)" stroke="var(--bg)" stroke-width="2"/>
+                    <circle cx="195" cy="110" r="4" fill="var(--green)" stroke="var(--bg)" stroke-width="2"/>
+                    <circle cx="265" cy="80" r="4" fill="var(--green)" stroke="var(--bg)" stroke-width="2"/>
+                    <circle cx="335" cy="60" r="4" fill="var(--green)" stroke="var(--bg)" stroke-width="2"/>
+                    <circle cx="405" cy="85" r="4" fill="var(--gold)" stroke="var(--bg)" stroke-width="2"/>
+                    <circle cx="475" cy="50" r="4" fill="var(--green)" stroke="var(--bg)" stroke-width="2"/>
+                    <circle cx="545" cy="70" r="4" fill="var(--green)" stroke="var(--bg)" stroke-width="2"/>
+                    <circle cx="615" cy="40" r="4" fill="var(--green)" stroke="var(--bg)" stroke-width="2"/>
+                    <circle cx="680" cy="35" r="4" fill="var(--green)" stroke="var(--bg)" stroke-width="2"/>
+
+                    <!-- X axis labels (dias da semana) -->
+                    <text x="55" y="300" text-anchor="middle" style="font-size: 11px; fill: var(--text-muted); font-family: Poppins;">Seg</text>
+                    <text x="125" y="300" text-anchor="middle" style="font-size: 11px; fill: var(--text-muted); font-family: Poppins;">Ter</text>
+                    <text x="195" y="300" text-anchor="middle" style="font-size: 11px; fill: var(--text-muted); font-family: Poppins;">Qua</text>
+                    <text x="265" y="300" text-anchor="middle" style="font-size: 11px; fill: var(--text-muted); font-family: Poppins;">Qui</text>
+                    <text x="335" y="300" text-anchor="middle" style="font-size: 11px; fill: var(--text-muted); font-family: Poppins;">Sex</text>
+                    <text x="405" y="300" text-anchor="middle" style="font-size: 11px; fill: var(--text-muted); font-family: Poppins;">Sab</text>
+                    <text x="475" y="300" text-anchor="middle" style="font-size: 11px; fill: var(--text-muted); font-family: Poppins;">Dom</text>
+                </svg>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 900; color: var(--green);">84%</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Média Semanal</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 900; color: var(--green);">92%</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Pico (Domingo)</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 900; color: var(--cyan);">↑ +8%</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Crescimento</div>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="section-title">📊 Pulso da Campanha</h2>
             <div class="grid grid-4">
                 <div class="card stat-card">
@@ -2571,7 +2648,64 @@
 
         <!-- DEMANDAS PAGE -->
         <div class="page" id="page-demandas">
-            <h2 class="section-title">📋 Demandas Abertas da Comunidade</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h2 class="section-title" style="margin-bottom:0;">📋 Demandas Abertas da Comunidade</h2>
+                <button class="btn btn-primary" onclick="toggleNovaDemanda()" style="padding:10px 20px;">+ Nova Demanda</button>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-4" style="margin-bottom:20px;" id="demandasStats"></div>
+
+            <!-- Formulário Nova Demanda (oculto) -->
+            <div id="formNovaDemanda" style="display:none; margin-bottom:20px;">
+                <div class="card" style="padding:20px; border:1px solid var(--green);">
+                    <h3 style="color:var(--green); margin-bottom:15px; font-size:1rem;">Nova Demanda</h3>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+                        <div>
+                            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Título</label>
+                            <input type="text" id="demTitulo" placeholder="Ex: Iluminação na rua principal" style="width:100%; padding:10px 12px; background:var(--surface); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:Poppins; font-size:0.85rem;" />
+                        </div>
+                        <div>
+                            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Região (RA)</label>
+                            <select id="demRA" style="width:100%; padding:10px 12px; background:var(--surface); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:Poppins; font-size:0.85rem;">
+                                <option value="">Selecione...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+                        <div>
+                            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Categoria</label>
+                            <select id="demCategoria" style="width:100%; padding:10px 12px; background:var(--surface); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:Poppins; font-size:0.85rem;">
+                                <option value="Infraestrutura">Infraestrutura</option>
+                                <option value="Saúde">Saúde</option>
+                                <option value="Educação">Educação</option>
+                                <option value="Segurança">Segurança</option>
+                                <option value="Transporte">Transporte</option>
+                                <option value="Social">Social</option>
+                                <option value="Meio Ambiente">Meio Ambiente</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Prioridade</label>
+                            <select id="demPrioridade" style="width:100%; padding:10px 12px; background:var(--surface); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:Poppins; font-size:0.85rem;">
+                                <option value="Alta">Alta</option>
+                                <option value="Média">Média</option>
+                                <option value="Baixa">Baixa</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Descrição</label>
+                        <textarea id="demDescricao" rows="2" placeholder="Descreva a demanda..." style="width:100%; padding:10px 12px; background:var(--surface); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:Poppins; font-size:0.85rem; resize:vertical;"></textarea>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn btn-primary" onclick="salvarDemanda()">Salvar Demanda</button>
+                        <button class="btn btn-secondary" onclick="toggleNovaDemanda()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Demandas -->
             <div id="demandasContainer"></div>
         </div>
 
@@ -3945,17 +4079,24 @@
                 container.innerHTML = Object.entries(agrupar).map(([cat, items]) => `
                     <div style="margin-bottom: 20px;">
                         <h3 style="color: var(--gold); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">📌 ${cat}</h3>
-                        ${items.map(d => `
-                            <div class="demand-item">
-                                <div class="demand-header">
+                        ${items.map(d => {
+                            const priColor = d.prioridade === 'Alta' ? 'var(--red)' : d.prioridade === 'Média' ? 'var(--orange)' : 'var(--cyan)';
+                            const priBg = d.prioridade === 'Alta' ? 'rgba(255,82,82,0.15)' : d.prioridade === 'Média' ? 'rgba(255,145,0,0.15)' : 'rgba(0,229,255,0.15)';
+                            return `
+                            <div class="demand-item" style="display:flex; align-items:center; justify-content:space-between;">
+                                <div style="flex:1;">
                                     <div class="demand-title">${d.titulo}</div>
-                                    <span class="badge" style="background: rgba(0,230,118,0.1); color: var(--green);">${d.prioridade}</span>
+                                    <div class="demand-ra">📍 ${d.ra}${d.descricao ? ' · ' + d.descricao : ''}</div>
                                 </div>
-                                <div class="demand-ra">📍 ${d.ra}</div>
-                            </div>
-                        `).join('')}
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span class="badge" style="background:${priBg}; color:${priColor};">${d.prioridade}</span>
+                                    <button onclick="resolverDemanda('${d.titulo}')" style="background:none;border:1px solid var(--green);color:var(--green);border-radius:8px;padding:4px 10px;font-size:0.7rem;cursor:pointer;font-family:Poppins;transition:all 0.2s;" onmouseover="this.style.background='var(--green)';this.style.color='#000'" onmouseout="this.style.background='none';this.style.color='var(--green)'">✓ Resolver</button>
+                                </div>
+                            </div>`;
+                        }).join('')}
                     </div>
                 `).join('');
+                updateDemandasStats();
             },
             renderMateriais() {
                 const container = document.getElementById('materiaisContainer');
@@ -4252,6 +4393,81 @@
 
         function closeCidadeModal() {
             document.getElementById('cidadeModal').classList.remove('active');
+        }
+
+        function toggleNovaDemanda() {
+            const form = document.getElementById('formNovaDemanda');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            if (form.style.display === 'block') {
+                const sel = document.getElementById('demRA');
+                if (sel.options.length <= 1) {
+                    app.rasCidades.forEach(ra => {
+                        const opt = document.createElement('option');
+                        opt.value = ra; opt.textContent = ra;
+                        sel.appendChild(opt);
+                    });
+                }
+                document.getElementById('demTitulo').focus();
+            }
+        }
+
+        function salvarDemanda() {
+            const titulo = document.getElementById('demTitulo').value.trim();
+            const ra = document.getElementById('demRA').value;
+            const cat = document.getElementById('demCategoria').value;
+            const pri = document.getElementById('demPrioridade').value;
+            const desc = document.getElementById('demDescricao').value.trim();
+            if (!titulo || !ra) { alert('Preencha título e região.'); return; }
+            app.demandas.push({ titulo, categoria: cat, ra, prioridade: pri, status: 'Aberta', descricao: desc });
+            app.renderDemandas();
+            updateDemandasStats();
+            document.getElementById('demTitulo').value = '';
+            document.getElementById('demRA').value = '';
+            document.getElementById('demDescricao').value = '';
+            toggleNovaDemanda();
+            if (typeof showToast === 'function') {
+                const container = document.getElementById('toastContainer');
+                const el = document.createElement('div');
+                el.className = 'toast';
+                el.style.borderLeftColor = 'var(--green)';
+                el.style.borderColor = 'var(--green)';
+                el.innerHTML = '<div class="toast-icon">📋</div><div class="toast-body"><div class="toast-title">Demanda registrada</div><div class="toast-msg">' + titulo + ' — ' + ra + '</div></div><div class="toast-time">agora</div>';
+                container.appendChild(el);
+                setTimeout(() => el.remove(), 4500);
+            }
+        }
+
+        function resolverDemanda(titulo) {
+            const idx = app.demandas.findIndex(d => d.titulo === titulo);
+            if (idx >= 0) {
+                app.demandas.splice(idx, 1);
+                app.renderDemandas();
+                const container = document.getElementById('toastContainer');
+                if (container) {
+                    const el = document.createElement('div');
+                    el.className = 'toast';
+                    el.style.borderLeftColor = 'var(--green)';
+                    el.style.borderColor = 'var(--green)';
+                    el.innerHTML = '<div class="toast-icon">✅</div><div class="toast-body"><div class="toast-title">Demanda resolvida</div><div class="toast-msg">' + titulo + '</div></div><div class="toast-time">agora</div>';
+                    container.appendChild(el);
+                    setTimeout(() => el.remove(), 4500);
+                }
+            }
+        }
+
+        function updateDemandasStats() {
+            const stats = document.getElementById('demandasStats');
+            if (!stats) return;
+            const total = app.demandas.length;
+            const altas = app.demandas.filter(d => d.prioridade === 'Alta').length;
+            const abertas = app.demandas.filter(d => d.status === 'Aberta').length;
+            const cats = [...new Set(app.demandas.map(d => d.categoria))].length;
+            stats.innerHTML = `
+                <div class="card stat-card"><div class="stat-label">Total</div><div class="stat-number">${total}</div></div>
+                <div class="card stat-card"><div class="stat-label">Urgentes</div><div class="stat-number" style="color:var(--red);">${altas}</div></div>
+                <div class="card stat-card"><div class="stat-label">Abertas</div><div class="stat-number" style="color:var(--orange);">${abertas}</div></div>
+                <div class="card stat-card"><div class="stat-label">Categorias</div><div class="stat-number" style="color:var(--cyan);">${cats}</div></div>
+            `;
         }
 
         // Close modals when clicking outside

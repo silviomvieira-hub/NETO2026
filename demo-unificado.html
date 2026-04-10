@@ -145,7 +145,7 @@
                 opacity: 1;
             }
             100% {
-                transform: translateY(-100vh) rotate(720deg) scale(0);
+                transform: translateY(100vh) rotate(720deg) scale(0);
                 opacity: 0;
             }
         }
@@ -162,7 +162,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
+            z-index: 99999;
             opacity: 1;
             transition: opacity 0.6s ease;
         }
@@ -225,7 +225,9 @@
         /* Confetti particles */
         .confetti-particle {
             position: fixed;
+            top: -10px;
             pointer-events: none;
+            z-index: 10000;
             animation: confetti 3s ease-out forwards;
         }
 
@@ -594,6 +596,25 @@
         .action-priority.low {
             background: rgba(0, 229, 255, 0.15);
             color: var(--cyan);
+        }
+
+        .action-draft {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease;
+            margin-top: 0;
+            padding: 0 0;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text);
+            border-top: 1px solid transparent;
+        }
+
+        .action-draft.expanded {
+            max-height: 300px;
+            margin-top: 12px;
+            padding: 12px 0 0;
+            border-top-color: var(--border);
         }
 
         /* ===== BUTTONS ===== */
@@ -999,12 +1020,12 @@
                 <span class="nav-icon">📅</span> Agenda
             </div>
 
-            <div class="nav-section">PESSOAS</div>
+            <div class="nav-section">EQUIPE</div>
             <div class="nav-item" onclick="navigateTo('pessoas')">
-                <span class="nav-icon">👥</span> Pessoas
+                <span class="nav-icon">🤝</span> Coordenadores
             </div>
             <div class="nav-item" onclick="navigateTo('lideres')">
-                <span class="nav-icon">🤝</span> Líderes
+                <span class="nav-icon">🗳️</span> Eleitores
             </div>
 
             <div class="nav-section">ESTRATÉGIA</div>
@@ -1045,8 +1066,8 @@
     <main class="main-content" id="mainContent">
         <!-- DASHBOARD PAGE -->
         <div class="page active" id="page-dashboard">
-            <div class="grid grid-3">
-                <div class="card stat-card" onclick="navigateTo('cidades')">
+            <div class="grid grid-4">
+                <div class="card stat-card" onclick="navigateTo('pessoas')">
                     <div class="stat-label">Apoiadores</div>
                     <div class="stat-number">2.847</div>
                 </div>
@@ -1057,6 +1078,10 @@
                 <div class="card stat-card" onclick="navigateTo('demandas')">
                     <div class="stat-label">Ações Hoje</div>
                     <div class="stat-number">12</div>
+                </div>
+                <div class="card stat-card" onclick="navigateTo('lideres')">
+                    <div class="stat-label">Coordenadores Ativos</div>
+                    <div class="stat-number">8</div>
                 </div>
             </div>
 
@@ -1107,7 +1132,7 @@
 
             <h2 class="section-title">⚡ Ações Priorizadas</h2>
 
-            <div class="action-card high">
+            <div class="action-card high" onclick="this.querySelector('.action-draft').classList.toggle('expanded')" style="cursor:pointer;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                     <span class="action-priority high">ALTA</span>
                     <span style="font-size: 0.75rem; color: var(--text-muted);">Até quinta-feira</span>
@@ -1115,9 +1140,18 @@
                 <div class="action-title">Visita estratégica — Ceilândia</div>
                 <p style="font-size: 0.9rem; margin-bottom: 8px;">Consolidar presença em maior RA não visitada. Estimar 500+ contatos, fortalecer base para eleição.</p>
                 <span class="badge badge-danger">Urgente</span>
+                <span style="font-size:0.7rem; color:var(--text-muted); margin-left:8px;">▼ clique para expandir</span>
+                <div class="action-draft">
+                    <strong>Rascunho de ação:</strong><br>
+                    1. Agendar visita com coord. Ceilândia (Marina Costa) para quinta 10h<br>
+                    2. Preparar material: 500 santinhos + 50 bandeiras<br>
+                    3. Gravar vídeo de 60s para Instagram/TikTok durante visita<br>
+                    4. Levantar 3 demandas prioritárias da RA antes da visita<br>
+                    <div style="margin-top:8px;"><span class="badge badge-success">Executar</span> <span class="badge" style="background:var(--surface);border:1px solid var(--border);">Concluído</span> <span class="badge" style="background:var(--surface);border:1px solid var(--border);">Dispensar</span></div>
+                </div>
             </div>
 
-            <div class="action-card medium">
+            <div class="action-card medium" onclick="this.querySelector('.action-draft').classList.toggle('expanded')" style="cursor:pointer;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                     <span class="action-priority medium">MÉDIA</span>
                     <span style="font-size: 0.75rem; color: var(--text-muted);">Até domingo</span>
@@ -1125,9 +1159,17 @@
                 <div class="action-title">Contra-movimento em Samambaia</div>
                 <p style="font-size: 0.9rem; margin-bottom: 8px;">Redução de 18% indica movimento rival. Agenda reunião com coordenador local para avaliar situação.</p>
                 <span class="badge badge-warning">Atenção</span>
+                <span style="font-size:0.7rem; color:var(--text-muted); margin-left:8px;">▼ clique para expandir</span>
+                <div class="action-draft">
+                    <strong>Rascunho de ação:</strong><br>
+                    1. Ligar para Juliana Mendes (coord. Samambaia) — entender causa da queda<br>
+                    2. Agendar caminhada em Samambaia para sábado de manhã<br>
+                    3. Publicar vídeo de compromisso com demandas locais (saúde + transporte)<br>
+                    <div style="margin-top:8px;"><span class="badge badge-success">Executar</span> <span class="badge" style="background:var(--surface);border:1px solid var(--border);">Concluído</span> <span class="badge" style="background:var(--surface);border:1px solid var(--border);">Dispensar</span></div>
+                </div>
             </div>
 
-            <div class="action-card low">
+            <div class="action-card low" onclick="this.querySelector('.action-draft').classList.toggle('expanded')" style="cursor:pointer;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                     <span class="action-priority low">BAIXA</span>
                     <span style="font-size: 0.75rem; color: var(--text-muted);">Próximas 2 semanas</span>
@@ -1135,25 +1177,70 @@
                 <div class="action-title">Ampliar conteúdo educação</div>
                 <p style="font-size: 0.9rem; margin-bottom: 8px;">Engajamento subiu 34% com conteúdo de educação. Expandir produção de vídeos nesta temática.</p>
                 <span class="badge badge-info">Planejamento</span>
+                <span style="font-size:0.7rem; color:var(--text-muted); margin-left:8px;">▼ clique para expandir</span>
+                <div class="action-draft">
+                    <strong>Rascunho de ação:</strong><br>
+                    1. Gravar 3 vídeos curtos sobre propostas para educação no DF<br>
+                    2. Agendar visita a escola em Taguatinga com Felipe Ribeiro<br>
+                    3. Criar carrossel Instagram: "5 propostas para educação no DF"<br>
+                    <div style="margin-top:8px;"><span class="badge badge-success">Executar</span> <span class="badge" style="background:var(--surface);border:1px solid var(--border);">Concluído</span> <span class="badge" style="background:var(--surface);border:1px solid var(--border);">Dispensar</span></div>
+                </div>
             </div>
 
             <h2 class="section-title">📰 Feed de Notícias</h2>
             <div class="card">
-                <div style="padding: 10px 0; border-bottom: 1px solid var(--border);">
-                    <strong>Ceilândia registra 5 mil novos residentes</strong>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">G1 DF - 08 de abril</div>
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong>Ceilândia registra 5 mil novos residentes</strong>
+                        <span class="badge badge-danger" style="font-size:0.65rem;">ALTO IMPACTO</span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">G1 DF - 08 de abril &nbsp; <span style="color:var(--cyan);">#população #ceilândia</span></div>
+                    <div style="font-size: 0.8rem; color: var(--gold); margin-top: 6px;">💡 Helena: usar no post de hoje — reforçar compromisso com Ceilândia antes da visita</div>
                 </div>
-                <div style="padding: 10px 0; border-bottom: 1px solid var(--border);">
-                    <strong>Transporte público entra em pauta nas RAs periféricas</strong>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Correio Braziliense - 07 de abril</div>
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong>Transporte público entra em pauta nas RAs periféricas</strong>
+                        <span class="badge badge-warning" style="font-size:0.65rem;">MÉDIO IMPACTO</span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Correio Braziliense - 07 de abril &nbsp; <span style="color:var(--cyan);">#transporte #periferia</span></div>
+                    <div style="font-size: 0.8rem; color: var(--gold); margin-top: 6px;">💡 Helena: oportunidade de posicionamento — gravar vídeo sobre mobilidade urbana no DF</div>
                 </div>
-                <div style="padding: 10px 0; border-bottom: 1px solid var(--border);">
-                    <strong>Educação em foco: escolas demandam investimento em infraestrutura</strong>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">CEDCA - 06 de abril</div>
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong>Educação em foco: escolas demandam investimento</strong>
+                        <span class="badge badge-danger" style="font-size:0.65rem;">ALTO IMPACTO</span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Metrópoles - 06 de abril &nbsp; <span style="color:var(--cyan);">#educação #infraestrutura</span></div>
+                    <div style="font-size: 0.8rem; color: var(--gold); margin-top: 6px;">💡 Helena: engajamento educação +34% — produzir carrossel com propostas concretas</div>
                 </div>
-                <div style="padding: 10px 0;">
-                    <strong>Saúde pública: UPA de Samambaia registra superlotação</strong>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Saúde DF - 05 de abril</div>
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong>Saúde pública: UPA de Samambaia registra superlotação</strong>
+                        <span class="badge badge-warning" style="font-size:0.65rem;">MÉDIO IMPACTO</span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Agência Brasília - 05 de abril &nbsp; <span style="color:var(--cyan);">#saúde #samambaia</span></div>
+                    <div style="font-size: 0.8rem; color: var(--gold); margin-top: 6px;">💡 Helena: vincular à ação em Samambaia — mostrar que estamos atentos às demandas locais</div>
+                </div>
+                <div style="padding: 12px 0;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong>GDF anuncia obras em vias de acesso ao Sol Nascente</strong>
+                        <span class="badge badge-warning" style="font-size:0.65rem;">MÉDIO IMPACTO</span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Correio Braziliense - 04 de abril &nbsp; <span style="color:var(--cyan);">#infraestrutura #solnascente</span></div>
+                    <div style="font-size: 0.8rem; color: var(--gold); margin-top: 6px;">💡 Helena: acompanhar e cobrar prazos — posicionar como fiscalizador em campo</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">🔮 Camada Invisível</h2>
+            <div class="card" style="border: 1px solid var(--purple); background: rgba(179,136,255,0.05);">
+                <div style="padding: 15px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+                        <span style="color: var(--purple); font-weight: 700; font-size: 0.9rem;">Tendências que só o sistema enxerga</span>
+                        <span style="background: var(--purple); color: #000; padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">Confiança: 0.78</span>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;">Análise cruzada de redes sociais, notícias e dados de campo revela: <strong>candidato rival está investindo pesado em Samambaia nas últimas 72h</strong> (aumento de 340% em menções patrocinadas). Janela de ação: <span style="color:var(--gold);">5 dias</span> antes que o posicionamento se consolide.</p>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Referências: Lakoff (framing), Penn (micro-targeting), Shapiro (timing eleitoral)</div>
+                    <span class="badge badge-success">Gerar plano de ação</span>
                 </div>
             </div>
 
@@ -1190,16 +1277,32 @@
             <div id="agendaContainer"></div>
         </div>
 
-        <!-- PESSOAS PAGE -->
+        <!-- COORDENADORES PAGE -->
         <div class="page" id="page-pessoas">
-            <h2 class="section-title">👥 Equipe da Campanha</h2>
+            <h2 class="section-title">🤝 Coordenadores</h2>
+            <p style="color:var(--text-muted); margin-bottom:20px; font-size:0.85rem;">Quem trabalha na campanha. Cada coordenador tem área de atuação, gerencia grupos de WhatsApp e cadastra eleitores.</p>
             <div class="grid grid-3" id="pessoasGrid"></div>
         </div>
 
-        <!-- LÍDERES PAGE -->
+        <!-- ELEITORES PAGE -->
         <div class="page" id="page-lideres">
-            <h2 class="section-title">🤝 Líderes Comunitários</h2>
-            <div class="grid grid-3" id="lideresGrid"></div>
+            <h2 class="section-title">🗳️ Eleitores Cadastrados</h2>
+            <p style="color:var(--text-muted); margin-bottom:20px; font-size:0.85rem;">Leads captados pelos coordenadores. Todo eleitor está vinculado a um coordenador e participa de um grupo de WhatsApp.</p>
+            <div style="display:flex; gap:15px; margin-bottom:20px;">
+                <div class="card stat-card" style="flex:1; text-align:center;">
+                    <div class="stat-label">Total Eleitores</div>
+                    <div class="stat-number" style="color:var(--green);">2.847</div>
+                </div>
+                <div class="card stat-card" style="flex:1; text-align:center;">
+                    <div class="stat-label">Em Grupos WhatsApp</div>
+                    <div class="stat-number" style="color:var(--cyan);">2.614</div>
+                </div>
+                <div class="card stat-card" style="flex:1; text-align:center;">
+                    <div class="stat-label">Sem Grupo (pendente)</div>
+                    <div class="stat-number" style="color:var(--red);">233</div>
+                </div>
+            </div>
+            <div id="lideresGrid"></div>
         </div>
 
         <!-- DEMANDAS PAGE -->
@@ -1301,14 +1404,14 @@
                 'Fercal', 'Sol Nascente/Pôr do Sol', 'Arniqueira'
             ],
             equipe: [
-                { nome: 'Lucas Almeida', cargo: 'Coordenador Geral', regiao: 'Plano Piloto', letra: 'L' },
-                { nome: 'Marina Costa', cargo: 'Coord. Ceilândia', regiao: 'Ceilândia', letra: 'M' },
-                { nome: 'Felipe Ribeiro', cargo: 'Coord. Taguatinga', regiao: 'Taguatinga', letra: 'F' },
-                { nome: 'Juliana Mendes', cargo: 'Coord. Samambaia', regiao: 'Samambaia', letra: 'J' },
-                { nome: 'André Santos', cargo: 'Social Media', regiao: 'Brasília', letra: 'A' },
-                { nome: 'Camila Oliveira', cargo: 'Jurídico', regiao: 'Brasília', letra: 'C' },
-                { nome: 'Roberto Gomes', cargo: 'Financeiro', regiao: 'Brasília', letra: 'R' },
-                { nome: 'Beatriz Silva', cargo: 'Comunicação', regiao: 'Brasília', letra: 'B' }
+                { nome: 'Lucas Almeida', cargo: 'Coordenador Geral', regiao: 'Plano Piloto', letra: 'L', esfera: 'Gestão geral', grupos: 3, eleitores: 412 },
+                { nome: 'Marina Costa', cargo: 'Coord. Regional', regiao: 'Ceilândia', letra: 'M', esfera: 'Comércio local', grupos: 5, eleitores: 823 },
+                { nome: 'Felipe Ribeiro', cargo: 'Coord. Regional', regiao: 'Taguatinga', letra: 'F', esfera: 'Igrejas evangélicas', grupos: 4, eleitores: 645 },
+                { nome: 'Juliana Mendes', cargo: 'Coord. Regional', regiao: 'Samambaia', letra: 'J', esfera: 'Associações de bairro', grupos: 3, eleitores: 518 },
+                { nome: 'André Santos', cargo: 'Coord. Digital', regiao: 'Brasília', letra: 'A', esfera: 'Redes sociais', grupos: 2, eleitores: 189 },
+                { nome: 'Camila Oliveira', cargo: 'Coord. Jurídico', regiao: 'Brasília', letra: 'C', esfera: 'Advocacia/OAB', grupos: 1, eleitores: 87 },
+                { nome: 'Roberto Gomes', cargo: 'Coord. Regional', regiao: 'Gama', letra: 'R', esfera: 'Vendedores ambulantes', grupos: 2, eleitores: 94 },
+                { nome: 'Beatriz Silva', cargo: 'Coord. Comunicação', regiao: 'Sobradinho', letra: 'B', esfera: 'Professores/educação', grupos: 2, eleitores: 79 }
             ],
             eventos: [
                 { data: '09/04', hora: '10:00', tipo: 'Reunião', local: 'Ceilândia - Assoc. Comercial', desc: 'Reunião com lideranças locais' },
@@ -1318,13 +1421,15 @@
                 { data: '12/04', hora: '09:00', tipo: 'Live', local: 'Instagram', desc: 'Live estratégia campanha' },
                 { data: '13/04', hora: '15:00', tipo: 'Visita', local: 'Samambaia - Centro', desc: 'Ação de aproximação e escuta' }
             ],
-            lideres: [
-                { nome: 'João Silva', ra: 'Ceilândia', alcance: '~800', contato: '📱' },
-                { nome: 'Maria Santos', ra: 'Taguatinga', alcance: '~650', contato: '📱' },
-                { nome: 'Carlos Mendes', ra: 'Samambaia', alcance: '~920', contato: '📱' },
-                { nome: 'Ana Costa', ra: 'Plano Piloto', alcance: '~450', contato: '📱' },
-                { nome: 'Pedro Oliveira', ra: 'Gama', alcance: '~580', contato: '📱' },
-                { nome: 'Fernanda Rocha', ra: 'Brazlândia', alcance: '~320', contato: '📱' }
+            eleitores: [
+                { nome: 'José Carlos Pereira', ra: 'Ceilândia', coordenador: 'Marina Costa', grupo: 'Neto Ceilândia Norte', status: 'Ativo' },
+                { nome: 'Sandra Lopes', ra: 'Ceilândia', coordenador: 'Marina Costa', grupo: 'Neto Ceilândia Sul', status: 'Ativo' },
+                { nome: 'Marcos Vieira', ra: 'Taguatinga', coordenador: 'Felipe Ribeiro', grupo: 'Neto Taguatinga Centro', status: 'Ativo' },
+                { nome: 'Patrícia Alves', ra: 'Samambaia', coordenador: 'Juliana Mendes', grupo: 'Neto Samambaia', status: 'Ativo' },
+                { nome: 'Ricardo Souza', ra: 'Gama', coordenador: 'Roberto Gomes', grupo: 'Neto Gama', status: 'Pendente' },
+                { nome: 'Luciana Ferreira', ra: 'Plano Piloto', coordenador: 'Lucas Almeida', grupo: 'Neto Plano Piloto', status: 'Ativo' },
+                { nome: 'Edson Lima', ra: 'Taguatinga', coordenador: 'Felipe Ribeiro', grupo: 'Neto Taguatinga Norte', status: 'Ativo' },
+                { nome: 'Cláudia Martins', ra: 'Sobradinho', coordenador: 'Beatriz Silva', grupo: 'Neto Sobradinho', status: 'Pendente' }
             ],
             demandas: [
                 { titulo: 'Recapeamento de rua', categoria: 'Infraestrutura', ra: 'Ceilândia', prioridade: 'Alta', status: 'Aberta' },
@@ -1361,7 +1466,7 @@
                 { nome: 'Mil Apoiadores', emoji: '🥇', locked: false },
                 { nome: 'Visitante DF', emoji: '🗺️', locked: true },
                 { nome: 'Super Missionário', emoji: '⚡', locked: false },
-                { nome: 'Líder Campeão', emoji: '👑', locked: true },
+                { nome: 'Coordenador Top', emoji: '👑', locked: true },
                 { nome: 'Mil Horas', emoji: '⏱️', locked: true },
                 { nome: 'Vitória', emoji: '🎊', locked: true },
                 { nome: 'Lenda', emoji: '🌟', locked: true }
@@ -1407,8 +1512,8 @@
                     inteligencia: '🧠 Inteligência',
                     cidades: '🏙️ Cidades',
                     agenda: '📅 Agenda',
-                    pessoas: '👥 Pessoas',
-                    lideres: '🤝 Líderes',
+                    pessoas: '🤝 Coordenadores',
+                    lideres: '🗳️ Eleitores',
                     demandas: '📋 Demandas',
                     pesquisas: '📈 Pesquisas',
                     materiais: '📦 Materiais',
@@ -1448,19 +1553,31 @@
                         <div class="person-name">${p.nome}</div>
                         <div class="person-role">${p.cargo}</div>
                         <div class="person-region">${p.regiao}</div>
+                        <div style="font-size: 0.75rem; color: var(--purple); margin-top: 6px;">📌 ${p.esfera}</div>
+                        <div style="display:flex; gap:10px; margin-top: 8px; font-size: 0.75rem;">
+                            <span style="color:var(--cyan);">💬 ${p.grupos} grupos</span>
+                            <span style="color:var(--gold);">🗳️ ${p.eleitores} eleitores</span>
+                        </div>
                     </div>
                 `).join('');
             },
             renderLideres() {
                 const grid = document.getElementById('lideresGrid');
-                grid.innerHTML = this.lideres.map(l => `
-                    <div class="card person-card">
-                        <div class="person-avatar">🗣️</div>
-                        <div class="person-name">${l.nome}</div>
-                        <div class="person-role">${l.ra}</div>
-                        <div style="font-size: 0.8rem; color: var(--green); margin-top: 8px;">Alcance: ${l.alcance}</div>
+                grid.innerHTML = this.eleitores.map(e => {
+                    const statusColor = e.status === 'Ativo' ? 'var(--green)' : 'var(--orange)';
+                    const statusBadge = e.status === 'Ativo' ? 'badge-success' : 'badge-warning';
+                    return `
+                    <div class="card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:15px;">
+                        <div class="person-avatar" style="background:var(--surface); border:2px solid ${statusColor}; width:40px; height:40px; font-size:0.9rem; flex-shrink:0;">${e.nome.charAt(0)}</div>
+                        <div style="flex:1;">
+                            <div style="font-weight:600;">${e.nome}</div>
+                            <div style="font-size:0.8rem; color:var(--text-muted);">📍 ${e.ra} &nbsp;|&nbsp; 👤 Coord: ${e.coordenador}</div>
+                            <div style="font-size:0.75rem; color:var(--cyan); margin-top:2px;">💬 Grupo: ${e.grupo}</div>
+                        </div>
+                        <span class="badge ${statusBadge}" style="font-size:0.7rem;">${e.status}</span>
                     </div>
-                `).join('');
+                    `;
+                }).join('');
             },
             renderDemandas() {
                 const container = document.getElementById('demandasContainer');
@@ -1546,18 +1663,20 @@
         }
 
         function createConfetti() {
-            const colors = ['var(--green)', 'var(--gold)', 'var(--purple)', 'var(--cyan)', 'var(--red)'];
-            for (let i = 0; i < 30; i++) {
+            const colors = ['#00e676', '#ffd600', '#b388ff', '#00e5ff', '#ff5252', '#ff9100'];
+            for (let i = 0; i < 50; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'confetti-particle';
                 particle.style.left = Math.random() * 100 + '%';
-                particle.style.delay = Math.random() * 0.5 + 's';
+                particle.style.animationDelay = Math.random() * 1.5 + 's';
+                particle.style.animationDuration = (Math.random() * 2 + 2) + 's';
                 particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.width = (Math.random() * 8 + 4) + 'px';
-                particle.style.height = particle.style.width;
-                particle.style.borderRadius = '50%';
+                const size = (Math.random() * 8 + 4) + 'px';
+                particle.style.width = size;
+                particle.style.height = size;
+                particle.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
                 document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 3500);
+                setTimeout(() => particle.remove(), 5000);
             }
         }
 

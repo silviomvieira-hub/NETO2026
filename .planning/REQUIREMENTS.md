@@ -22,8 +22,8 @@ Requirements for initial release (Campanha Neto Rodrigues 2026).
 - [ ] **AUTH-01**: Usuario pode fazer login com username e senha
 - [ ] **AUTH-02**: Sessao persiste entre recargas do navegador
 - [ ] **AUTH-03**: Admin tem acesso total a todos os modulos e dados de todas as regioes
-- [ ] **AUTH-04**: Coordenador ve apenas dados da(s) sua(s) regiao(oes) e seus cabos eleitorais
-- [ ] **AUTH-05**: Cabo eleitoral tem tela simplificada para acoes de campo (cadastrar apoiador, subir foto, ver missoes)
+- [ ] **AUTH-04**: Colaborador (= coordenador de area) ve apenas dados da sua area de influencia e dos eleitores vinculados a ele
+- [ ] **AUTH-05**: Tela simplificada para colaborador focada em acoes de campo (cadastrar eleitor, gerenciar grupo WA, subir foto, ver missoes, ranking)
 - [ ] **AUTH-06**: Pagina de troca de senha acessivel ao usuario logado
 - [ ] **AUTH-07**: Redirect automatico para login quando sessao expira
 - [ ] **AUTH-08**: Row Level Security (RLS) no Supabase isola dados por nivel de acesso
@@ -54,29 +54,35 @@ Requirements for initial release (Campanha Neto Rodrigues 2026).
 - [ ] **AGEN-05**: Estatisticas: eventos hoje, esta semana, total
 - [ ] **AGEN-06**: Alertas do calendario eleitoral TSE com prazos legais
 
-### Pessoas & Equipe
+### Colaboradores (Coordenadores) & Organograma
 
-- [ ] **PESS-01**: Cadastrar membro da equipe com nome, telefone, funcao, regiao e observacoes
-- [ ] **PESS-02**: Funcoes disponiveis: coordenador, apoiador, voluntario, lideranca, assessor, digital, motorista
-- [ ] **PESS-03**: Buscar pessoa por nome ou regiao
-- [ ] **PESS-04**: Estatisticas por funcao (total, coordenadores, voluntarios, liderancas)
-- [ ] **PESS-05**: Excluir membro da equipe
-- [ ] **PESS-06**: Link direto para WhatsApp do membro (wa.me)
+> Modelo: o sistema tem apenas DUAS classes de pessoas. **Colaborador** (=coordenador de uma area, trabalha, ganha pontos, gamificado) e **Eleitor** (=lead vinculado a 1 colaborador, so vota). Toda pessoa da campanha so existe se tiver uma area de influencia para coordenar.
 
-### Lideres Comunitarios
+- [ ] **PESS-01**: Cadastrar colaborador com nome, telefone, area de influencia (obrigatoria), funcao especifica e observacoes
+- [ ] **PESS-02**: Toda area de influencia e ou (a) Geografica = 1 das 33 RAs do DF, ou (b) Horizontal = setor tematico (concessionarias, juventude, mulheres, igrejas, comercio, servidores, educacao, saude, seguranca, cultura, esporte, LGBTQIA+, cooperativas, terceira idade, etc)
+- [ ] **PESS-03**: Funcao individual (cargo) registrada no perfil de cada colaborador (campo, formacao, logistica, juridico, digital, motorista, etc) — visivel ao candidato
+- [ ] **PESS-04**: Validacao: nao e possivel cadastrar colaborador sem area de influencia atribuida
+- [ ] **PESS-05**: Buscar colaborador por nome, area ou funcao
+- [ ] **PESS-06**: Estatisticas: total de colaboradores, areas atribuidas vs vagas em aberto, colaboradores por tipo de area (geo/horizontal)
+- [ ] **PESS-07**: Link direto WhatsApp (wa.me) do colaborador
+- [ ] **PESS-08**: Organograma visual da campanha listando todas as 33 RAs + areas horizontais com slot para coordenador (preenchido ou vago) — entrada de cadastro principal
+- [ ] **PESS-09**: Toda area pode ter 1 coordenador titular + N sublideres
+- [ ] **PESS-10**: Reatribuir area de um colaborador (transferir ou desligar)
 
-- [ ] **LIDE-01**: Cadastrar lider com nome, telefone, regiao, tipo, alcance e observacoes
-- [ ] **LIDE-02**: Tipos de lideranca: comunitaria, religiosa, sindical, estudantil, empresarial, politica, digital, social
-- [ ] **LIDE-03**: Estimar alcance (numero de pessoas que o lider influencia)
-- [ ] **LIDE-04**: Buscar lideres por nome ou regiao
-- [ ] **LIDE-05**: Estatisticas: total de lideres, alcance total, distribuicao por tipo
+### Coordenador Geral (Funcao Unica)
 
-### Mapeamento Politico (Quem e Quem)
+> Modelo: existe **1 unico Coordenador Geral** na campanha — funcao centralizadora e nao competitiva (fora do ranking gamificado). E quem valida iniciativas criativas, cria missoes/metas/tarefas e distribui materiais. Todos os outros colaboradores sao coordenadores de area normais e disputam o ranking.
 
-- [ ] **MAPA-01**: Cadastrar figura politica com nome, cargo, relacao, regiao e observacoes
-- [ ] **MAPA-02**: Classificar relacao: aliado, neutro, adversario, potencial aliado
-- [ ] **MAPA-03**: Buscar por nome ou cargo
-- [ ] **MAPA-04**: Visualizacao com cores por tipo de relacao
+- [ ] **CGER-01**: Funcao "Coordenador Geral" exclusiva e unica no sistema (1 por campanha)
+- [ ] **CGER-02**: Coord. Geral nao aparece no ranking competitivo
+- [ ] **CGER-03**: Coord. Geral tem permissao de aprovar/rejeitar comprovacoes criativas enviadas pelos colaboradores
+- [ ] **CGER-04**: Coord. Geral pode ajustar XP sugerido ao aprovar comprovacao
+- [ ] **CGER-05**: Coord. Geral pode transformar uma comprovacao criativa aprovada em missao oficial recorrente da campanha
+- [ ] **CGER-06**: Coord. Geral cadastra missoes do dia, metas semanais e tarefas distribuidas aos coordenadores de area
+- [ ] **CGER-07**: Coord. Geral controla distribuicao de materiais de campanha aos coordenadores de area
+- [ ] **CGER-08**: Dashboard exclusivo do Coord. Geral com fila de comprovacoes pendentes, alertas de inatividade e cobranca
+
+> NOTA: removida a antiga secao "Lideres Comunitarios" (LIDE-XX). O sistema nao usa mais o conceito de "lider" — pessoas externas com influencia comunitaria sao registradas como Eleitores influentes vinculados a um colaborador, ou se trabalham ativamente, viram Colaboradores de area horizontal.
 
 ### Demandas da Comunidade
 
@@ -90,9 +96,13 @@ Requirements for initial release (Campanha Neto Rodrigues 2026).
 ### Pesquisas Eleitorais
 
 - [ ] **PESQ-01**: Registrar pesquisa com data, instituto, % do candidato, 1o colocado, amostra e margem
-- [ ] **PESQ-02**: Grafico comparativo visual (barras) Neto vs 1o colocado
+- [ ] **PESQ-02**: Grafico comparativo visual (barras) Neto vs concorrentes
 - [ ] **PESQ-03**: Tabela historica de todas as pesquisas
-- [ ] **PESQ-04**: Estatisticas: ultima %, 1o colocado, total de pesquisas
+- [ ] **PESQ-04**: Estatisticas: ultima %, 1o colocado, total de pesquisas, delta vs lider, evolucao em 30/60/90d
+- [ ] **PESQ-05**: Auto-busca automatica de novas pesquisas (Datafolha, Quaest, IPEC e similares) via crawl/scraping com cadastro automatico no sistema
+- [ ] **PESQ-06**: Notificacao no dashboard quando nova pesquisa relevante for detectada
+- [ ] **PESQ-07**: Distincao entre pesquisas estimuladas, espontaneas e de aprovacao pessoal
+- [ ] **PESQ-08**: Helena cruza pesquisa com dados internos (RAs onde estamos crescendo vs pesquisa) para gerar insight
 
 ### Materiais de Campanha
 
@@ -101,28 +111,40 @@ Requirements for initial release (Campanha Neto Rodrigues 2026).
 - [ ] **MATE-03**: Estatisticas: total de itens, em estoque, distribuidos
 - [ ] **MATE-04**: Log de distribuicao por regiao
 
-### Gamificacao
+### Gamificacao (Automatica + Criativa)
 
-- [ ] **GAME-01**: Sistema de XP com 10 niveis (Novato ate Imbativel) e icones por nivel
-- [ ] **GAME-02**: Ranking de colaboradores ordenado por XP com medalhas (ouro, prata, bronze)
-- [ ] **GAME-03**: Missoes do dia com titulo, descricao, categoria, prazo, XP e responsaveis
-- [ ] **GAME-04**: Bonus de XP para o primeiro a concluir a missao
-- [ ] **GAME-05**: Sistema de streaks (sequencia de dias ativos) com bonus em 3, 7 e 15 dias
-- [ ] **GAME-06**: 12 trofeus desbloqueáveis por conquistas especificas
-- [ ] **GAME-07**: Registrar XP manual por 14 tipos de acoes diferentes
-- [ ] **GAME-08**: Upload de foto/print como comprovacao de atividade para ganhar XP
-- [ ] **GAME-09**: Feed de ultimas jogadas (historico de XP ganho)
-- [ ] **GAME-10**: Tabela de pontuacao visivel (como ganhar XP por categoria)
+> Filosofia: maximizar XP **automatico** (o sistema observa e pontua sozinho) e reservar a validacao manual do Coord. Geral so para iniciativas criativas nao previstas. Niveis renomeados sem o termo "lider": Coord. Iniciante → Coord. Ativo → Coord. Senior → Coord. Master.
 
-### Captacao de Leads (QR Code)
+- [ ] **GAME-01**: Sistema de XP com niveis Coord. Iniciante / Ativo / Senior / Master (sem termo "lider")
+- [ ] **GAME-02**: Ranking de colaboradores ordenado por XP com medalhas (ouro, prata, bronze) — visivel a todos para criar competicao saudavel
+- [ ] **GAME-03**: Ranking persistente (mini-widget) visivel em todas as telas do sistema dos coordenadores
+- [ ] **GAME-04**: Highlight do "Campeao Coordenador" (top 1) com nome em destaque no dashboard
+- [ ] **GAME-05**: Card de coordenador clicavel abrindo perfil completo (eleitores cadastrados, grupos, XP, posts captados, ultima atividade)
+- [ ] **GAME-06**: XP automatico — eventos pontuados sem intervencao humana: cadastrar eleitor (+10), eleitor confirmado em grupo WA (+5), post pro-candidato detectado pelo bot (+3), check-in em campo (+2), missao concluida (+XP da missao), streak diario (+bonus), responder demanda (+5), participar de evento agendado (+10)
+- [ ] **GAME-07**: Sistema de streaks (sequencia de dias ativos) com bonus em 3, 7 e 15 dias — automatico
+- [ ] **GAME-08**: Comprovacoes criativas — colaborador envia 1+ fotos + descricao de iniciativa nao prevista (churrasco com apoiadores, bicicletada, adesivaco, cafe com referencias, etc)
+- [ ] **GAME-09**: Comprovacao criativa entra em fila de validacao do Coord. Geral
+- [ ] **GAME-10**: Coord. Geral aprova/rejeita comprovacao com XP ajustavel (sistema sugere valor base)
+- [ ] **GAME-11**: Coord. Geral pode promover uma comprovacao aprovada a "missao oficial recorrente" (ex: bicicletada virou missao semanal RA V)
+- [ ] **GAME-12**: Trofeus desbloqueaveis por conquistas especificas (10 por demo, expansivel)
+- [ ] **GAME-13**: Feed de ultimas jogadas (historico de XP ganho com origem: auto vs validacao)
+- [ ] **GAME-14**: Tabela de pontuacao visivel (como ganhar XP por categoria)
 
-- [ ] **LEAD-01**: Gerar QR Code unico por cabo eleitoral que linka para formulario de apoiador
-- [ ] **LEAD-02**: Formulario publico (sem login) para apoiador preencher: nome, telefone, regiao, como conheceu
-- [ ] **LEAD-03**: Apoiador cadastrado via QR Code gera XP automatico para o cabo eleitoral dono do QR
-- [ ] **LEAD-04**: Base de leads centralizada com todos apoiadores captados
-- [ ] **LEAD-05**: Rastreamento de origem de cada lead (qual cabo eleitoral, qual QR, qual evento)
-- [ ] **LEAD-06**: Consentimento LGPD explicito no formulario de cadastro
-- [ ] **LEAD-07**: Export de leads para WhatsApp (lista de telefones formatada)
+### Eleitores / Leads (QR Code + Vinculo Obrigatorio)
+
+> Modelo: **Eleitor** = a segunda (e unica outra) classe de pessoa do sistema. So vota, nao trabalha. **Todo eleitor obrigatoriamente esta vinculado a 1 colaborador** (quem cadastrou ou quem foi atribuido), que ganha pontos por ele e e responsavel por mante-lo em pelo menos 1 grupo de WhatsApp.
+
+- [ ] **LEAD-01**: Gerar QR Code unico por colaborador que linka para formulario de cadastro de eleitor
+- [ ] **LEAD-02**: Formulario publico (sem login) para eleitor preencher: nome, telefone, RA, como conheceu, opt-in WhatsApp
+- [ ] **LEAD-03**: Eleitor cadastrado via QR Code gera XP automatico para o colaborador dono do QR
+- [ ] **LEAD-04**: Base de eleitores centralizada com vinculo obrigatorio a 1 colaborador
+- [ ] **LEAD-05**: Rastreamento de origem (colaborador, QR, evento, data)
+- [ ] **LEAD-06**: Consentimento LGPD explicito + aviso de monitoramento de grupos de WhatsApp
+- [ ] **LEAD-07**: Validacao: ao cadastrar eleitor, atribuir obrigatoriamente a 1 colaborador (default = quem cadastrou)
+- [ ] **LEAD-08**: Validacao secundaria: ao criar eleitor, sugerir grupo(s) de WhatsApp da area do colaborador para insercao imediata
+- [ ] **LEAD-09**: Reatribuir eleitor para outro colaborador (transferencia de carteira)
+- [ ] **LEAD-10**: Dashboard por colaborador: quantos eleitores cadastrou, quantos estao em grupo, taxa de cobertura
+- [ ] **LEAD-11**: Export de eleitores para WhatsApp (lista de telefones formatada)
 
 ### Relatorios
 
@@ -146,6 +168,31 @@ Requirements for initial release (Campanha Neto Rodrigues 2026).
 - [ ] **CAMP-03**: Checklist de pre-campanha e campanha (itens obrigatorios por fase eleitoral)
 - [ ] **CAMP-04**: Subcoordenacoes por segmento (juventude, mulheres, religioso, empresarial)
 - [ ] **CAMP-05**: Bandeiracos/eventos externos com local, data e controle de conflito
+
+### Grupos de WhatsApp & Numero Monitor
+
+- [ ] **WPP-01**: Aba dedicada de Grupos de WhatsApp no menu principal do sistema
+- [ ] **WPP-02**: Cadastrar grupo com nome, tipo (geografica/horizontal), area vinculada (RA ou setor), admin (colaborador responsavel), link de convite e descricao
+- [ ] **WPP-03**: Toda area do organograma (33 RAs + areas horizontais) pode ter 1 ou mais grupos vinculados
+- [ ] **WPP-04**: Regra de compliance: todo eleitor deve estar em pelo menos 1 grupo de WhatsApp
+- [ ] **WPP-05**: Regra de compliance: todo colaborador deve cuidar de no minimo 1 grupo de WhatsApp (admin)
+- [ ] **WPP-06**: Dashboard de compliance: % de eleitores em grupo, % de colaboradores com grupo, lista de quem esta fora da regra
+- [ ] **WPP-07**: Distribuicao automatica sugerida: eleitores fora de grupo agrupados pela RA e atribuidos ao colaborador da regiao
+- [ ] **WPP-08**: Numero monitor proprio da campanha (Helena Bot) adicionado a todos os grupos
+- [ ] **WPP-09**: Numero monitor captura todas as mensagens dos grupos e armazena com timestamp, autor, grupo e conteudo
+- [ ] **WPP-10**: Classificacao automatica de cada post: PRO-candidato, NEUTRO, ATAQUE (analise de sentimento + keywords)
+- [ ] **WPP-11**: Cada post PRO-candidato gera XP automatico para o colaborador que postou (gamificacao)
+- [ ] **WPP-12**: Deteccao de ataques/fake news com alerta em tempo real para a coordenacao + sugestao de resposta da Helena
+- [ ] **WPP-13**: Metricas por grupo: membros, mensagens/dia, crescimento semanal, ultimo admin ativo, sentimento medio
+- [ ] **WPP-14**: Status do grupo: ATIVO, INATIVO (>72h sem mensagem), OFICIAL (broadcast da campanha)
+- [ ] **WPP-15**: Alerta automatico quando grupo fica inativo >72h com cobranca ao admin responsavel
+- [ ] **WPP-16**: Botao de reatribuicao de admin quando colaborador some
+- [ ] **WPP-17**: Feed em tempo real das ultimas N capturas (autor, grupo, sentimento, snippet)
+- [ ] **WPP-18**: Relatorio de engajamento por grupo com top postadores e melhores horarios
+- [ ] **WPP-19**: Mensagem broadcast programada da coordenacao para 1 ou mais grupos
+- [ ] **WPP-20**: Link wa.me direto do contato individual de cada colaborador e eleitor
+- [ ] **WPP-21**: Conformidade LGPD: aviso explicito de monitoramento ao entrar no grupo, opt-out garantido
+- [ ] **WPP-22**: Implementacao do bot via WhatsApp Business API (Meta Cloud API) ou solucao equivalente (whatsapp-web.js como fallback)
 
 ### Compliance & Dados
 
@@ -201,7 +248,6 @@ Explicitly excluded. Documented to prevent scope creep.
 | Feature | Reason |
 |---------|--------|
 | App nativo (Play Store / App Store) | PWA atende, sem custo de publicacao, atualiza instantaneo |
-| API WhatsApp Business | Custo alto, complexidade, links wa.me sao suficientes |
 | Pagamento integrado | Venda unica manual, sem PCI-DSS |
 | AI Chatbot | Complexidade alta, foco no operacional |
 | Live streaming | Usar Instagram/YouTube existentes |

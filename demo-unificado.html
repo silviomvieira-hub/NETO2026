@@ -188,6 +188,15 @@
             animation: glow 3s ease-in-out infinite;
         }
 
+        .splash-name {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--green);
+            margin-bottom: 15px;
+            animation: glow 2s ease-in-out infinite;
+            letter-spacing: 2px;
+        }
+
         .splash-title {
             font-size: 3.5rem;
             font-weight: 900;
@@ -200,7 +209,20 @@
         .splash-subtitle {
             font-size: 1.2rem;
             color: var(--text);
-            margin-bottom: 40px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .splash-tag {
+            display: inline-block;
+            background: rgba(0, 229, 255, 0.2);
+            color: var(--cyan);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
 
@@ -386,9 +408,167 @@
         }
 
         .countdown {
-            font-size: 0.85rem;
+            font-size: 1.2rem;
             color: var(--gold);
+            font-weight: 700;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .phase-bar {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .phase-item {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .phase-item.active {
+            background: rgba(0, 230, 118, 0.15);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .mini-ranking {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px 15px;
+            margin-top: 15px;
+            font-size: 0.75rem;
+        }
+
+        .mini-ranking-title {
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mini-rank-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            color: var(--text-muted);
+        }
+
+        .mini-rank-name {
+            color: var(--text);
+        }
+
+        .mini-rank-xp {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .birthday-card {
+            background: rgba(255, 214, 0, 0.08);
+            border: 1px solid rgba(255, 214, 0, 0.2);
+            border-radius: var(--radius);
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .birthday-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--orange));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .birthday-info {
+            flex: 1;
+        }
+
+        .birthday-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .birthday-details {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .birthday-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .birthday-btn {
+            padding: 4px 10px;
+            background: var(--gold);
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .birthday-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 214, 0, 0.3);
+        }
+
+        .alert-item {
+            padding: 12px;
+            border-radius: 10px;
+            border-left: 4px solid var(--red);
+            background: rgba(255, 82, 82, 0.08);
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .alert-item.operational {
+            border-left-color: var(--orange);
+            background: rgba(255, 145, 0, 0.08);
+        }
+
+        .alert-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .alert-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -984,6 +1164,139 @@
             font-weight: 600;
             color: var(--text-muted);
         }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 5000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--green);
+        }
+
+        .coord-level {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--green);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-box-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--green);
+            margin-bottom: 4px;
+        }
+
+        .stat-box-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .coord-list {
+            margin: 12px 0;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .coord-list:last-child {
+            border-bottom: none;
+        }
+
+        .coord-list-title {
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .coord-list-item {
+            font-size: 0.85rem;
+            color: var(--text);
+            padding: 4px 0;
+        }
+
+        .coord-modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .coord-modal-actions .btn {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -991,8 +1304,10 @@
     <div class="splash" id="splash">
         <div class="splash-content">
             <img src="neto-avatar.webp" alt="Neto Rodrigues" class="splash-avatar">
-            <h1 class="splash-title">VAMOS TRABALHAR?</h1>
-            <p class="splash-subtitle">Neto Rodrigues — Deputado Distrital 2026</p>
+            <h1 class="splash-name">NETO RODRIGUES</h1>
+            <h2 class="splash-title">VAMOS TRABALHAR?</h2>
+            <p class="splash-subtitle">Deputado Distrital 2026</p>
+            <span class="splash-tag">Pré-Campanha 2026</span>
             <button class="splash-button" onclick="enterSystem()">ENTRAR NO SISTEMA</button>
         </div>
     </div>
@@ -1037,6 +1352,15 @@
             </div>
 
             <div class="nav-section">OPERAÇÕES</div>
+            <div class="nav-item" onclick="navigateTo('midiakit')">
+                <span class="nav-icon">🎨</span> Mídia Kit
+            </div>
+            <div class="nav-item" onclick="navigateTo('grupos')">
+                <span class="nav-icon">💬</span> Grupos WA
+            </div>
+            <div class="nav-item" onclick="navigateTo('financeiro')">
+                <span class="nav-icon">💰</span> Financeiro
+            </div>
             <div class="nav-item" onclick="navigateTo('materiais')">
                 <span class="nav-icon">📦</span> Materiais
             </div>
@@ -1052,15 +1376,36 @@
 
     <!-- HEADER -->
     <header class="header">
-        <span class="header-title" id="headerTitle">📊 Dashboard</span>
+        <div style="flex: 1;">
+            <span class="header-title" id="headerTitle">📊 Dashboard</span>
+            <div class="phase-bar" id="phaseBar" style="display:none; margin-top: 8px;">
+                <div class="phase-item active">Pré-campanha (ativa)</div>
+                <div class="phase-item">Campanha</div>
+                <div class="phase-item">2º turno</div>
+            </div>
+        </div>
         <div class="header-actions">
             <div class="status-indicator">
                 <span class="status-dot"></span>
                 <span>ao vivo</span>
             </div>
-            <div class="countdown" id="countdownDisplay">---</div>
+            <div style="text-align: right;">
+                <div class="countdown" id="countdownDisplay">---</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">até 04/10/2026 · Eleição 2026</div>
+            </div>
         </div>
     </header>
+
+    <!-- COORDINATOR MODAL -->
+    <div class="modal" id="coordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="coordModalName">---</h2>
+                <button class="modal-close" onclick="closeCoordModal()">✕</button>
+            </div>
+            <div id="coordModalBody"></div>
+        </div>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="main-content" id="mainContent">
@@ -1085,15 +1430,89 @@
                 </div>
             </div>
 
+            <h2 class="section-title">🎂 Aniversariantes do Dia</h2>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 20px;">
+                <div class="birthday-card">
+                    <div class="birthday-avatar">🎉</div>
+                    <div class="birthday-info">
+                        <div class="birthday-name">Marina Costa</div>
+                        <div class="birthday-details">35 anos · Coord. Ceilândia</div>
+                    </div>
+                    <div class="birthday-actions">
+                        <button class="birthday-btn" onclick="alert('Ligando para Marina...')">📞 Ligar</button>
+                        <button class="birthday-btn" onclick="alert('Abrindo WhatsApp...')">💚 WA</button>
+                    </div>
+                </div>
+                <div class="birthday-card">
+                    <div class="birthday-avatar">🎂</div>
+                    <div class="birthday-info">
+                        <div class="birthday-name">Roberto Gomes</div>
+                        <div class="birthday-details">48 anos · Coord. Gama</div>
+                    </div>
+                    <div class="birthday-actions">
+                        <button class="birthday-btn" onclick="alert('Ligando para Roberto...')">📞 Ligar</button>
+                        <button class="birthday-btn" onclick="alert('Abrindo WhatsApp...')">💚 WA</button>
+                    </div>
+                </div>
+                <div class="birthday-card">
+                    <div class="birthday-avatar">🎈</div>
+                    <div class="birthday-info">
+                        <div class="birthday-name">Fernanda Silva</div>
+                        <div class="birthday-details">29 anos · Apoiadora | Taguatinga</div>
+                    </div>
+                    <div class="birthday-actions">
+                        <button class="birthday-btn" onclick="alert('Ligando para Fernanda...')">📞 Ligar</button>
+                        <button class="birthday-btn" onclick="alert('Abrindo WhatsApp...')">💚 WA</button>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">⚠️ Alertas Ativos</h2>
+            <div style="margin-bottom: 20px;">
+                <div class="alert-item">
+                    <div class="alert-icon">🔴</div>
+                    <div class="alert-content">
+                        <div class="alert-title">CRÍTICO: Redução em Samambaia</div>
+                        <div class="alert-desc">-18% em apoio nas últimas 72h. Rival investe pesado. Ação recomendada: visita urgente com Juliana Mendes.</div>
+                    </div>
+                </div>
+                <div class="alert-item operational">
+                    <div class="alert-icon">🟠</div>
+                    <div class="alert-content">
+                        <div class="alert-title">Falta de Material em Campo</div>
+                        <div class="alert-desc">Santinhos em falta em 3 RAs. 8.400 distribuídos de 15.000. Reposição urgente.</div>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="section-title">📅 Tarefas do Dia</h2>
             <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 20px;">
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">🎯 Candidato (Neto)</div>
                 <div class="task-item">
                     <div class="task-checkbox checked"></div>
                     <div class="task-content">
-                        <div class="task-title">Visitar Ceilândia</div>
+                        <div class="task-title">Visitar Ceilândia <span style="background: var(--green); color: #000; padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; margin-left: 6px;">AGORA</span></div>
                         <div class="task-desc">Reunião com liderança local às 10h</div>
                     </div>
                 </div>
+
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin: 12px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; padding-top: 8px; border-top: 1px solid var(--border);">📋 Coordenação Central</div>
+                <div class="task-item">
+                    <div class="task-checkbox"></div>
+                    <div class="task-content">
+                        <div class="task-title">Revisar demandas abertas</div>
+                        <div class="task-desc">Priorizar ações da semana</div>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-checkbox"></div>
+                    <div class="task-content">
+                        <div class="task-title">Reunião com coordenadores regionais</div>
+                        <div class="task-desc">Briefing sobre estratégia em Samambaia</div>
+                    </div>
+                </div>
+
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin: 12px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; padding-top: 8px; border-top: 1px solid var(--border);">🚀 Coordenadores de Campo</div>
                 <div class="task-item">
                     <div class="task-checkbox"></div>
                     <div class="task-content">
@@ -1104,9 +1523,45 @@
                 <div class="task-item">
                     <div class="task-checkbox"></div>
                     <div class="task-content">
-                        <div class="task-title">Revisar demandas abertas</div>
-                        <div class="task-desc">Priorizar ações da semana</div>
+                        <div class="task-title">Cadastrar 10+ novos eleitores</div>
+                        <div class="task-desc">Meta diária por coordenador</div>
                     </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">⭐ Ranking em Tempo Real</h2>
+            <div class="mini-ranking">
+                <div class="mini-ranking-title">Top 3 Coordenadores</div>
+                <div class="mini-rank-item">
+                    <span>🥇 <span class="mini-rank-name">Lucas Almeida</span></span>
+                    <span class="mini-rank-xp">2.840 XP</span>
+                </div>
+                <div class="mini-rank-item">
+                    <span>🥈 <span class="mini-rank-name">Marina Costa</span></span>
+                    <span class="mini-rank-xp">2.450 XP</span>
+                </div>
+                <div class="mini-rank-item">
+                    <span>🥉 <span class="mini-rank-name">Felipe Ribeiro</span></span>
+                    <span class="mini-rank-xp">2.180 XP</span>
+                </div>
+            </div>
+
+            <h2 class="section-title">📅 Próximos 5 Dias</h2>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 20px;">
+                <div class="event-item">
+                    <div class="event-time">📍 09/04 às 10:00</div>
+                    <div class="event-title">Reunião: Ceilândia - Assoc. Comercial</div>
+                    <div class="event-location">Reunião com lideranças locais</div>
+                </div>
+                <div class="event-item">
+                    <div class="event-time">📍 09/04 às 14:30</div>
+                    <div class="event-title">Visita: Taguatinga - Centro</div>
+                    <div class="event-location">Caminhada e distribuição de material</div>
+                </div>
+                <div class="event-item">
+                    <div class="event-time">📍 10/04 às 08:30</div>
+                    <div class="event-title">Entrevista: Rádio Capital</div>
+                    <div class="event-location">Programa matinal</div>
                 </div>
             </div>
 
@@ -1267,8 +1722,65 @@
 
         <!-- CIDADES PAGE -->
         <div class="page" id="page-cidades">
-            <h2 class="section-title">🏙️ Cidades do DF (33 RAs)</h2>
+            <h2 class="section-title">🏙️ Organograma de Cidades</h2>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 20px; display: flex; gap: 20px; justify-content: center;">
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: var(--green); font-weight: 700;">33</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">RAs</div>
+                </div>
+                <div style="width: 1px; background: var(--border);"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: var(--gold); font-weight: 700;">6</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Áreas Horizontais</div>
+                </div>
+                <div style="width: 1px; background: var(--border);"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: var(--cyan); font-weight: 700;">18</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Preenchidas</div>
+                </div>
+                <div style="width: 1px; background: var(--border);"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: var(--red); font-weight: 700;">21</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Vagas</div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--green); margin: 25px 0 15px 0; font-size: 1.1rem; font-weight: 700;">📍 Regiões Administrativas (RAs)</h3>
             <div class="grid grid-4" id="cidadesGrid"></div>
+
+            <h3 style="color: var(--gold); margin: 25px 0 15px 0; font-size: 1.1rem; font-weight: 700;">🌍 Áreas Horizontais</h3>
+            <div class="grid grid-3">
+                <div class="card ra-card">
+                    <div class="ra-name">⛪ Igrejas</div>
+                    <div style="font-size: 0.8rem; color: var(--cyan); margin: 8px 0;">Felipe Ribeiro</div>
+                    <span class="badge badge-success">Preenchida</span>
+                </div>
+                <div class="card ra-card">
+                    <div class="ra-name">🏪 Comércio</div>
+                    <div style="font-size: 0.8rem; color: var(--cyan); margin: 8px 0;">Marina Costa</div>
+                    <span class="badge badge-success">Preenchida</span>
+                </div>
+                <div class="card ra-card">
+                    <div class="ra-name">🎓 Educação</div>
+                    <div style="font-size: 0.8rem; color: var(--cyan); margin: 8px 0;">Beatriz Silva</div>
+                    <span class="badge badge-success">Preenchida</span>
+                </div>
+                <div class="card ra-card">
+                    <div class="ra-name">👨‍👩‍👧‍👦 Juventude</div>
+                    <div style="font-size: 0.8rem; color: var(--red); margin: 8px 0;">VAGA — atribuir</div>
+                    <span class="badge badge-danger">Vaga</span>
+                </div>
+                <div class="card ra-card">
+                    <div class="ra-name">👩 Mulheres</div>
+                    <div style="font-size: 0.8rem; color: var(--red); margin: 8px 0;">VAGA — atribuir</div>
+                    <span class="badge badge-danger">Vaga</span>
+                </div>
+                <div class="card ra-card">
+                    <div class="ra-name">👔 Servidores</div>
+                    <div style="font-size: 0.8rem; color: var(--red); margin: 8px 0;">VAGA — atribuir</div>
+                    <span class="badge badge-danger">Vaga</span>
+                </div>
+            </div>
         </div>
 
         <!-- AGENDA PAGE -->
@@ -1280,7 +1792,23 @@
         <!-- COORDENADORES PAGE -->
         <div class="page" id="page-pessoas">
             <h2 class="section-title">🤝 Coordenadores</h2>
-            <p style="color:var(--text-muted); margin-bottom:20px; font-size:0.85rem;">Quem trabalha na campanha. Cada coordenador tem área de atuação, gerencia grupos de WhatsApp e cadastra eleitores.</p>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 20px; display: flex; gap: 20px; justify-content: center;">
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: var(--green); font-weight: 700;">8</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Coordenadores</div>
+                </div>
+                <div style="width: 1px; background: var(--border);"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: var(--cyan); font-weight: 700;">2.847</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Eleitores</div>
+                </div>
+                <div style="width: 1px; background: var(--border);"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: var(--gold); font-weight: 700;">+189</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Esta Semana</div>
+                </div>
+            </div>
+            <p style="color:var(--text-muted); margin-bottom:20px; font-size:0.85rem;">Quem trabalha na campanha. Cada coordenador tem área de atuação, gerencia grupos de WhatsApp e cadastra eleitores. Clique para detalhes.</p>
             <div class="grid grid-3" id="pessoasGrid"></div>
         </div>
 
@@ -1314,8 +1842,11 @@
         <!-- PESQUISAS PAGE -->
         <div class="page" id="page-pesquisas">
             <h2 class="section-title">📈 Pesquisa Eleitoral</h2>
-            <h3 style="color: var(--text); margin: 20px 0 15px 0; font-size: 1.1rem;">Pesquisa Espontânea</h3>
+
+            <h3 style="color: var(--text); margin: 20px 0 10px 0; font-size: 1.1rem;">Datafolha — Março 2026</h3>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">📊 Amostra: 800 | Margem: ±3.5%</div>
             <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 30px;">
+                <div style="font-size: 0.9rem; color: var(--gold); font-weight: 600; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">Pesquisa Espontânea</div>
                 <div class="poll-item">
                     <div class="poll-name">Neto Rodrigues</div>
                     <div class="poll-bar">
@@ -1325,7 +1856,7 @@
                 <div class="poll-item">
                     <div class="poll-name">Candidato B</div>
                     <div class="poll-bar">
-                        <div class="poll-fill" style="width: 18%; background: linear-gradient(90deg, var(--purple), var(--blue));">18%</div>
+                        <div class="poll-fill" style="width: 18%; background: linear-gradient(90deg, var(--purple), #6666ff);">18%</div>
                     </div>
                 </div>
                 <div class="poll-item">
@@ -1340,10 +1871,8 @@
                         <div class="poll-fill" style="width: 39%; background: var(--text-muted);">39%</div>
                     </div>
                 </div>
-            </div>
 
-            <h3 style="color: var(--text); margin: 20px 0 15px 0; font-size: 1.1rem;">Pesquisa Estimulada</h3>
-            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;">
+                <div style="font-size: 0.9rem; color: var(--gold); font-weight: 600; margin: 20px 0 15px 0; text-transform: uppercase; letter-spacing: 0.5px;">Pesquisa Estimulada</div>
                 <div class="poll-item">
                     <div class="poll-name">Neto Rodrigues</div>
                     <div class="poll-bar">
@@ -1353,7 +1882,7 @@
                 <div class="poll-item">
                     <div class="poll-name">Candidato B</div>
                     <div class="poll-bar">
-                        <div class="poll-fill" style="width: 28%; background: linear-gradient(90deg, var(--purple), var(--blue));">28%</div>
+                        <div class="poll-fill" style="width: 28%; background: linear-gradient(90deg, var(--purple), #6666ff);">28%</div>
                     </div>
                 </div>
                 <div class="poll-item">
@@ -1369,6 +1898,68 @@
                     </div>
                 </div>
             </div>
+
+            <h3 style="color: var(--text); margin: 20px 0 10px 0; font-size: 1.1rem;">Quaest — Março 2026</h3>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">📊 Amostra: 750 | Margem: ±3.6%</div>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 30px;">
+                <div style="font-size: 0.9rem; color: var(--gold); font-weight: 600; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">Pesquisa Espontânea</div>
+                <div class="poll-item">
+                    <div class="poll-name">Neto Rodrigues</div>
+                    <div class="poll-bar">
+                        <div class="poll-fill" style="width: 26%;">26%</div>
+                    </div>
+                </div>
+                <div class="poll-item">
+                    <div class="poll-name">Candidato B</div>
+                    <div class="poll-bar">
+                        <div class="poll-fill" style="width: 20%; background: linear-gradient(90deg, var(--purple), #6666ff);">20%</div>
+                    </div>
+                </div>
+                <div class="poll-item">
+                    <div class="poll-name">Candidato C</div>
+                    <div class="poll-bar">
+                        <div class="poll-fill" style="width: 17%; background: linear-gradient(90deg, var(--orange), var(--red));">17%</div>
+                    </div>
+                </div>
+                <div class="poll-item">
+                    <div class="poll-name">Indecisos</div>
+                    <div class="poll-bar">
+                        <div class="poll-fill" style="width: 37%; background: var(--text-muted);">37%</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">📊 Histórico de Pesquisas</h2>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0; overflow: hidden;">
+                <div style="display: grid; grid-template-columns: 120px 100px 80px 80px 80px; border-bottom: 1px solid var(--border);">
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Data</div>
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Instituto</div>
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Neto %</div>
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Rival A %</div>
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Rival B %</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 120px 100px 80px 80px 80px; border-bottom: 1px solid var(--border);">
+                    <div style="padding: 12px; font-size: 0.85rem;">01/03/2026</div>
+                    <div style="padding: 12px; font-size: 0.85rem; color: var(--cyan);">Datafolha</div>
+                    <div style="padding: 12px; font-size: 0.85rem; color: var(--green); font-weight: 600;">24%</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">15%</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">13%</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 120px 100px 80px 80px 80px; border-bottom: 1px solid var(--border);">
+                    <div style="padding: 12px; font-size: 0.85rem;">08/03/2026</div>
+                    <div style="padding: 12px; font-size: 0.85rem; color: var(--cyan);">Quaest</div>
+                    <div style="padding: 12px; font-size: 0.85rem; color: var(--green); font-weight: 600;">25%</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">16%</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">14%</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 120px 100px 80px 80px 80px;">
+                    <div style="padding: 12px; font-size: 0.85rem;">15/03/2026</div>
+                    <div style="padding: 12px; font-size: 0.85rem; color: var(--cyan);">Datafolha</div>
+                    <div style="padding: 12px; font-size: 0.85rem; color: var(--green); font-weight: 600;">28%</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">18%</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">15%</div>
+                </div>
+            </div>
         </div>
 
         <!-- MATERIAIS PAGE -->
@@ -1377,13 +1968,402 @@
             <div id="materiaisContainer"></div>
         </div>
 
+        <!-- MÍDIA KIT PAGE -->
+        <div class="page" id="page-midiakit">
+            <h2 class="section-title">🎨 Mídia Kit</h2>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 20px; display: flex; gap: 20px; justify-content: center;">
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: var(--green); font-weight: 700;">32</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Materiais</div>
+                </div>
+                <div style="width: 1px; background: var(--border);"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: var(--cyan); font-weight: 700;">8</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Novos Esta Semana</div>
+                </div>
+                <div style="width: 1px; background: var(--border);"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: var(--gold); font-weight: 700;">12</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Stories</div>
+                </div>
+                <div style="width: 1px; background: var(--border);"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: var(--purple); font-weight: 700;">15</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Textos WA</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding: 0 0 8px 0;">
+                <button class="badge badge-success" style="cursor: pointer; white-space: nowrap;">Todos</button>
+                <button class="badge badge-info" style="cursor: pointer; white-space: nowrap;">Instagram</button>
+                <button class="badge badge-info" style="cursor: pointer; white-space: nowrap;">WhatsApp</button>
+                <button class="badge badge-info" style="cursor: pointer; white-space: nowrap;">Stories</button>
+                <button class="badge badge-info" style="cursor: pointer; white-space: nowrap;">Cards</button>
+            </div>
+
+            <div class="grid grid-3" style="margin-bottom: 25px;">
+                <div class="card">
+                    <div style="width: 100%; height: 120px; background: linear-gradient(135deg, var(--green), var(--cyan)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 12px;">📱</div>
+                    <div style="font-weight: 600; margin-bottom: 6px;">Post Instagram — Educação</div>
+                    <div style="font-size: 0.75rem; color: var(--gold); margin-bottom: 8px;">📸 Instagram</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Postar até 19h45</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-primary" style="flex: 1; font-size: 0.8rem;">📥 Baixar</button>
+                        <button class="btn btn-secondary" style="flex: 1; font-size: 0.8rem;">📋 Copiar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="width: 100%; height: 120px; background: linear-gradient(135deg, var(--gold), var(--orange)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 12px;">💬</div>
+                    <div style="font-weight: 600; margin-bottom: 6px;">Texto WhatsApp — Saúde</div>
+                    <div style="font-size: 0.75rem; color: var(--gold); margin-bottom: 8px;">💬 WhatsApp</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Postar até 20h00</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-primary" style="flex: 1; font-size: 0.8rem;">📥 Baixar</button>
+                        <button class="btn btn-secondary" style="flex: 1; font-size: 0.8rem;">📋 Copiar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="width: 100%; height: 120px; background: linear-gradient(135deg, var(--purple), var(--cyan)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 12px;">🎬</div>
+                    <div style="font-weight: 600; margin-bottom: 6px;">Story — Call to Action</div>
+                    <div style="font-size: 0.75rem; color: var(--gold); margin-bottom: 8px;">📽️ Stories</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Postar até 18h30</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-primary" style="flex: 1; font-size: 0.8rem;">📥 Baixar</button>
+                        <button class="btn btn-secondary" style="flex: 1; font-size: 0.8rem;">📋 Copiar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="width: 100%; height: 120px; background: linear-gradient(135deg, var(--red), var(--orange)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 12px;">🎨</div>
+                    <div style="font-weight: 600; margin-bottom: 6px;">Card — Propostas</div>
+                    <div style="font-size: 0.75rem; color: var(--gold); margin-bottom: 8px;">📊 Cards</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Postar até 17h00</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-primary" style="flex: 1; font-size: 0.8rem;">📥 Baixar</button>
+                        <button class="btn btn-secondary" style="flex: 1; font-size: 0.8rem;">📋 Copiar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #00aa88, var(--cyan)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 12px;">✨</div>
+                    <div style="font-weight: 600; margin-bottom: 6px;">Reels — Mobilização</div>
+                    <div style="font-size: 0.75rem; color: var(--gold); margin-bottom: 8px;">🎥 Instagram Reels</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Postar até 19h00</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-primary" style="flex: 1; font-size: 0.8rem;">📥 Baixar</button>
+                        <button class="btn btn-secondary" style="flex: 1; font-size: 0.8rem;">📋 Copiar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="width: 100%; height: 120px; background: linear-gradient(135deg, var(--gold), var(--red)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 12px;">📢</div>
+                    <div style="font-weight: 600; margin-bottom: 6px;">Banner — Evento</div>
+                    <div style="font-size: 0.75rem; color: var(--gold); margin-bottom: 8px;">🎪 Eventos</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Postar até 21h00</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-primary" style="flex: 1; font-size: 0.8rem;">📥 Baixar</button>
+                        <button class="btn btn-secondary" style="flex: 1; font-size: 0.8rem;">📋 Copiar</button>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">🔥 Trending</h2>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 20px;">
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-weight: 600;">Post Instagram — Educação</div>
+                    <div style="color: var(--cyan); font-weight: 700;">1.240 downloads</div>
+                </div>
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-weight: 600;">Texto WhatsApp — Saúde</div>
+                    <div style="color: var(--cyan); font-weight: 700;">980 downloads</div>
+                </div>
+                <div style="padding: 12px 0; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-weight: 600;">Story — Call to Action</div>
+                    <div style="color: var(--cyan); font-weight: 700;">750 downloads</div>
+                </div>
+            </div>
+
+            <div style="background: rgba(179, 136, 255, 0.08); border: 1px solid rgba(179, 136, 255, 0.2); border-radius: var(--radius); padding: 15px;">
+                <p style="font-size: 0.85rem; color: var(--text); line-height: 1.6;">📝 <strong>Nota:</strong> Materiais gerados automaticamente pela IA Helena com base em pesquisas, dados de campo e calendário de eventos. Todos os materiais passam por revisão antes de serem disponibilizados para uso em campanha.</p>
+            </div>
+        </div>
+
+        <!-- GRUPOS WHATSAPP PAGE -->
+        <div class="page" id="page-grupos">
+            <h2 class="section-title">💬 Grupos WhatsApp</h2>
+
+            <div class="card" style="background: rgba(0, 230, 118, 0.08); border: 1px solid rgba(0, 230, 118, 0.2); padding: 15px; margin-bottom: 20px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; color: var(--green); font-weight: 700;">✅</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px;">Monitor Ativo</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; color: var(--cyan); font-weight: 700;">22</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px;">Grupos</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; color: var(--gold); font-weight: 700;">1.847</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px;">Posts Captados</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; color: var(--green); font-weight: 700;">78%</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px;">Sentimento Positivo</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--gold); margin: 20px 0 15px 0; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">📊 Compliance</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 2rem; color: var(--green); font-weight: 700;">94%</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">Eleitores em grupo</div>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 2rem; color: var(--green); font-weight: 700;">100%</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">Coordenadores com grupo</div>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 2rem; color: var(--red); font-weight: 700;">157</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">Sem grupo</div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--gold); margin: 20px 0 15px 0; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">📋 Grupos Ativos</h3>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0; overflow: hidden;">
+                <div style="display: grid; grid-template-columns: 150px 80px 80px 80px 100px 100px; border-bottom: 1px solid var(--border);">
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Grupo</div>
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Tipo</div>
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Admin</div>
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Membros</div>
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Msgs/dia</div>
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Status</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 150px 80px 80px 80px 100px 100px; border-bottom: 1px solid var(--border);">
+                    <div style="padding: 12px; font-size: 0.85rem;">Neto Ceilândia</div>
+                    <div style="padding: 12px; font-size: 0.8rem; color: var(--cyan);">Geográfico</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">Marina</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">234</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">45</div>
+                    <div style="padding: 12px;"><span class="badge badge-success">ATIVO</span></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 150px 80px 80px 80px 100px 100px; border-bottom: 1px solid var(--border);">
+                    <div style="padding: 12px; font-size: 0.85rem;">Neto Taguatinga</div>
+                    <div style="padding: 12px; font-size: 0.8rem; color: var(--cyan);">Geográfico</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">Felipe</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">189</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">38</div>
+                    <div style="padding: 12px;"><span class="badge badge-success">ATIVO</span></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 150px 80px 80px 80px 100px 100px; border-bottom: 1px solid var(--border);">
+                    <div style="padding: 12px; font-size: 0.85rem;">Neto Educação</div>
+                    <div style="padding: 12px; font-size: 0.8rem; color: var(--purple);">Horizontal</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">Beatriz</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">156</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">29</div>
+                    <div style="padding: 12px;"><span class="badge badge-success">ATIVO</span></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 150px 80px 80px 80px 100px 100px;">
+                    <div style="padding: 12px; font-size: 0.85rem;">Neto Igrejas</div>
+                    <div style="padding: 12px; font-size: 0.8rem; color: var(--purple);">Horizontal</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">Felipe</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">203</div>
+                    <div style="padding: 12px; font-size: 0.85rem;">52</div>
+                    <div style="padding: 12px;"><span class="badge badge-success">ATIVO</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FINANCEIRO PAGE -->
+        <div class="page" id="page-financeiro">
+            <h2 class="section-title">💰 Financeiro</h2>
+
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px;">
+                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Meta de Arrecadação</div>
+                <div style="font-size: 2rem; color: var(--green); font-weight: 700; margin-bottom: 10px;">R$ 45.000 / R$ 80.000</div>
+                <div style="background: rgba(255, 255, 255, 0.05); height: 12px; border-radius: 6px; overflow: hidden;">
+                    <div style="background: linear-gradient(90deg, var(--green), var(--cyan)); height: 100%; width: 56%;"></div>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--gold); margin-top: 8px; font-weight: 700;">56% atingido</div>
+            </div>
+
+            <div class="grid grid-3" style="margin-bottom: 20px;">
+                <div class="card stat-card">
+                    <div class="stat-label">Receitas</div>
+                    <div class="stat-number" style="color: var(--green);">R$ 45K</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Despesas</div>
+                    <div class="stat-number" style="color: var(--red);">R$ 32,4K</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Saldo</div>
+                    <div class="stat-number" style="color: var(--gold);">R$ 12,6K</div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--gold); margin: 20px 0 15px 0; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">📊 Despesas por Categoria</h3>
+            <div class="grid grid-2" style="margin-bottom: 20px;">
+                <div class="card">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--green);"></div>
+                        <div style="font-weight: 600; flex: 1;">Material</div>
+                        <div style="color: var(--green); font-weight: 700;">R$ 12.000</div>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.05); height: 6px; border-radius: 3px; overflow: hidden;">
+                        <div style="background: var(--green); height: 100%; width: 37%;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cyan);"></div>
+                        <div style="font-weight: 600; flex: 1;">Transporte</div>
+                        <div style="color: var(--cyan); font-weight: 700;">R$ 8.500</div>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.05); height: 6px; border-radius: 3px; overflow: hidden;">
+                        <div style="background: var(--cyan); height: 100%; width: 26%;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold);"></div>
+                        <div style="font-weight: 600; flex: 1;">Alimentação</div>
+                        <div style="color: var(--gold); font-weight: 700;">R$ 5.200</div>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.05); height: 6px; border-radius: 3px; overflow: hidden;">
+                        <div style="background: var(--gold); height: 100%; width: 16%;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--purple);"></div>
+                        <div style="font-weight: 600; flex: 1;">Digital</div>
+                        <div style="color: var(--purple); font-weight: 700;">R$ 4.300</div>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.05); height: 6px; border-radius: 3px; overflow: hidden;">
+                        <div style="background: var(--purple); height: 100%; width: 13%;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--orange);"></div>
+                        <div style="font-weight: 600; flex: 1;">Estrutura</div>
+                        <div style="color: var(--orange); font-weight: 700;">R$ 2.400</div>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.05); height: 6px; border-radius: 3px; overflow: hidden;">
+                        <div style="background: var(--orange); height: 100%; width: 7%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--gold); margin: 20px 0 15px 0; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">👥 Doadores</h3>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0; overflow: hidden;">
+                <div style="display: grid; grid-template-columns: 200px 100px 100px; border-bottom: 1px solid var(--border);">
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Doador</div>
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Valor</div>
+                    <div style="padding: 12px; font-weight: 700; color: var(--gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;">Data</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 200px 100px 100px; border-bottom: 1px solid var(--border);">
+                    <div style="padding: 12px; font-size: 0.85rem;">Carlos Alberto Lima</div>
+                    <div style="padding: 12px; font-size: 0.85rem; color: var(--green); font-weight: 700;">R$ 5.000</div>
+                    <div style="padding: 12px; font-size: 0.8rem; color: var(--text-muted);">05/04</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 200px 100px 100px; border-bottom: 1px solid var(--border);">
+                    <div style="padding: 12px; font-size: 0.85rem;">Fernanda Martins</div>
+                    <div style="padding: 12px; font-size: 0.85rem; color: var(--green); font-weight: 700;">R$ 3.000</div>
+                    <div style="padding: 12px; font-size: 0.8rem; color: var(--text-muted);">04/04</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 200px 100px 100px; border-bottom: 1px solid var(--border);">
+                    <div style="padding: 12px; font-size: 0.85rem;">Sociedade Comercial XYZ</div>
+                    <div style="padding: 12px; font-size: 0.85rem; color: var(--green); font-weight: 700;">R$ 10.000</div>
+                    <div style="padding: 12px; font-size: 0.8rem; color: var(--text-muted);">02/04</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 200px 100px 100px;">
+                    <div style="padding: 12px; font-size: 0.85rem;">João da Silva</div>
+                    <div style="padding: 12px; font-size: 0.85rem; color: var(--green); font-weight: 700;">R$ 2.500</div>
+                    <div style="padding: 12px; font-size: 0.8rem; color: var(--text-muted);">01/04</div>
+                </div>
+            </div>
+        </div>
+
         <!-- GAMIFICAÇÃO PAGE -->
         <div class="page" id="page-gamificacao">
             <h2 class="section-title">🏆 Ranking XP</h2>
             <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 25px;" id="leaderboardContainer"></div>
 
+            <h2 class="section-title">📊 Tabela de Pontuação</h2>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 25px;">
+                <div style="display: grid; gap: 8px;">
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                        <div style="font-weight: 600; color: var(--gold);">Ação</div>
+                        <div style="font-weight: 600; color: var(--gold);">XP</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <div>Cadastrar eleitor</div>
+                        <div style="color: var(--green); font-weight: 700;">+50 XP</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <div>Foto comprovando atividade</div>
+                        <div style="color: var(--green); font-weight: 700;">+50 XP</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <div>10 novos apoiadores</div>
+                        <div style="color: var(--green); font-weight: 700;">+100 XP</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <div>Completar rota de visitas</div>
+                        <div style="color: var(--green); font-weight: 700;">+200 XP</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <div>Organizar evento comunitário</div>
+                        <div style="color: var(--green); font-weight: 700;">+300 XP</div>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="section-title">⚡ Missões do Dia</h2>
             <div style="margin-bottom: 25px;" id="missoesContainer"></div>
+
+            <h2 class="section-title">📜 Feed de Últimas Jogadas</h2>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin-bottom: 25px;">
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 600; color: var(--text);">Marina Costa cadastrou eleitor</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Ceilândia</div>
+                    </div>
+                    <div style="color: var(--green); font-weight: 700; font-size: 0.9rem;">+50 XP</div>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 600; color: var(--text);">Felipe Ribeiro completou rota de visitas</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Taguatinga — 10 casas</div>
+                    </div>
+                    <div style="color: var(--green); font-weight: 700; font-size: 0.9rem;">+200 XP</div>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 600; color: var(--text);">Juliana Mendes enviou foto de atividade</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Samambaia — 5 novos apoiadores</div>
+                    </div>
+                    <div style="color: var(--green); font-weight: 700; font-size: 0.9rem;">+50 XP</div>
+                </div>
+                <div style="padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 600; color: var(--text);">Lucas Almeida organizou evento</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Plano Piloto — Reunião comunitária</div>
+                    </div>
+                    <div style="color: var(--green); font-weight: 700; font-size: 0.9rem;">+300 XP</div>
+                </div>
+                <div style="padding: 10px 0; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 600; color: var(--text);">André Santos cadastrou 3 eleitores</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Brasília — Redes digitais</div>
+                    </div>
+                    <div style="color: var(--green); font-weight: 700; font-size: 0.9rem;">+150 XP</div>
+                </div>
+            </div>
 
             <h2 class="section-title">🎖️ Troféus</h2>
             <div class="grid grid-4" id="trofeusContainer"></div>
@@ -1510,12 +2490,15 @@
                 const icons = {
                     dashboard: '📊 Dashboard',
                     inteligencia: '🧠 Inteligência',
-                    cidades: '🏙️ Cidades',
+                    cidades: '🏙️ Organograma',
                     agenda: '📅 Agenda',
                     pessoas: '🤝 Coordenadores',
                     lideres: '🗳️ Eleitores',
                     demandas: '📋 Demandas',
                     pesquisas: '📈 Pesquisas',
+                    midiakit: '🎨 Mídia Kit',
+                    grupos: '💬 Grupos WA',
+                    financeiro: '💰 Financeiro',
                     materiais: '📦 Materiais',
                     gamificacao: '🎮 Gamificação'
                 };
@@ -1547,19 +2530,29 @@
             },
             renderPessoas() {
                 const grid = document.getElementById('pessoasGrid');
-                grid.innerHTML = this.equipe.map(p => `
-                    <div class="card person-card">
-                        <div class="person-avatar" style="background: linear-gradient(135deg, var(--green), var(--cyan));">${p.letra}</div>
-                        <div class="person-name">${p.nome}</div>
+                grid.innerHTML = this.equipe.map((p, idx) => {
+                    const xp = this.leaderboard.find(l => l.nome === p.nome)?.xp || 0;
+                    const rank = this.leaderboard.find(l => l.nome === p.nome)?.rank || 0;
+                    let levelName = 'Iniciante';
+                    if (xp > 2500) levelName = 'Master';
+                    else if (xp > 2000) levelName = 'Sênior';
+                    else if (xp > 1500) levelName = 'Ativo';
+                    const isCampeao = rank === 1;
+                    return `
+                    <div class="card person-card" onclick="showCoordModal(${idx})" style="cursor: pointer; transition: all 0.3s; ${isCampeao ? 'box-shadow: 0 0 30px rgba(255, 214, 0, 0.3);' : ''}">
+                        <div class="person-avatar" style="background: linear-gradient(135deg, var(--green), var(--cyan)); ${isCampeao ? 'box-shadow: 0 0 20px rgba(255, 214, 0, 0.5);' : ''}">${p.letra}</div>
+                        <div class="person-name">${p.nome} ${isCampeao ? '👑' : ''}</div>
                         <div class="person-role">${p.cargo}</div>
                         <div class="person-region">${p.regiao}</div>
+                        <div class="coord-level">Coord. ${levelName}</div>
                         <div style="font-size: 0.75rem; color: var(--purple); margin-top: 6px;">📌 ${p.esfera}</div>
                         <div style="display:flex; gap:10px; margin-top: 8px; font-size: 0.75rem;">
                             <span style="color:var(--cyan);">💬 ${p.grupos} grupos</span>
                             <span style="color:var(--gold);">🗳️ ${p.eleitores} eleitores</span>
                         </div>
                     </div>
-                `).join('');
+                    `;
+                }).join('');
             },
             renderLideres() {
                 const grid = document.getElementById('lideresGrid');
@@ -1652,15 +2645,97 @@
 
         // ===== GLOBAL FUNCTIONS =====
         function enterSystem() {
+            createConfetti();
             const splash = document.getElementById('splash');
             splash.classList.add('hidden');
-            createConfetti();
+            document.getElementById('phaseBar').style.display = 'flex';
             app.init();
         }
 
         function navigateTo(page) {
             window.location.hash = page;
         }
+
+        function showCoordModal(idx) {
+            const coord = app.equipe[idx];
+            const xp = app.leaderboard.find(l => l.nome === coord.nome)?.xp || 0;
+            const rank = app.leaderboard.find(l => l.nome === coord.nome)?.rank || 0;
+            let levelName = 'Iniciante';
+            if (xp > 2500) levelName = 'Master';
+            else if (xp > 2000) levelName = 'Sênior';
+            else if (xp > 1500) levelName = 'Ativo';
+
+            const mockEletores = ['José Carlos Pereira', 'Sandra Lopes', 'Marcos Vieira'];
+            const mockGrupos = [`Neto ${coord.regiao} Norte`, `Neto ${coord.regiao} Sul`, 'Neto Geral'];
+
+            const html = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div class="person-avatar" style="width: 80px; height: 80px; margin: 0 auto 12px; font-size: 2.5rem; background: linear-gradient(135deg, var(--green), var(--cyan));">${coord.letra}</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px;">${coord.cargo}</div>
+                    <div class="coord-level" style="justify-content: center;">${rank > 0 ? `#${rank} · ` : ''}Coord. ${levelName}</div>
+                </div>
+
+                <div class="stat-grid">
+                    <div class="stat-box">
+                        <div class="stat-box-value">${xp}</div>
+                        <div class="stat-box-label">XP</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">${coord.eleitores}</div>
+                        <div class="stat-box-label">Eleitores</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">${coord.grupos}</div>
+                        <div class="stat-box-label">Grupos WA</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">12</div>
+                        <div class="stat-box-label">Leads/Semana</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">45</div>
+                        <div class="stat-box-label">Posts Pró</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-value">28</div>
+                        <div class="stat-box-label">Ações</div>
+                    </div>
+                </div>
+
+                <div class="coord-list">
+                    <div class="coord-list-title">📍 Últimos Eleitores Cadastrados</div>
+                    ${mockEletores.map(e => `<div class="coord-list-item">• ${e}</div>`).join('')}
+                </div>
+
+                <div class="coord-list">
+                    <div class="coord-list-title">💬 Grupos que Administra</div>
+                    ${mockGrupos.map(g => `<div class="coord-list-item">• ${g}</div>`).join('')}
+                </div>
+
+                <div class="coord-modal-actions">
+                    <button class="btn btn-primary" onclick="alert('Abrindo WhatsApp...')">💚 WhatsApp</button>
+                    <button class="btn btn-secondary" onclick="navigateTo('cidades')">📍 Ver Área</button>
+                </div>
+            `;
+
+            document.getElementById('coordModalName').textContent = coord.nome;
+            document.getElementById('coordModalBody').innerHTML = html;
+            document.getElementById('coordModal').classList.add('active');
+        }
+
+        function closeCoordModal() {
+            document.getElementById('coordModal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('coordModal');
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeCoordModal();
+                }
+            });
+        });
 
         function createConfetti() {
             const colors = ['#00e676', '#ffd600', '#b388ff', '#00e5ff', '#ff5252', '#ff9100'];
@@ -1682,7 +2757,8 @@
 
         // ===== INIT ON LOAD =====
         window.addEventListener('DOMContentLoaded', () => {
-            // Don't auto-init; wait for splash click
+            // Start confetti on page load
+            createConfetti();
         });
     </script>
 </body>

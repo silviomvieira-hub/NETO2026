@@ -631,6 +631,14 @@
         .leaflet-popup-tip { background: #141428; }
         .leaflet-control-layers, .leaflet-bar a { background: #141428 !important; color: #e0e0e0 !important; border-color: rgba(255,255,255,0.12) !important; }
         .leaflet-control-layers label { font-size: 0.78rem; font-weight: 600; }
+        .mapa-coord-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .mapa-coord-del { background: transparent; border: none; color: var(--red); font-size: 0.9rem; font-weight: 800; cursor: pointer; padding: 2px 7px; border-radius: 6px; line-height: 1; }
+        .mapa-coord-del:hover { background: rgba(255,23,68,0.15); }
+        .mapa-add { margin-top: 12px; padding: 12px; border: 1px dashed rgba(255,214,0,0.45); border-radius: 10px; background: rgba(255,214,0,0.04); }
+        .mapa-add-titulo { font-size: 0.78rem; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
+        .mapa-add-input { width: 100%; box-sizing: border-box; margin-bottom: 8px; padding: 9px 11px; background: var(--bg-card2); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: var(--text); font-size: 0.82rem; }
+        .mapa-add-input:focus { outline: none; border-color: var(--gold); }
+        .mapa-add-btn { width: 100%; }
         .mapa-svg { width: 100%; height: auto; display: block; }
         .mapa-vazio { padding: 40px; text-align: center; color: var(--text-dim); }
         .mapa-badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; margin-bottom: 12px; }
@@ -1913,11 +1921,13 @@
         function coordenadoresDaCidade(c){ const n=_normRA(c); return data.pessoas.filter(p => p.funcao==='coordenador' && _normRA(p.regiao)===n); }
 
         let _leafletMap = null;
+        let _mapaCidadeAtual = null;
         function abrirMapaCidade(c){
             const ring = getRAShape(c);
             const visitas = data.visitas[c] || [];
             const visitada = visitas.length > 0;
             const coords = coordenadoresDaCidade(c);
+            _mapaCidadeAtual = c;
             document.getElementById('mapaTitulo').innerHTML = '🗺️ ' + escapeHtml(c);
 
             const status = visitada
@@ -1925,10 +1935,16 @@
                 : '<span class="mapa-badge no">📍 Ainda não visitada</span>';
             let lista = '<div class="mapa-coords-titulo">👤 Coordenador(es) da região</div>';
             if(coords.length){
-                lista += coords.map(p=>'<div class="mapa-coord-item"><div class="mapa-coord-nome">'+escapeHtml(p.nome)+'</div><div class="mapa-coord-sub">'+escapeHtml(p.tel||'')+(p.obs?' — '+escapeHtml(p.obs):'')+'</div></div>').join('');
+                lista += coords.map(p=>'<div class="mapa-coord-item"><div class="mapa-coord-row"><div class="mapa-coord-nome">'+escapeHtml(p.nome)+'</div><button class="mapa-coord-del" title="Remover coordenador" onclick="removeCoordenadorMapa('+p.id+')">✕</button></div><div class="mapa-coord-sub">'+escapeHtml(p.tel||'')+(p.obs?' — '+escapeHtml(p.obs):'')+'</div></div>').join('');
             } else {
                 lista += '<div class="mapa-coord-vazio">Nenhum coordenador cadastrado nesta região ainda.</div>';
             }
+            lista += '<div class="mapa-add">'
+                + '<div class="mapa-add-titulo">➕ Adicionar coordenador desta região</div>'
+                + '<input id="mapaNovoCoordNome" class="mapa-add-input" placeholder="Nome do coordenador" autocomplete="off" onkeydown="if(event.key===\'Enter\')addCoordenadorMapa()">'
+                + '<input id="mapaNovoCoordTel" class="mapa-add-input" placeholder="Telefone / WhatsApp (opcional)" autocomplete="off" onkeydown="if(event.key===\'Enter\')addCoordenadorMapa()">'
+                + '<button class="btn btn-primary mapa-add-btn" onclick="addCoordenadorMapa()">Adicionar coordenador</button>'
+                + '</div>';
             document.getElementById('mapaCoords').innerHTML = status + lista;
 
             const btn = document.getElementById('mapaBtnVisita');
@@ -1978,6 +1994,29 @@
                 });
             }
             setTimeout(() => map.invalidateSize(), 80);
+        }
+
+        function addCoordenadorMapa(){
+            const c = _mapaCidadeAtual;
+            if(!c) return;
+            const nomeEl = document.getElementById('mapaNovoCoordNome');
+            const telEl = document.getElementById('mapaNovoCoordTel');
+            const nome = (nomeEl.value || '').trim();
+            if(!nome){ nomeEl.focus(); return; }
+            data.pessoas.push({ id: gerarId(), nome: nome, tel: (telEl.value || '').trim(), funcao: 'coordenador', regiao: c, obs: '' });
+            addAtividade('👤 Coordenador adicionado em ' + c + ': ' + nome);
+            saveData();
+            abrirMapaCidade(c);
+        }
+        function removeCoordenadorMapa(id){
+            const c = _mapaCidadeAtual;
+            const p = data.pessoas.find(x => x.id === id);
+            if(!p) return;
+            if(!confirm('Remover o coordenador "' + p.nome + '"?')) return;
+            data.pessoas = data.pessoas.filter(x => x.id !== id);
+            addAtividade('🗑️ Coordenador removido de ' + (c || p.regiao) + ': ' + p.nome);
+            saveData();
+            abrirMapaCidade(c);
         }
 
         // ===== AGENDA =====

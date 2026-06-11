@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="Candidato Campeao">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b2a4a"/>
+      <stop offset="1" stop-color="#0e1730"/>
+    </linearGradient>
+    <linearGradient id="suit" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#23314f"/>
+      <stop offset="1" stop-color="#16203a"/>
+    </linearGradient>
+    <linearGradient id="tie" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#00e676"/>
+      <stop offset="1" stop-color="#00b85a"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0c19b"/>
+      <stop offset="1" stop-color="#dca878"/>
+    </linearGradient>
+  </defs>
+  <rect width="240" height="240" fill="url(#bg)"/>
+  <circle cx="120" cy="96" r="78" fill="#ffffff" opacity="0.04"/>
+  <!-- suit / shoulders -->
+  <path d="M120 150
+           C 70 150 38 178 30 240
+           L 210 240
+           C 202 178 170 150 120 150 Z" fill="url(#suit)"/>
+  <!-- shirt -->
+  <path d="M95 156 L120 188 L145 156 L145 240 L95 240 Z" fill="#f4f6fb"/>
+  <!-- collar -->
+  <path d="M95 156 L120 188 L104 158 Z" fill="#dfe5f0"/>
+  <path d="M145 156 L120 188 L136 158 Z" fill="#dfe5f0"/>
+  <!-- tie -->
+  <path d="M120 188 L113 200 L120 240 L127 200 Z" fill="url(#tie)"/>
+  <path d="M120 188 L114 197 L120 205 L126 197 Z" fill="#00c853"/>
+  <!-- neck -->
+  <rect x="106" y="128" width="28" height="34" rx="12" fill="#dca878"/>
+  <!-- head -->
+  <circle cx="120" cy="100" r="42" fill="url(#skin)"/>
+  <!-- ears -->
+  <circle cx="79" cy="102" r="8" fill="#dca878"/>
+  <circle cx="161" cy="102" r="8" fill="#dca878"/>
+  <!-- hair -->
+  <path d="M80 96
+           C 78 60 100 52 120 52
+           C 140 52 162 60 160 96
+           C 156 80 150 74 138 72
+           C 132 80 108 80 102 72
+           C 90 74 84 80 80 96 Z" fill="#2c2a32"/>
+  <!-- eyebrows -->
+  <rect x="100" y="92" width="16" height="4" rx="2" fill="#3a3640"/>
+  <rect x="124" y="92" width="16" height="4" rx="2" fill="#3a3640"/>
+  <!-- eyes -->
+  <circle cx="108" cy="101" r="4" fill="#33323a"/>
+  <circle cx="132" cy="101" r="4" fill="#33323a"/>
+  <!-- nose -->
+  <path d="M120 104 L116 116 L124 116 Z" fill="#cf9a6c"/>
+  <!-- smile -->
+  <path d="M106 122 Q120 134 134 122" stroke="#b5734a" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>

@@ -622,7 +622,15 @@
         }
 
         /* ===== MAPA DA RA ===== */
-        .mapa-wrap { background: radial-gradient(circle at 50% 28%, #12203f, #0a0a1a 72%); border: 1px solid rgba(68,138,255,0.22); border-radius: 14px; padding: 10px; margin-bottom: 14px; }
+        .mapa-wrap { height: 440px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(68,138,255,0.25); margin-bottom: 14px; padding: 0; background: #0a0a1a; position: relative; }
+        .mapa-wrap .leaflet-container { width: 100%; height: 100%; background: #0a0a1a; font-family: inherit; }
+        .mapa-pin-dot { width: 14px; height: 14px; border-radius: 50%; background: #ffd600; border: 2px solid #0a0a1a; box-shadow: 0 0 0 2px #ffd600, 0 2px 6px rgba(0,0,0,0.6); position: absolute; left: -7px; top: -7px; }
+        .mapa-pin-label { position: absolute; left: 13px; top: -13px; white-space: nowrap; background: #0a0a1a; color: #ffd600; border: 1px solid #ffd600; border-radius: 12px; padding: 3px 9px; font-size: 12px; font-weight: 700; box-shadow: 0 2px 6px rgba(0,0,0,0.55); }
+        .leaflet-popup-content-wrapper { background: #141428; color: #e0e0e0; border: 1px solid rgba(255,214,0,0.35); }
+        .leaflet-popup-content-wrapper .leaflet-popup-content { margin: 10px 14px; font-size: 0.8rem; }
+        .leaflet-popup-tip { background: #141428; }
+        .leaflet-control-layers, .leaflet-bar a { background: #141428 !important; color: #e0e0e0 !important; border-color: rgba(255,255,255,0.12) !important; }
+        .leaflet-control-layers label { font-size: 0.78rem; font-weight: 600; }
         .mapa-svg { width: 100%; height: auto; display: block; }
         .mapa-vazio { padding: 40px; text-align: center; color: var(--text-dim); }
         .mapa-badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; margin-bottom: 12px; }
@@ -1047,6 +1055,8 @@
             .countdown-bar { flex-direction: column; text-align: center; }
         }
     </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
@@ -1902,64 +1912,13 @@
         function getRAShape(nome){ const n=_normRA(nome); return _shapeIndex[n] || _shapeIndex[_shapeAlias[n]] || null; }
         function coordenadoresDaCidade(c){ const n=_normRA(c); return data.pessoas.filter(p => p.funcao==='coordenador' && _normRA(p.regiao)===n); }
 
+        let _leafletMap = null;
         function abrirMapaCidade(c){
             const ring = getRAShape(c);
             const visitas = data.visitas[c] || [];
             const visitada = visitas.length > 0;
             const coords = coordenadoresDaCidade(c);
             document.getElementById('mapaTitulo').innerHTML = '🗺️ ' + escapeHtml(c);
-
-            const W=600, H=420, pad=48;
-            let svg;
-            if(!ring || ring.length < 3){
-                svg = '<div class="mapa-vazio">Mapa indisponível para esta região.</div>';
-            } else {
-                let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
-                ring.forEach(([x,y])=>{ if(x<minX)minX=x; if(x>maxX)maxX=x; if(y<minY)minY=y; if(y>maxY)maxY=y; });
-                const latMid=(minY+maxY)/2, kx=Math.cos(latMid*Math.PI/180);
-                const bw=(maxX-minX)*kx, bh=(maxY-minY);
-                const scale=Math.min((W-2*pad)/bw,(H-2*pad)/bh);
-                const ox=(W-bw*scale)/2, oy=(H-bh*scale)/2;
-                const toXY=([x,y])=>[ox+((x-minX)*kx)*scale, oy+(maxY-y)*scale];
-                const pts=ring.map(toXY);
-                const dpath='M'+pts.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' L')+' Z';
-                let cx=0,cy=0; pts.forEach(p=>{cx+=p[0];cy+=p[1];}); cx/=pts.length; cy/=pts.length;
-                const fill = visitada ? 'url(#gMapV)' : 'url(#gMapN)';
-                const stroke = visitada ? '#00e676' : '#448aff';
-
-                let pins='';
-                if(coords.length){
-                    const startY = cy - ((coords.length-1)*32)/2;
-                    coords.forEach((p,i)=>{
-                        const py = startY + i*32;
-                        const nome = escapeHtml(p.nome);
-                        const wlabel = Math.min(280, 44 + p.nome.length*8.4);
-                        pins += '<g>'
-                            + '<line x1="'+cx.toFixed(1)+'" y1="'+cy.toFixed(1)+'" x2="'+cx.toFixed(1)+'" y2="'+py.toFixed(1)+'" stroke="#ffd600" stroke-width="1" opacity="0.45"/>'
-                            + '<g transform="translate('+cx.toFixed(1)+','+py.toFixed(1)+')">'
-                            + '<rect x="14" y="-14" width="'+wlabel+'" height="28" rx="14" fill="#0a0a1a" stroke="#ffd600" stroke-width="1.5"/>'
-                            + '<circle cx="0" cy="0" r="7" fill="#ffd600" stroke="#0a0a1a" stroke-width="2"/>'
-                            + '<text x="28" y="5" fill="#ffd600" font-size="13.5" font-weight="700">'+nome+'</text>'
-                            + '</g></g>';
-                    });
-                } else {
-                    pins = '<g transform="translate('+cx.toFixed(1)+','+cy.toFixed(1)+')">'
-                        + '<circle cx="0" cy="0" r="7" fill="#888" stroke="#0a0a1a" stroke-width="2"/>'
-                        + '<rect x="14" y="-14" width="214" height="28" rx="14" fill="#0a0a1a" stroke="#555" stroke-width="1.5"/>'
-                        + '<text x="28" y="5" fill="#aaa" font-size="12.5" font-weight="600">Sem coordenador definido</text></g>';
-                }
-
-                svg = '<svg viewBox="0 0 '+W+' '+H+'" class="mapa-svg" preserveAspectRatio="xMidYMid meet">'
-                    + '<defs>'
-                    + '<linearGradient id="gMapV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00e676" stop-opacity="0.5"/><stop offset="1" stop-color="#00b85a" stop-opacity="0.78"/></linearGradient>'
-                    + '<linearGradient id="gMapN" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#448aff" stop-opacity="0.4"/><stop offset="1" stop-color="#2b5fb0" stop-opacity="0.62"/></linearGradient>'
-                    + '<filter id="mapaShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#000" flood-opacity="0.55"/></filter>'
-                    + '</defs>'
-                    + '<path d="'+dpath+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2.5" stroke-linejoin="round" filter="url(#mapaShadow)"/>'
-                    + pins
-                    + '</svg>';
-            }
-            document.getElementById('mapaWrap').innerHTML = svg;
 
             const status = visitada
                 ? '<span class="mapa-badge ok">✅ RA visitada — '+visitas.length+' visita(s)</span>'
@@ -1974,7 +1933,51 @@
 
             const btn = document.getElementById('mapaBtnVisita');
             btn.onclick = function(){ closeModal('modalMapa'); abrirVisita(c); };
+
             openModal('modalMapa');
+
+            const wrap = document.getElementById('mapaWrap');
+            wrap.innerHTML = '';
+            if(typeof L === 'undefined'){
+                wrap.innerHTML = '<div class="mapa-vazio">Mapa real indisponível (sem internet). Conecte-se à internet para carregar ruas e satélite.</div>';
+                return;
+            }
+            if(_leafletMap){ try{ _leafletMap.remove(); }catch(e){} _leafletMap = null; }
+
+            const map = L.map(wrap, { zoomControl: true, attributionControl: false, scrollWheelZoom: true });
+            _leafletMap = map;
+            const ruas = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 });
+            const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19 });
+            const labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', { maxZoom: 19 });
+            ruas.addTo(map);
+            const satGroup = L.layerGroup([sat, labels]);
+            L.control.layers({ '🗺️ Ruas': ruas, '🛰️ Satélite': satGroup }, null, { position: 'topright', collapsed: false }).addTo(map);
+
+            const corBorda = visitada ? '#00e676' : '#448aff';
+            let center = L.latLng(-15.793, -47.882);
+            if(ring && ring.length >= 3){
+                const latlngs = ring.map(([x,y]) => [y, x]);
+                const poly = L.polygon(latlngs, { color: corBorda, weight: 3, opacity: 0.95, fillColor: corBorda, fillOpacity: 0.16 }).addTo(map);
+                const b = poly.getBounds();
+                center = b.getCenter();
+                map.fitBounds(b, { padding: [28, 28] });
+            } else {
+                map.setView(center, 11);
+            }
+
+            if(coords.length){
+                const n = coords.length;
+                coords.forEach((p, i) => {
+                    const ang = (i / n) * Math.PI * 2;
+                    const off = n > 1 ? 0.010 : 0;
+                    const la = center.lat + Math.sin(ang) * off;
+                    const ln = center.lng + Math.cos(ang) * off * 1.05;
+                    const icon = L.divIcon({ className: 'mapa-pin', html: '<div class="mapa-pin-dot"></div><div class="mapa-pin-label">' + escapeHtml(p.nome) + '</div>', iconSize: [0,0], iconAnchor: [0,0] });
+                    L.marker([la, ln], { icon }).addTo(map)
+                        .bindPopup('<b>' + escapeHtml(p.nome) + '</b><br>' + escapeHtml(p.tel||'') + (p.obs ? '<br><i>' + escapeHtml(p.obs) + '</i>' : ''));
+                });
+            }
+            setTimeout(() => map.invalidateSize(), 80);
         }
 
         // ===== AGENDA =====

@@ -639,6 +639,7 @@
         .mapa-add-input { width: 100%; box-sizing: border-box; margin-bottom: 8px; padding: 9px 11px; background: var(--bg-card2); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: var(--text); font-size: 0.82rem; }
         .mapa-add-input:focus { outline: none; border-color: var(--gold); }
         .mapa-add-btn { width: 100%; }
+        .stat-card.ativo { box-shadow: 0 0 0 2px var(--green) inset, 0 0 14px var(--green-glow); }
         .mapa-svg { width: 100%; height: auto; display: block; }
         .mapa-vazio { padding: 40px; text-align: center; color: var(--text-dim); }
         .mapa-badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; margin-bottom: 12px; }
@@ -2290,24 +2291,27 @@
         function deleteEvento(id) { if(!confirm('Excluir?'))return; data.eventos=data.eventos.filter(e=>e.id!==id); addAtividade('Compromisso excluído'); saveData(); renderAgenda(); }
 
         // ===== PESSOAS =====
+        let _filtroPessoaFuncao = '';
         function renderPessoas() {
             const busca = (document.getElementById('buscaPessoa').value||'').toLowerCase();
             const funcoes = {}; data.pessoas.forEach(p=>{funcoes[p.funcao]=(funcoes[p.funcao]||0)+1;});
 
             document.getElementById('pessoasStats').innerHTML = `
-                <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value">${data.pessoas.length}</div></div>
-                <div class="stat-card blue"><div class="stat-label">Coordenadores</div><div class="stat-value">${funcoes.coordenador||0}</div></div>
-                <div class="stat-card purple"><div class="stat-label">Voluntários</div><div class="stat-value">${funcoes.voluntario||0}</div></div>
-                <div class="stat-card gold"><div class="stat-label">Lideranças</div><div class="stat-value">${funcoes.lideranca||0}</div></div>
+                <div class="stat-card ${_filtroPessoaFuncao===''?'ativo':''}" style="cursor:pointer" onclick="filtrarPessoas('')"><div class="stat-label">Total</div><div class="stat-value">${data.pessoas.length}</div></div>
+                <div class="stat-card blue ${_filtroPessoaFuncao==='coordenador'?'ativo':''}" style="cursor:pointer" onclick="filtrarPessoas('coordenador')"><div class="stat-label">Coordenadores</div><div class="stat-value">${funcoes.coordenador||0}</div></div>
+                <div class="stat-card purple ${_filtroPessoaFuncao==='voluntario'?'ativo':''}" style="cursor:pointer" onclick="filtrarPessoas('voluntario')"><div class="stat-label">Voluntários</div><div class="stat-value">${funcoes.voluntario||0}</div></div>
+                <div class="stat-card gold ${_filtroPessoaFuncao==='lideranca'?'ativo':''}" style="cursor:pointer" onclick="filtrarPessoas('lideranca')"><div class="stat-label">Lideranças</div><div class="stat-value">${funcoes.lideranca||0}</div></div>
             `;
 
             const fc = {coordenador:'tag-blue',apoiador:'tag-green',voluntario:'tag-purple',lideranca:'tag-gold',assessor:'tag-cyan',digital:'tag-pink',motorista:'tag-orange',outro:'tag-green'};
-            const filtrados = data.pessoas.filter(p=>!busca||(p.nome||'').toLowerCase().includes(busca)||(p.regiao||'').toLowerCase().includes(busca));
+            const filtrados = data.pessoas.filter(p=>(!_filtroPessoaFuncao||p.funcao===_filtroPessoaFuncao)&&(!busca||(p.nome||'').toLowerCase().includes(busca)||(p.regiao||'').toLowerCase().includes(busca)));
 
             document.getElementById('pessoasGrid').innerHTML = filtrados.length
                 ? filtrados.map(p=>`<div class="card-item"><h4>👤 ${escapeHtml(p.nome)}</h4><p>📞 ${escapeHtml(p.tel||'-')}</p><p>📍 ${escapeHtml(p.regiao||'-')}</p><span class="tag ${fc[p.funcao]||'tag-green'}">${escapeHtml(p.funcao)}</span>${p.obs?'<p style="margin-top:8px;font-style:italic;color:var(--text-dim)">'+escapeHtml(p.obs)+'</p>':''}<div class="card-actions"><button class="btn btn-danger btn-sm" onclick="deletePessoa(${p.id})">Excluir</button></div></div>`).join('')
-                : '<p style="color:var(--text-dim)">Nenhuma pessoa. Adicione o time!</p>';
+                : '<p style="color:var(--text-dim)">Nenhuma pessoa nesta categoria.</p>';
         }
+
+        function filtrarPessoas(f){ _filtroPessoaFuncao = f; renderPessoas(); }
 
         function savePessoa() {
             const n = document.getElementById('peNome').value.trim();

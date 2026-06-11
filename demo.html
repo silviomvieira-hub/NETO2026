@@ -1194,6 +1194,7 @@
             <div class="toolbar">
                 <h2 style="flex:1;font-size:1.1rem;font-weight:800;color:var(--green);">👥 Time do Campeão</h2>
                 <input type="text" class="search-input" placeholder="Buscar pessoa..." oninput="renderPessoas()" id="buscaPessoa">
+                <select class="search-input" id="filtroCidadePessoa" onchange="filtrarPessoasCidade(this.value)" style="max-width:230px;cursor:pointer"><option value="">Todas as cidades</option></select>
                 <button class="btn btn-primary" onclick="openModal('modalPessoa')">+ Adicionar</button>
             </div>
             <div class="stats-grid" id="pessoasStats"></div>
@@ -1418,7 +1419,7 @@
                     <option value="outro">Outro</option>
                 </select>
             </div>
-            <div class="form-group"><label>Região</label><input type="text" id="peRegiao" placeholder="Ex: Taguatinga"></div>
+            <div class="form-group"><label>Região</label><select id="peRegiao"><option value="">Selecione a cidade</option></select></div>
             <div class="form-group"><label>Observações</label><textarea id="peObs" rows="2"></textarea></div>
             <div class="modal-actions">
                 <button class="btn btn-outline" onclick="closeModal('modalPessoa')">Cancelar</button>
@@ -2292,19 +2293,27 @@
 
         // ===== PESSOAS =====
         let _filtroPessoaFuncao = '';
+        let _filtroPessoaCidade = '';
         function renderPessoas() {
             const busca = (document.getElementById('buscaPessoa').value||'').toLowerCase();
-            const funcoes = {}; data.pessoas.forEach(p=>{funcoes[p.funcao]=(funcoes[p.funcao]||0)+1;});
+            const cidadeMap = {};
+            REGIOES_DF.forEach(c=>{ cidadeMap[_normRA(c)] = c; });
+            data.pessoas.forEach(p=>{ if(p.regiao){ const k=_normRA(p.regiao); if(!cidadeMap[k]) cidadeMap[k]=p.regiao; } });
+            const cidades = Object.values(cidadeMap).sort((a,b)=>a.localeCompare(b,'pt'));
+            const selCidade = document.getElementById('filtroCidadePessoa');
+            if(selCidade){ selCidade.innerHTML = '<option value="">Todas as cidades</option>' + cidades.map(c=>'<option value="'+escapeHtml(c)+'"'+(_filtroPessoaCidade&&_normRA(c)===_normRA(_filtroPessoaCidade)?' selected':'')+'>'+escapeHtml(c)+'</option>').join(''); }
+            const naCidade = data.pessoas.filter(p=>!_filtroPessoaCidade||_normRA(p.regiao)===_normRA(_filtroPessoaCidade));
+            const funcoes = {}; naCidade.forEach(p=>{funcoes[p.funcao]=(funcoes[p.funcao]||0)+1;});
 
             document.getElementById('pessoasStats').innerHTML = `
-                <div class="stat-card ${_filtroPessoaFuncao===''?'ativo':''}" style="cursor:pointer" onclick="filtrarPessoas('')"><div class="stat-label">Total</div><div class="stat-value">${data.pessoas.length}</div></div>
+                <div class="stat-card ${_filtroPessoaFuncao===''?'ativo':''}" style="cursor:pointer" onclick="filtrarPessoas('')"><div class="stat-label">Total</div><div class="stat-value">${naCidade.length}</div></div>
                 <div class="stat-card blue ${_filtroPessoaFuncao==='coordenador'?'ativo':''}" style="cursor:pointer" onclick="filtrarPessoas('coordenador')"><div class="stat-label">Coordenadores</div><div class="stat-value">${funcoes.coordenador||0}</div></div>
                 <div class="stat-card purple ${_filtroPessoaFuncao==='voluntario'?'ativo':''}" style="cursor:pointer" onclick="filtrarPessoas('voluntario')"><div class="stat-label">Voluntários</div><div class="stat-value">${funcoes.voluntario||0}</div></div>
                 <div class="stat-card gold ${_filtroPessoaFuncao==='lideranca'?'ativo':''}" style="cursor:pointer" onclick="filtrarPessoas('lideranca')"><div class="stat-label">Lideranças</div><div class="stat-value">${funcoes.lideranca||0}</div></div>
             `;
 
             const fc = {coordenador:'tag-blue',apoiador:'tag-green',voluntario:'tag-purple',lideranca:'tag-gold',assessor:'tag-cyan',digital:'tag-pink',motorista:'tag-orange',outro:'tag-green'};
-            const filtrados = data.pessoas.filter(p=>(!_filtroPessoaFuncao||p.funcao===_filtroPessoaFuncao)&&(!busca||(p.nome||'').toLowerCase().includes(busca)||(p.regiao||'').toLowerCase().includes(busca)));
+            const filtrados = naCidade.filter(p=>(!_filtroPessoaFuncao||p.funcao===_filtroPessoaFuncao)&&(!busca||(p.nome||'').toLowerCase().includes(busca)||(p.regiao||'').toLowerCase().includes(busca)));
 
             document.getElementById('pessoasGrid').innerHTML = filtrados.length
                 ? filtrados.map(p=>`<div class="card-item"><h4>👤 ${escapeHtml(p.nome)}</h4><p>📞 ${escapeHtml(p.tel||'-')}</p><p>📍 ${escapeHtml(p.regiao||'-')}</p><span class="tag ${fc[p.funcao]||'tag-green'}">${escapeHtml(p.funcao)}</span>${p.obs?'<p style="margin-top:8px;font-style:italic;color:var(--text-dim)">'+escapeHtml(p.obs)+'</p>':''}<div class="card-actions"><button class="btn btn-danger btn-sm" onclick="deletePessoa(${p.id})">Excluir</button></div></div>`).join('')
@@ -2312,6 +2321,7 @@
         }
 
         function filtrarPessoas(f){ _filtroPessoaFuncao = f; renderPessoas(); }
+        function filtrarPessoasCidade(c){ _filtroPessoaCidade = c; renderPessoas(); }
 
         function savePessoa() {
             const n = document.getElementById('peNome').value.trim();
@@ -2869,6 +2879,8 @@
         document.querySelectorAll('.nav-item').forEach(i=>{i.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();i.click();}});});
 
         // ===== INIT =====
+        function popularSelectRegioes(){ const s=document.getElementById('peRegiao'); if(s){ s.innerHTML='<option value="">Selecione a cidade</option>'+REGIOES_DF.slice().sort((a,b)=>a.localeCompare(b,'pt')).map(c=>'<option value="'+escapeHtml(c)+'">'+escapeHtml(c)+'</option>').join(''); } }
+        popularSelectRegioes();
         renderDashboard();
     </script>
 </body>

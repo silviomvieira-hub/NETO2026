@@ -1102,8 +1102,8 @@
             <div class="nav-item" onclick="showPage('demandas')" role="button" tabindex="0">
                 <span class="nav-icon">📋</span> Demandas Abertas
             </div>
-            <div class="nav-item" onclick="showPage('pesquisas')" role="button" tabindex="0">
-                <span class="nav-icon">📊</span> Pesquisas Eleitorais
+            <div class="nav-item" onclick="showPage('inteligencia')" role="button" tabindex="0">
+                <span class="nav-icon">🧠</span> Inteligência
             </div>
 
             <div class="nav-section">Operações</div>
@@ -1238,17 +1238,19 @@
         </div>
 
         <!-- PESQUISAS -->
-        <div class="page" id="page-pesquisas">
+        <div class="page" id="page-inteligencia">
             <div class="toolbar">
-                <h2 style="flex:1;font-size:1.1rem;font-weight:800;color:var(--green);">📊 Pesquisas Eleitorais</h2>
-                <button class="btn btn-primary" onclick="openModal('modalPesquisa')">+ Registrar Pesquisa</button>
+                <h2 style="flex:1;font-size:1.1rem;font-weight:800;color:var(--green);">🧠 Central de Inteligência</h2>
+                <button class="btn btn-outline" onclick="openModal('modalApify')">📥 Importar do Apify</button>
+                <button class="btn btn-primary" onclick="openModal('modalIntel')">+ Adicionar</button>
             </div>
-            <div class="stats-grid" id="pesquisasStats"></div>
-            <div class="panel">
-                <div class="panel-title">Evolução nas Pesquisas</div>
-                <div id="pesquisasChart"></div>
-                <div id="pesquisasList" style="margin-top:20px;"></div>
+            <div class="stats-grid" id="intelStats"></div>
+            <div class="panel" style="margin-bottom:16px;">
+                <div class="panel-title">💡 Como usar esta central</div>
+                <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.6;">Nesta fase de pré-campanha não há pesquisas — a inteligência vem das redes. Monitore <strong>perfis e influenciadores</strong> por região, organize os <strong>grupos de WhatsApp</strong> da base e acompanhe os <strong>temas que mais repercutem</strong>. Use <strong>Importar do Apify</strong> para trazer perfis do Instagram já coletados (seguidores, bio) e transformá-los em alvos de mobilização.</p>
             </div>
+            <div id="intelFiltros" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
+            <div class="cards-grid" id="intelGrid"></div>
         </div>
 
         <!-- MATERIAIS -->
@@ -1477,19 +1479,53 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="modalPesquisa" onclick="closeModal('modalPesquisa')">
+    <div class="modal-overlay" id="modalIntel" onclick="closeModal('modalIntel')">
         <div class="modal" onclick="event.stopPropagation()">
-            <h2>📊 Registrar Pesquisa</h2>
-            <div class="form-group"><label>Data</label><input type="date" id="psData"></div>
-            <div class="form-group"><label>Instituto / Fonte</label><input type="text" id="psInst" placeholder="Ex: Pesquisa Interna"></div>
-            <div class="form-group"><label>% Valdelino</label><input type="number" id="psNeto" step="0.1" placeholder="Ex: 12.5"></div>
-            <div class="form-group"><label>1º Colocado (Nome)</label><input type="text" id="ps1Nome"></div>
-            <div class="form-group"><label>1º Colocado (%)</label><input type="number" id="ps1Pct" step="0.1"></div>
-            <div class="form-group"><label>Amostra</label><input type="number" id="psAmostra"></div>
-            <div class="form-group"><label>Margem de Erro (%)</label><input type="number" id="psMargem" step="0.1"></div>
+            <h2>🧠 Adicionar Inteligência</h2>
+            <div class="form-group">
+                <label>Tipo</label>
+                <select id="inTipo">
+                    <option value="perfil">📷 Perfil Instagram</option>
+                    <option value="influencer">⭐ Influenciador / Liderança digital</option>
+                    <option value="grupo">💬 Grupo de WhatsApp</option>
+                    <option value="tema">🔥 Tema / Pauta em alta</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Nome / Título</label><input type="text" id="inNome" placeholder="Ex: Maria Apoiadora / Mobilidade no Gama"></div>
+            <div class="form-group"><label>Identificador</label><input type="text" id="inIdent" placeholder="@perfil, link do grupo ou #hashtag"></div>
+            <div class="form-group"><label>Região (RA)</label><input type="text" id="inRegiao" placeholder="Ex: Gama, Ceilândia"></div>
+            <div class="form-group"><label>Métrica</label><input type="text" id="inMetrica" placeholder="Seguidores / membros / nº de menções"></div>
+            <div class="form-group">
+                <label>Alinhamento</label>
+                <select id="inAlinhamento">
+                    <option value="favoravel">💙 Favorável</option>
+                    <option value="neutro">😐 Neutro / a conquistar</option>
+                    <option value="contra">⚠️ Contrário</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Observações</label><textarea id="inObs" rows="3" placeholder="Ação sugerida, contato, contexto..."></textarea></div>
             <div class="modal-actions">
-                <button class="btn btn-outline" onclick="closeModal('modalPesquisa')">Cancelar</button>
-                <button class="btn btn-primary" onclick="savePesquisa()">Salvar</button>
+                <button class="btn btn-outline" onclick="closeModal('modalIntel')">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveIntel()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalApify" onclick="closeModal('modalApify')">
+        <div class="modal" onclick="event.stopPropagation()">
+            <h2>📥 Importar do Apify</h2>
+            <p style="font-size:0.78rem;color:var(--text-dim);line-height:1.6;margin-bottom:12px;">1. No Apify, rode o ator <strong>Instagram Profile Scraper</strong> (ou Hashtag / Followers). 2. Exporte o resultado em <strong>JSON</strong>. 3. Cole o conteúdo abaixo. Cada perfil vira um registro com @usuário, seguidores e bio.</p>
+            <div class="form-group"><label>JSON do Apify</label><textarea id="apJson" rows="8" placeholder='[{"username":"...","followersCount":1234,"fullName":"...","biography":"..."}]'></textarea></div>
+            <div class="form-group">
+                <label>Importar como</label>
+                <select id="apTipo">
+                    <option value="perfil">📷 Perfil Instagram</option>
+                    <option value="influencer">⭐ Influenciador</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal('modalApify')">Cancelar</button>
+                <button class="btn btn-primary" onclick="importarApify()">Importar</button>
             </div>
         </div>
     </div>
@@ -1697,12 +1733,13 @@
                     {id:410, titulo:'Ponto de alagamento na EPTG', regiao:'Aguas Claras', categoria:'infraestrutura', prioridade:'media', status:'em_andamento', desc:'Todo periodo de chuva alaga e trava o transito.', solicitante:'Comunidade Aguas Claras', data:ha10}
                 ],
 
-                pesquisas: [
-                    {id:501, data:ha60, instituto:'Pesquisa Interna', pctNeto:'3.2', primeiroNome:'Fulano Souza', primeiroPct:'22.1', amostra:500, margem:'4.5'},
-                    {id:502, data:ha45, instituto:'Instituto Real', pctNeto:'5.8', primeiroNome:'Fulano Souza', primeiroPct:'21.3', amostra:800, margem:'3.5'},
-                    {id:503, data:ha30, instituto:'Pesquisa Interna', pctNeto:'8.1', primeiroNome:'Fulano Souza', primeiroPct:'20.5', amostra:600, margem:'4.0'},
-                    {id:504, data:ha15, instituto:'DataDF Pesquisas', pctNeto:'11.4', primeiroNome:'Fulano Souza', primeiroPct:'19.8', amostra:1200, margem:'2.8'},
-                    {id:505, data:ha5, instituto:'Pesquisa Interna', pctNeto:'14.7', primeiroNome:'Fulano Souza', primeiroPct:'18.9', amostra:1000, margem:'3.1'}
+                inteligencia: [
+                    {id:501, tipo:'perfil', nome:'Maria Apoiadora', ident:'@maria.gama', regiao:'Gama', metrica:'3.200 seguidores', alinhamento:'favoravel', obs:'Posta sobre o candidato. Convidar para evento.'},
+                    {id:502, tipo:'influencer', nome:'Pastor João', ident:'@pastorjoao.df', regiao:'Ceilândia', metrica:'28.500 seguidores', alinhamento:'neutro', obs:'Grande alcance religioso. Agendar visita.'},
+                    {id:503, tipo:'grupo', nome:'Caminhoneiros DF Unidos', ident:'chat.whatsapp.com/xxxxx', regiao:'Taguatinga', metrica:'256 membros', alinhamento:'favoravel', obs:'Base forte da categoria. Responsavel: Antonio.'},
+                    {id:504, tipo:'grupo', nome:'Moradores Sol Nascente', ident:'chat.whatsapp.com/yyyyy', regiao:'Sol Nascente', metrica:'480 membros', alinhamento:'neutro', obs:'Discutem demandas locais de saude.'},
+                    {id:505, tipo:'tema', nome:'Falta de medicos nas UBS', ident:'#saudeDF', regiao:'Sol Nascente', metrica:'+1.200 mencoes/semana', alinhamento:'favoravel', obs:'Pauta quente. Alinhar discurso de saude.'},
+                    {id:506, tipo:'tema', nome:'Asfalto e mobilidade', ident:'#mobilidadeDF', regiao:'Arniqueira', metrica:'em alta', alinhamento:'neutro', obs:'Demanda recorrente. Cruzar com Demandas do Povo.'}
                 ],
 
                 materiais: [
@@ -1840,7 +1877,7 @@
                     {texto:'👥 3 novos apoiadores cadastrados em Aguas Claras', data:new Date(Date.now()-2*86400000).toISOString()},
                     {texto:'📦 1.200 santinhos distribuidos em Ceilandia esta semana', data:new Date(Date.now()-3*86400000).toISOString()},
                     {texto:'⭐ Novo lider cadastrado: Influencer Bia DF (45k seguidores)', data:new Date(Date.now()-4*86400000).toISOString()},
-                    {texto:'📊 Nova pesquisa: Valdelino sobe para 14.7%! Tendencia de alta!', data:new Date(Date.now()-5*86400000).toISOString()},
+                    {texto:'🧠 Inteligência: Pastor João (28,5 mil seguidores) mapeado em Ceilândia', data:new Date(Date.now()-5*86400000).toISOString()},
                     {texto:'🔥 Carlos Eduardo Silva esteve ativo 7 dias seguidos!', data:new Date(Date.now()-5*86400000).toISOString()},
                     {texto:'🤝 Reuniao com sindicato dos servidores — pauta alinhada', data:new Date(Date.now()-6*86400000).toISOString()},
                     {texto:'✅ Demanda resolvida: Praca de Sobradinho — equipamentos trocados!', data:new Date(Date.now()-7*86400000).toISOString()}
@@ -1889,7 +1926,7 @@
             dashboard:'🚀 Dashboard', cidades:'🗺️ Cidades Visitadas',
             agenda:'📅 Agenda do Valdelino', pessoas:'👥 Time do Valdelino',
             lideres:'⭐ Líderes', quemequem:'🔍 Quem é Quem',
-            demandas:'📋 Demandas', pesquisas:'📊 Pesquisas',
+            demandas:'📋 Demandas', inteligencia:'🧠 Inteligência',
             materiais:'📦 Materiais', gamificacao:'🏆 Gamificação'
         };
 
@@ -1931,7 +1968,7 @@
             const fns = {
                 dashboard:renderDashboard, cidades:renderCidades, agenda:renderAgenda,
                 pessoas:renderPessoas, lideres:renderLideres, quemequem:renderQuemEQuem,
-                demandas:renderDemandas, pesquisas:renderPesquisas, materiais:renderMateriais,
+                demandas:renderDemandas, inteligencia:renderInteligencia, materiais:renderMateriais,
                 gamificacao:renderGamificacao
             };
             if (fns[page]) fns[page]();
@@ -2035,7 +2072,7 @@
             const cv = Object.keys(data.visitas).filter(c => data.visitas[c]?.length > 0).length;
             const tp = data.pessoas.length;
             const da = data.demandas.filter(d => d.status !== 'resolvida').length;
-            const tps = data.pesquisas.length;
+            const tps = (data.inteligencia||[]).length;
             const tl = data.lideres.length;
             const eh = data.eventos.filter(e => e.data === new Date().toISOString().split('T')[0]).length;
             const totalXP = data.gamificacao.reduce((s,g) => s + (g.xp||0), 0);
@@ -2044,7 +2081,7 @@
                 <div class="stat-card"><div class="stat-icon">🗺️</div><div class="stat-label">Cidades Visitadas</div><div class="stat-value">${cv}</div><div class="stat-sub">de ${REGIOES_DF.length} RAs</div></div>
                 <div class="stat-card blue"><div class="stat-icon">👥</div><div class="stat-label">Time</div><div class="stat-value">${tp}</div><div class="stat-sub">${data.pessoas.filter(p=>p.funcao==='coordenador').length} coordenadores</div></div>
                 <div class="stat-card orange"><div class="stat-icon">📋</div><div class="stat-label">Demandas Abertas</div><div class="stat-value">${da}</div><div class="stat-sub">${data.demandas.filter(d=>d.prioridade==='alta'&&d.status!=='resolvida').length} urgentes</div></div>
-                <div class="stat-card purple"><div class="stat-icon">📊</div><div class="stat-label">Pesquisas</div><div class="stat-value">${tps}</div><div class="stat-sub">${tps>0?'Último: '+data.pesquisas[tps-1].pctNeto+'%':'Nenhuma'}</div></div>
+                <div class="stat-card purple"><div class="stat-icon">🧠</div><div class="stat-label">Inteligência</div><div class="stat-value">${tps}</div><div class="stat-sub">${tps>0?'alvos monitorados':'Nenhum'}</div></div>
                 <div class="stat-card gold"><div class="stat-icon">⭐</div><div class="stat-label">Líderes</div><div class="stat-value">${tl}</div><div class="stat-sub">Alcance: ${data.lideres.reduce((s,l)=>s+(parseInt(l.alcance)||0),0).toLocaleString('pt-BR')}</div></div>
                 <div class="stat-card cyan"><div class="stat-icon">⭐</div><div class="stat-label">Pontos da Equipe</div><div class="stat-value">${totalXP.toLocaleString('pt-BR')}</div><div class="stat-sub">no ranking da gamificação</div></div>
             `;
@@ -2384,36 +2421,66 @@
         function deleteDemanda(id) { if(!confirm('Excluir?'))return; data.demandas=data.demandas.filter(d=>d.id!==id); saveData(); renderDemandas(); }
 
         // ===== PESQUISAS =====
-        function renderPesquisas() {
-            const u = data.pesquisas.length>0?data.pesquisas[data.pesquisas.length-1]:null;
+        let intelFiltro = 'todos';
+        function renderInteligencia() {
+            const I = data.inteligencia || (data.inteligencia = []);
+            const ti = {perfil:'📷', influencer:'⭐', grupo:'💬', tema:'🔥'};
+            const tn = {perfil:'Perfil Instagram', influencer:'Influenciador', grupo:'Grupo WhatsApp', tema:'Tema em alta'};
+            const ai = {favoravel:'💙', neutro:'😐', contra:'⚠️'};
+            const ac = {favoravel:'tag-blue', neutro:'tag-gold', contra:'tag-red'};
+            const cont = t => I.filter(x=>x.tipo===t).length;
 
-            document.getElementById('pesquisasStats').innerHTML = `
-                <div class="stat-card"><div class="stat-label">Última % Valdelino</div><div class="stat-value" style="color:var(--green)">${u?u.pctNeto+'%':'-'}</div><div class="stat-sub">${u?formatDate(u.data)+' - '+escapeHtml(u.instituto):''}</div></div>
-                <div class="stat-card red"><div class="stat-label">1º Colocado</div><div class="stat-value">${u?u.pct1+'%':'-'}</div><div class="stat-sub">${u?escapeHtml(u.nome1):''}</div></div>
-                <div class="stat-card blue"><div class="stat-label">Total Pesquisas</div><div class="stat-value">${data.pesquisas.length}</div></div>
+            document.getElementById('intelStats').innerHTML = `
+                <div class="stat-card"><div class="stat-icon">📷</div><div class="stat-label">Perfis Instagram</div><div class="stat-value">${cont('perfil')}</div></div>
+                <div class="stat-card gold"><div class="stat-icon">⭐</div><div class="stat-label">Influenciadores</div><div class="stat-value">${cont('influencer')}</div></div>
+                <div class="stat-card blue"><div class="stat-icon">💬</div><div class="stat-label">Grupos WhatsApp</div><div class="stat-value">${cont('grupo')}</div></div>
+                <div class="stat-card red"><div class="stat-icon">🔥</div><div class="stat-label">Temas em alta</div><div class="stat-value">${cont('tema')}</div></div>
             `;
 
-            document.getElementById('pesquisasChart').innerHTML = data.pesquisas.length
-                ? data.pesquisas.map(p=>`<div style="margin-bottom:24px;"><div style="font-size:0.72rem;font-weight:600;color:var(--text-dim);margin-bottom:8px;">${formatDate(p.data)} — ${escapeHtml(p.instituto)} (Amostra: ${p.amostra||'-'})</div><div class="bar-row"><span class="bar-label" style="color:var(--green)">Valdelino</span><div class="bar-track"><div class="bar-fill" style="width:${p.pctNeto||0}%;background:linear-gradient(90deg,var(--green),var(--cyan));">${p.pctNeto}%</div></div></div><div class="bar-row"><span class="bar-label" style="color:var(--red)">${escapeHtml(p.nome1||'1º')}</span><div class="bar-track"><div class="bar-fill" style="width:${p.pct1||0}%;background:linear-gradient(90deg,var(--red),var(--pink));">${p.pct1}%</div></div></div></div>`).join('')
-                : '<p style="color:var(--text-dim)">Nenhuma pesquisa registrada ainda</p>';
+            const chips = [['todos','Todos'],['perfil','📷 Perfis'],['influencer','⭐ Influenciadores'],['grupo','💬 Grupos WhatsApp'],['tema','🔥 Temas']];
+            document.getElementById('intelFiltros').innerHTML = chips.map(([k,l])=>`<button class="btn btn-sm ${intelFiltro===k?'btn-primary':'btn-outline'}" onclick="filtrarIntel('${k}')">${l}</button>`).join('');
 
-            document.getElementById('pesquisasList').innerHTML = data.pesquisas.length
-                ? '<table class="data-table"><thead><tr><th>Data</th><th>Instituto</th><th>% Valdelino</th><th>1º</th><th>% 1º</th><th>Amostra</th><th></th></tr></thead><tbody>'+data.pesquisas.map(p=>`<tr><td>${formatDate(p.data)}</td><td>${escapeHtml(p.instituto)}</td><td><strong style="color:var(--green)">${p.pctNeto}%</strong></td><td>${escapeHtml(p.nome1)}</td><td>${p.pct1}%</td><td>${p.amostra||'-'}</td><td><button class="btn btn-danger btn-sm" onclick="deletePesquisa(${p.id})">X</button></td></tr>`).join('')+'</tbody></table>'
-                : '';
+            const lista = intelFiltro==='todos' ? I : I.filter(x=>x.tipo===intelFiltro);
+            document.getElementById('intelGrid').innerHTML = lista.length
+                ? lista.map(x=>`<div class="card-item"><h4>${ti[x.tipo]||'🧠'} ${escapeHtml(x.nome)}</h4><p><strong style="color:#fff">${escapeHtml(x.ident||'-')}</strong></p>${x.regiao?'<p>📍 '+escapeHtml(x.regiao)+'</p>':''}${x.metrica?'<p>📈 '+escapeHtml(x.metrica)+'</p>':''}<span class="tag tag-purple">${escapeHtml(tn[x.tipo]||x.tipo)}</span> <span class="tag ${ac[x.alinhamento]||'tag-blue'}">${ai[x.alinhamento]||''} ${escapeHtml(x.alinhamento||'')}</span>${x.obs?'<p style="margin-top:8px;font-style:italic;font-size:0.72rem;color:var(--text-dim)">'+escapeHtml(x.obs)+'</p>':''}<div class="card-actions"><button class="btn btn-danger btn-sm" onclick="deleteIntel(${x.id})">Excluir</button></div></div>`).join('')
+                : '<p style="color:var(--text-dim)">Nenhum registro. Adicione perfis, grupos e temas — ou importe do Apify!</p>';
         }
 
-        function savePesquisa() {
-            const d = document.getElementById('psData').value;
-            const i = document.getElementById('psInst').value.trim();
-            const n = parseFloat(document.getElementById('psNeto').value);
-            if(!d||!i||isNaN(n))return alert('Preencha data, instituto e %.');
-            data.pesquisas.push({id:gerarId(),data:d,instituto:i,pctNeto:n,nome1:document.getElementById('ps1Nome').value.trim(),pct1:parseFloat(document.getElementById('ps1Pct').value)||0,amostra:document.getElementById('psAmostra').value,margem:document.getElementById('psMargem').value});
-            addAtividade('📊 Pesquisa: '+i+' — Valdelino '+n+'%'); saveData(); closeModal('modalPesquisa');
-            ['psInst','psNeto','ps1Nome','ps1Pct','psAmostra','psMargem'].forEach(id=>document.getElementById(id).value='');
-            renderPesquisas();
+        function filtrarIntel(t) { intelFiltro = t; renderInteligencia(); }
+
+        function saveIntel() {
+            const nome = document.getElementById('inNome').value.trim();
+            if(!nome)return alert('Preencha o nome/título.');
+            (data.inteligencia||(data.inteligencia=[])).push({id:gerarId(),tipo:document.getElementById('inTipo').value,nome:nome,ident:document.getElementById('inIdent').value.trim(),regiao:document.getElementById('inRegiao').value.trim(),metrica:document.getElementById('inMetrica').value.trim(),alinhamento:document.getElementById('inAlinhamento').value,obs:document.getElementById('inObs').value.trim()});
+            addAtividade('🧠 Inteligência: '+nome+' adicionado'); saveData(); closeModal('modalIntel');
+            ['inNome','inIdent','inRegiao','inMetrica','inObs'].forEach(id=>document.getElementById(id).value='');
+            renderInteligencia();
         }
 
-        function deletePesquisa(id) { if(!confirm('Excluir?'))return; data.pesquisas=data.pesquisas.filter(p=>p.id!==id); saveData(); renderPesquisas(); }
+        function deleteIntel(id) { if(!confirm('Excluir?'))return; data.inteligencia=(data.inteligencia||[]).filter(x=>x.id!==id); saveData(); renderInteligencia(); }
+
+        function importarApify() {
+            const raw = document.getElementById('apJson').value.trim();
+            if(!raw)return alert('Cole o JSON exportado do Apify.');
+            let arr;
+            try { arr = JSON.parse(raw); } catch(e){ return alert('JSON inválido. Confira o conteúdo colado.'); }
+            if(!Array.isArray(arr)) arr = [arr];
+            const tipo = document.getElementById('apTipo').value;
+            let n = 0;
+            arr.forEach(o=>{
+                if(!o || typeof o !== 'object') return;
+                const user = o.username||o.userName||o.ownerUsername||o.handle;
+                if(!user) return;
+                const seg = o.followersCount||o.followers||o.followersCounts;
+                (data.inteligencia||(data.inteligencia=[])).push({id:gerarId(),tipo:tipo,nome:o.fullName||o.full_name||user,ident:'@'+String(user).replace(/^@/,''),regiao:'',metrica:seg?Number(seg).toLocaleString('pt-BR')+' seguidores':'',alinhamento:'neutro',obs:String(o.biography||o.bio||'').slice(0,160)});
+                n++;
+            });
+            if(!n) return alert('Nenhum perfil reconhecido no JSON. Verifique se há o campo "username".');
+            addAtividade('📥 Apify: '+n+' perfis importados'); saveData(); closeModal('modalApify');
+            document.getElementById('apJson').value='';
+            intelFiltro = tipo; renderInteligencia();
+            alert(n+' perfis importados com sucesso!');
+        }
 
         // ===== MATERIAIS =====
         function renderMateriais() {

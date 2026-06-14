@@ -1417,18 +1417,24 @@
         <div class="modal" onclick="event.stopPropagation()">
             <h2>🔍 Quem é Quem</h2>
             <div class="form-group"><label>Nome</label><input type="text" id="qqNome" placeholder="Nome"></div>
-            <div class="form-group"><label>Cargo / Função</label><input type="text" id="qqCargo" placeholder="Ex: Vereador, Líder Comunitário"></div>
             <div class="form-group">
-                <label>Relação</label>
-                <select id="qqRelacao">
-                    <option value="aliado">🤝 Aliado</option>
-                    <option value="neutro">😐 Neutro</option>
-                    <option value="adversario">⚔️ Adversário</option>
-                    <option value="potencial">🎯 Potencial Aliado</option>
+                <label>Função</label>
+                <select id="qqFuncao">
+                    <option value="Secretária">🗂️ Secretária</option>
+                    <option value="Motorista">🚗 Motorista</option>
+                    <option value="Equipe de Som">🔊 Equipe de Som</option>
+                    <option value="Agenda / Cerimonial">📋 Agenda / Cerimonial</option>
+                    <option value="Assessor(a)">🤝 Assessor(a)</option>
+                    <option value="Imprensa / Mídias">📱 Imprensa / Mídias</option>
+                    <option value="Segurança">🛡️ Segurança</option>
+                    <option value="Fotografia / Vídeo">📸 Fotografia / Vídeo</option>
+                    <option value="Jurídico">⚖️ Jurídico</option>
+                    <option value="Financeiro">💰 Financeiro</option>
+                    <option value="Outro">👤 Outro</option>
                 </select>
             </div>
-            <div class="form-group"><label>Região</label><input type="text" id="qqRegiao" placeholder="Região de influência"></div>
-            <div class="form-group"><label>Observações</label><textarea id="qqObs" rows="3" placeholder="Intel sobre esta pessoa..."></textarea></div>
+            <div class="form-group"><label>Telefone</label><input type="tel" id="qqTel" placeholder="(61) 90000-0000"></div>
+            <div class="form-group"><label>Observações</label><textarea id="qqObs" rows="3" placeholder="Disponibilidade, área de atuação, etc."></textarea></div>
             <div class="modal-actions">
                 <button class="btn btn-outline" onclick="closeModal('modalQuem')">Cancelar</button>
                 <button class="btn btn-primary" onclick="saveQuem()">Salvar</button>
@@ -1669,13 +1675,13 @@
                 ],
 
                 quemequem: [
-                    {id:301, nome:'Dep. Fulano Souza', cargo:'Deputado Distrital (atual)', relacao:'adversario', regiao:'Ceilandia', obs:'Principal adversario na regiao. Base forte em Ceilandia Norte.'},
-                    {id:302, nome:'Dep. Beltrana Costa', cargo:'Deputada Distrital (atual)', relacao:'aliado', regiao:'Taguatinga', obs:'Aliada estrategica. Pode compor chapa.'},
-                    {id:303, nome:'Vereador Cicrano Jr.', cargo:'Presidente da Camara de Comercio', relacao:'neutro', regiao:'Aguas Claras', obs:'Pode ser conquistado. Agenda economia e emprego.'},
-                    {id:304, nome:'Lider Jorge Mendes', cargo:'Presidente do PT-DF', relacao:'adversario', regiao:'Plano Piloto', obs:'Articulador de oposicao. Monitorar movimentos.'},
-                    {id:305, nome:'Fatima Bernardo', cargo:'Secretaria de Educacao', relacao:'potencial', regiao:'Guara', obs:'Afinidade em pauta educacao. Aberta a dialogo.'},
-                    {id:306, nome:'Coronel Ribeiro', cargo:'Comandante PM do DF (reserva)', relacao:'aliado', regiao:'Gama', obs:'Forte influencia na area de seguranca. Aliado confirmado.'},
-                    {id:307, nome:'Dr. Patricia Leal', cargo:'Presidente OAB-DF', relacao:'neutro', regiao:'Asa Sul', obs:'Neutra, mas aberta. Potencial para pauta justica social.'}
+                    {id:301, nome:'Cleide Martins', funcao:'Secretária', tel:'(61) 98111-2233', obs:'Organiza a agenda e o gabinete. Disponivel periodo integral.'},
+                    {id:302, nome:'Antônio Pereira', funcao:'Motorista', tel:'(61) 98222-3344', obs:'Motorista principal do candidato. Conhece todas as RAs.'},
+                    {id:303, nome:'Equipe Som & Cia', funcao:'Equipe de Som', tel:'(61) 98333-4455', obs:'Carro de som e sonorizacao de eventos.'},
+                    {id:304, nome:'Marina Lopes', funcao:'Agenda / Cerimonial', tel:'(61) 98444-5566', obs:'Cuida da agenda de compromissos e do cerimonial.'},
+                    {id:305, nome:'Rafael Gomes', funcao:'Imprensa / Mídias', tel:'(61) 98555-6677', obs:'Redes sociais, fotos e divulgacao.'},
+                    {id:306, nome:'Sgt. Oliveira', funcao:'Segurança', tel:'(61) 98666-7788', obs:'Seguranca em eventos e deslocamentos.'},
+                    {id:307, nome:'Dra. Helena Castro', funcao:'Jurídico', tel:'(61) 98777-8899', obs:'Acompanhamento juridico eleitoral.'}
                 ],
 
                 demandas: [
@@ -2316,23 +2322,21 @@
         // ===== QUEM E QUEM =====
         function renderQuemEQuem() {
             const busca = (document.getElementById('buscaQuem').value||'').toLowerCase();
-            const rc = {aliado:'tag-green',neutro:'tag-blue',adversario:'tag-red',potencial:'tag-gold'};
-            const ri = {aliado:'🤝',neutro:'😐',adversario:'⚔️',potencial:'🎯'};
-            const bc = {aliado:'var(--green)',neutro:'var(--blue)',adversario:'var(--red)',potencial:'var(--gold)'};
+            const fi = {'Secretária':'🗂️','Motorista':'🚗','Equipe de Som':'🔊','Agenda / Cerimonial':'📋','Assessor(a)':'🤝','Imprensa / Mídias':'📱','Segurança':'🛡️','Fotografia / Vídeo':'📸','Jurídico':'⚖️','Financeiro':'💰','Outro':'👤'};
 
-            const filtrados = data.quemequem.filter(q=>!busca||(q.nome||'').toLowerCase().includes(busca)||(q.cargo||'').toLowerCase().includes(busca));
+            const filtrados = data.quemequem.filter(q=>!busca||(q.nome||'').toLowerCase().includes(busca)||(q.funcao||'').toLowerCase().includes(busca));
 
             document.getElementById('quemGrid').innerHTML = filtrados.length
-                ? filtrados.map(q=>`<div class="card-item" style="border-left-color:${bc[q.relacao]||'var(--green)'}"><h4>${ri[q.relacao]||'👤'} ${escapeHtml(q.nome)}</h4><p><strong style="color:#fff">${escapeHtml(q.cargo||'-')}</strong></p><p>📍 ${escapeHtml(q.regiao||'-')}</p><span class="tag ${rc[q.relacao]||'tag-blue'}">${escapeHtml(q.relacao)}</span>${q.obs?'<p style="margin-top:8px;font-style:italic;font-size:0.72rem;color:var(--text-dim)">'+escapeHtml(q.obs)+'</p>':''}<div class="card-actions"><button class="btn btn-danger btn-sm" onclick="deleteQuem(${q.id})">Excluir</button></div></div>`).join('')
-                : '<p style="color:var(--text-dim)">Nenhum registro. Mapeie o cenário político!</p>';
+                ? filtrados.map(q=>`<div class="card-item"><h4>${fi[q.funcao]||'👤'} ${escapeHtml(q.nome)}</h4><p><strong style="color:#fff">${escapeHtml(q.funcao||'-')}</strong></p>${q.tel?'<p>📞 '+escapeHtml(q.tel)+'</p>':''}<span class="tag tag-blue">${escapeHtml(q.funcao||'Equipe')}</span>${q.obs?'<p style="margin-top:8px;font-style:italic;font-size:0.72rem;color:var(--text-dim)">'+escapeHtml(q.obs)+'</p>':''}<div class="card-actions"><button class="btn btn-danger btn-sm" onclick="deleteQuem(${q.id})">Excluir</button></div></div>`).join('')
+                : '<p style="color:var(--text-dim)">Nenhum registro. Cadastre a equipe da campanha!</p>';
         }
 
         function saveQuem() {
             const n = document.getElementById('qqNome').value.trim();
             if(!n)return alert('Preencha o nome.');
-            data.quemequem.push({id:gerarId(),nome:n,cargo:document.getElementById('qqCargo').value.trim(),relacao:document.getElementById('qqRelacao').value,regiao:document.getElementById('qqRegiao').value.trim(),obs:document.getElementById('qqObs').value.trim()});
-            addAtividade('🔍 '+n+' mapeado'); saveData(); closeModal('modalQuem');
-            ['qqNome','qqCargo','qqRegiao','qqObs'].forEach(id=>document.getElementById(id).value='');
+            data.quemequem.push({id:gerarId(),nome:n,funcao:document.getElementById('qqFuncao').value,tel:document.getElementById('qqTel').value.trim(),obs:document.getElementById('qqObs').value.trim()});
+            addAtividade('👥 '+n+' adicionado à equipe'); saveData(); closeModal('modalQuem');
+            ['qqNome','qqTel','qqObs'].forEach(id=>document.getElementById(id).value='');
             renderQuemEQuem();
         }
 

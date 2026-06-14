@@ -1084,7 +1084,7 @@
                 <span class="nav-icon">🗺️</span> Cidades Visitadas
             </div>
             <div class="nav-item" onclick="showPage('agenda')" role="button" tabindex="0">
-                <span class="nav-icon">📅</span> Agenda do Campeão
+                <span class="nav-icon">📅</span> Agenda do Valdelino
             </div>
 
             <div class="nav-section">Pessoas</div>
@@ -1116,7 +1116,7 @@
             </div>
         </div>
         <div class="sidebar-footer">
-            <span>@candidatocampeao</span>
+            <span>@valdelino</span>
         </div>
     </nav>
 
@@ -1177,7 +1177,7 @@
         <!-- AGENDA -->
         <div class="page" id="page-agenda">
             <div class="toolbar">
-                <h2 style="flex:1;font-size:1.1rem;font-weight:800;color:var(--green);">📅 Agenda do Campeão</h2>
+                <h2 style="flex:1;font-size:1.1rem;font-weight:800;color:var(--green);">📅 Agenda do Valdelino</h2>
                 <button class="btn btn-primary" onclick="openModal('modalEvento')">+ Novo Compromisso</button>
             </div>
             <div class="stats-grid" id="agendaStats"></div>
@@ -1191,7 +1191,7 @@
         <!-- PESSOAS -->
         <div class="page" id="page-pessoas">
             <div class="toolbar">
-                <h2 style="flex:1;font-size:1.1rem;font-weight:800;color:var(--green);">👥 Time do Campeão</h2>
+                <h2 style="flex:1;font-size:1.1rem;font-weight:800;color:var(--green);">👥 Time do Valdelino</h2>
                 <input type="text" class="search-input" placeholder="Buscar pessoa..." oninput="renderPessoas()" id="buscaPessoa">
                 <select class="search-input" id="filtroCidadePessoa" onchange="filtrarPessoasCidade(this.value)" style="max-width:230px;cursor:pointer"><option value="">Todas as cidades</option></select>
                 <button class="btn btn-primary" onclick="openModal('modalPessoa')">+ Adicionar</button>
@@ -1275,7 +1275,7 @@
                 <div class="missao-header">
                     <div style="position:relative;">
                         <div class="missao-slogan">CADA PONTO APROXIMA O CAMPEÃO DA VITÓRIA!</div>
-                        <div class="missao-sub">Simples: faça sua parte, marque seus pontos e suba no ranking. Quem se destaca, o Campeão reconhece.</div>
+                        <div class="missao-sub">Simples: faça sua parte, marque seus pontos e suba no ranking. Quem se destaca, o Valdelino reconhece.</div>
                     </div>
                     <div style="display:flex;gap:8px;position:relative;">
                         <button class="btn btn-primary" onclick="openModal('modalXP')">+ Registrar Pontos</button>
@@ -1292,7 +1292,7 @@
             <!-- RANKING + ULTIMAS JOGADAS -->
             <div class="game-grid-2" style="margin-top:20px;">
                 <div class="panel">
-                    <div class="panel-title" style="color:var(--gold);">🏆 RANKING — Quem está fazendo o Campeão vencer</div>
+                    <div class="panel-title" style="color:var(--gold);">🏆 RANKING — Quem está fazendo o Valdelino vencer</div>
                     <div id="rankingList"></div>
                 </div>
                 <div class="panel">
@@ -1476,7 +1476,7 @@
             <h2>📊 Registrar Pesquisa</h2>
             <div class="form-group"><label>Data</label><input type="date" id="psData"></div>
             <div class="form-group"><label>Instituto / Fonte</label><input type="text" id="psInst" placeholder="Ex: Pesquisa Interna"></div>
-            <div class="form-group"><label>% Campeão</label><input type="number" id="psNeto" step="0.1" placeholder="Ex: 12.5"></div>
+            <div class="form-group"><label>% Valdelino</label><input type="number" id="psNeto" step="0.1" placeholder="Ex: 12.5"></div>
             <div class="form-group"><label>1º Colocado (Nome)</label><input type="text" id="ps1Nome"></div>
             <div class="form-group"><label>1º Colocado (%)</label><input type="number" id="ps1Pct" step="0.1"></div>
             <div class="form-group"><label>Amostra</label><input type="number" id="psAmostra"></div>
@@ -1704,7 +1704,7 @@
                     {id:602, nome:'Adesivos para carro', fase:'pre-campanha', pedido:5000, estoque:3200, distribuido:1800, fornecedor:'Grafica Brasilia', obs:''},
                     {id:603, nome:'Bandeiras 1m x 0.70m', fase:'campanha', pedido:200, estoque:200, distribuido:0, fornecedor:'Bandeiras DF', obs:'Estoque para caminhadas'},
                     {id:604, nome:'Camisetas verdes', fase:'pre-campanha', pedido:1000, estoque:450, distribuido:550, fornecedor:'Malhas & Cia', obs:'Tam P a GG. Sucesso absoluto!'},
-                    {id:605, nome:'Bonés bordados', fase:'ambas', pedido:2000, estoque:1600, distribuido:400, fornecedor:'Bones BSB', obs:'Logo Campeão 2026'},
+                    {id:605, nome:'Bonés bordados', fase:'ambas', pedido:2000, estoque:1600, distribuido:400, fornecedor:'Bones BSB', obs:'Logo Valdelino 2026'},
                     {id:606, nome:'Panfletos A5 programatico', fase:'pre-campanha', pedido:30000, estoque:18000, distribuido:12000, fornecedor:'Grafica Brasilia', obs:'Propostas em 5 eixos'}
                 ],
 
@@ -1834,7 +1834,7 @@
                     {texto:'👥 3 novos apoiadores cadastrados em Aguas Claras', data:new Date(Date.now()-2*86400000).toISOString()},
                     {texto:'📦 1.200 santinhos distribuidos em Ceilandia esta semana', data:new Date(Date.now()-3*86400000).toISOString()},
                     {texto:'⭐ Novo lider cadastrado: Influencer Bia DF (45k seguidores)', data:new Date(Date.now()-4*86400000).toISOString()},
-                    {texto:'📊 Nova pesquisa: Campeão sobe para 14.7%! Tendencia de alta!', data:new Date(Date.now()-5*86400000).toISOString()},
+                    {texto:'📊 Nova pesquisa: Valdelino sobe para 14.7%! Tendencia de alta!', data:new Date(Date.now()-5*86400000).toISOString()},
                     {texto:'🔥 Carlos Eduardo Silva esteve ativo 7 dias seguidos!', data:new Date(Date.now()-5*86400000).toISOString()},
                     {texto:'🤝 Reuniao com sindicato dos servidores — pauta alinhada', data:new Date(Date.now()-6*86400000).toISOString()},
                     {texto:'✅ Demanda resolvida: Praca de Sobradinho — equipamentos trocados!', data:new Date(Date.now()-7*86400000).toISOString()}
@@ -1881,7 +1881,7 @@
 
         const PAGE_TITLES = {
             dashboard:'🚀 Dashboard', cidades:'🗺️ Cidades Visitadas',
-            agenda:'📅 Agenda do Campeão', pessoas:'👥 Time do Campeão',
+            agenda:'📅 Agenda do Valdelino', pessoas:'👥 Time do Valdelino',
             lideres:'⭐ Líderes', quemequem:'🔍 Quem é Quem',
             demandas:'📋 Demandas', pesquisas:'📊 Pesquisas',
             materiais:'📦 Materiais', gamificacao:'🏆 Gamificação'
@@ -2384,17 +2384,17 @@
             const u = data.pesquisas.length>0?data.pesquisas[data.pesquisas.length-1]:null;
 
             document.getElementById('pesquisasStats').innerHTML = `
-                <div class="stat-card"><div class="stat-label">Última % Campeão</div><div class="stat-value" style="color:var(--green)">${u?u.pctNeto+'%':'-'}</div><div class="stat-sub">${u?formatDate(u.data)+' - '+escapeHtml(u.instituto):''}</div></div>
+                <div class="stat-card"><div class="stat-label">Última % Valdelino</div><div class="stat-value" style="color:var(--green)">${u?u.pctNeto+'%':'-'}</div><div class="stat-sub">${u?formatDate(u.data)+' - '+escapeHtml(u.instituto):''}</div></div>
                 <div class="stat-card red"><div class="stat-label">1º Colocado</div><div class="stat-value">${u?u.pct1+'%':'-'}</div><div class="stat-sub">${u?escapeHtml(u.nome1):''}</div></div>
                 <div class="stat-card blue"><div class="stat-label">Total Pesquisas</div><div class="stat-value">${data.pesquisas.length}</div></div>
             `;
 
             document.getElementById('pesquisasChart').innerHTML = data.pesquisas.length
-                ? data.pesquisas.map(p=>`<div style="margin-bottom:24px;"><div style="font-size:0.72rem;font-weight:600;color:var(--text-dim);margin-bottom:8px;">${formatDate(p.data)} — ${escapeHtml(p.instituto)} (Amostra: ${p.amostra||'-'})</div><div class="bar-row"><span class="bar-label" style="color:var(--green)">Campeão</span><div class="bar-track"><div class="bar-fill" style="width:${p.pctNeto||0}%;background:linear-gradient(90deg,var(--green),var(--cyan));">${p.pctNeto}%</div></div></div><div class="bar-row"><span class="bar-label" style="color:var(--red)">${escapeHtml(p.nome1||'1º')}</span><div class="bar-track"><div class="bar-fill" style="width:${p.pct1||0}%;background:linear-gradient(90deg,var(--red),var(--pink));">${p.pct1}%</div></div></div></div>`).join('')
+                ? data.pesquisas.map(p=>`<div style="margin-bottom:24px;"><div style="font-size:0.72rem;font-weight:600;color:var(--text-dim);margin-bottom:8px;">${formatDate(p.data)} — ${escapeHtml(p.instituto)} (Amostra: ${p.amostra||'-'})</div><div class="bar-row"><span class="bar-label" style="color:var(--green)">Valdelino</span><div class="bar-track"><div class="bar-fill" style="width:${p.pctNeto||0}%;background:linear-gradient(90deg,var(--green),var(--cyan));">${p.pctNeto}%</div></div></div><div class="bar-row"><span class="bar-label" style="color:var(--red)">${escapeHtml(p.nome1||'1º')}</span><div class="bar-track"><div class="bar-fill" style="width:${p.pct1||0}%;background:linear-gradient(90deg,var(--red),var(--pink));">${p.pct1}%</div></div></div></div>`).join('')
                 : '<p style="color:var(--text-dim)">Nenhuma pesquisa registrada ainda</p>';
 
             document.getElementById('pesquisasList').innerHTML = data.pesquisas.length
-                ? '<table class="data-table"><thead><tr><th>Data</th><th>Instituto</th><th>% Campeão</th><th>1º</th><th>% 1º</th><th>Amostra</th><th></th></tr></thead><tbody>'+data.pesquisas.map(p=>`<tr><td>${formatDate(p.data)}</td><td>${escapeHtml(p.instituto)}</td><td><strong style="color:var(--green)">${p.pctNeto}%</strong></td><td>${escapeHtml(p.nome1)}</td><td>${p.pct1}%</td><td>${p.amostra||'-'}</td><td><button class="btn btn-danger btn-sm" onclick="deletePesquisa(${p.id})">X</button></td></tr>`).join('')+'</tbody></table>'
+                ? '<table class="data-table"><thead><tr><th>Data</th><th>Instituto</th><th>% Valdelino</th><th>1º</th><th>% 1º</th><th>Amostra</th><th></th></tr></thead><tbody>'+data.pesquisas.map(p=>`<tr><td>${formatDate(p.data)}</td><td>${escapeHtml(p.instituto)}</td><td><strong style="color:var(--green)">${p.pctNeto}%</strong></td><td>${escapeHtml(p.nome1)}</td><td>${p.pct1}%</td><td>${p.amostra||'-'}</td><td><button class="btn btn-danger btn-sm" onclick="deletePesquisa(${p.id})">X</button></td></tr>`).join('')+'</tbody></table>'
                 : '';
         }
 
@@ -2404,7 +2404,7 @@
             const n = parseFloat(document.getElementById('psNeto').value);
             if(!d||!i||isNaN(n))return alert('Preencha data, instituto e %.');
             data.pesquisas.push({id:gerarId(),data:d,instituto:i,pctNeto:n,nome1:document.getElementById('ps1Nome').value.trim(),pct1:parseFloat(document.getElementById('ps1Pct').value)||0,amostra:document.getElementById('psAmostra').value,margem:document.getElementById('psMargem').value});
-            addAtividade('📊 Pesquisa: '+i+' — Campeão '+n+'%'); saveData(); closeModal('modalPesquisa');
+            addAtividade('📊 Pesquisa: '+i+' — Valdelino '+n+'%'); saveData(); closeModal('modalPesquisa');
             ['psInst','psNeto','ps1Nome','ps1Pct','psAmostra','psMargem'].forEach(id=>document.getElementById(id).value='');
             renderPesquisas();
         }
@@ -2472,7 +2472,7 @@
             const destaque = semanaRk.length ? { nome: semanaRk[0][0], pontos: semanaRk[0][1], geral: false }
                 : (rk.length ? { nome: rk[0].nome, pontos: rk[0].pontos, geral: true } : null);
             document.getElementById('destaqueSemana').innerHTML = destaque
-                ? `<div class="destaque-card"><div class="destaque-icon">⭐</div><div class="destaque-info"><div class="destaque-label">DESTAQUE DA SEMANA</div><div class="destaque-nome">👑 ${escapeHtml(destaque.nome)}</div><div class="destaque-sub">${destaque.pontos.toLocaleString('pt-BR')} pontos${destaque.geral ? ' (no total)' : ' nos últimos 7 dias'} — o Campeão reconhece! 🎉</div></div></div>`
+                ? `<div class="destaque-card"><div class="destaque-icon">⭐</div><div class="destaque-info"><div class="destaque-label">DESTAQUE DA SEMANA</div><div class="destaque-nome">👑 ${escapeHtml(destaque.nome)}</div><div class="destaque-sub">${destaque.pontos.toLocaleString('pt-BR')} pontos${destaque.geral ? ' (no total)' : ' nos últimos 7 dias'} — o Valdelino reconhece! 🎉</div></div></div>`
                 : '';
 
             const mvp = rk.length ? rk[0] : null;

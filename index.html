@@ -12,9 +12,9 @@
             --bg: #0a0a1a;
             --bg-card: #141428;
             --bg-card2: #1a1a36;
-            --green: #00e676;
-            --green-dark: #00c853;
-            --green-glow: rgba(0,230,118,0.3);
+            --green: #2962ff;
+            --green-dark: #0039cb;
+            --green-glow: rgba(41,98,255,0.35);
             --gold: #ffd600;
             --gold-glow: rgba(255,214,0,0.3);
             --blue: #448aff;
@@ -70,13 +70,13 @@
             display: flex;
             flex-direction: column;
             transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
-            border-right: 1px solid rgba(0,230,118,0.1);
+            border-right: 1px solid rgba(41,98,255,0.1);
         }
 
         .sidebar-brand {
             padding: 24px 20px;
             text-align: center;
-            border-bottom: 1px solid rgba(0,230,118,0.15);
+            border-bottom: 1px solid rgba(41,98,255,0.15);
             position: relative;
         }
         .sidebar-brand::after {
@@ -146,7 +146,7 @@
             top: 0;
             bottom: 0;
             width: 0;
-            background: linear-gradient(90deg, rgba(0,230,118,0.15), transparent);
+            background: linear-gradient(90deg, rgba(41,98,255,0.15), transparent);
             transition: width 0.3s;
         }
         .nav-item:hover::before { width: 100%; }
@@ -158,7 +158,7 @@
             color: var(--green);
             border-left-color: var(--green);
             font-weight: 700;
-            background: rgba(0,230,118,0.08);
+            background: rgba(41,98,255,0.08);
         }
         .nav-item .nav-icon {
             font-size: 1.15rem;
@@ -179,7 +179,7 @@
 
         .sidebar-footer {
             padding: 15px 20px;
-            border-top: 1px solid rgba(0,230,118,0.1);
+            border-top: 1px solid rgba(41,98,255,0.1);
             text-align: center;
         }
         .sidebar-footer span {
@@ -197,7 +197,7 @@
             height: var(--header-h);
             background: rgba(10,10,26,0.9);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0,230,118,0.1);
+            border-bottom: 1px solid rgba(41,98,255,0.1);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -222,9 +222,9 @@
             font-weight: 400;
         }
         .btn-header {
-            background: rgba(0,230,118,0.1);
+            background: rgba(41,98,255,0.1);
             color: var(--green);
-            border: 1px solid rgba(0,230,118,0.3);
+            border: 1px solid rgba(41,98,255,0.3);
             padding: 7px 14px;
             border-radius: 10px;
             font-size: 0.72rem;
@@ -262,7 +262,7 @@
         /* ===== COUNTDOWN ===== */
         .countdown-bar {
             background: linear-gradient(135deg, #0d1a0d 0%, #0a2a0a 50%, #0d1a0d 100%);
-            border: 1px solid rgba(0,230,118,0.2);
+            border: 1px solid rgba(41,98,255,0.2);
             border-radius: var(--radius);
             padding: 28px 32px;
             display: flex;
@@ -281,7 +281,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(0,230,118,0.05) 0%, transparent 50%);
+            background: radial-gradient(circle at 30% 50%, rgba(41,98,255,0.05) 0%, transparent 50%);
             animation: spin 20s linear infinite;
         }
         .countdown-bar h3 {
@@ -338,7 +338,7 @@
         }
         .stat-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(0,230,118,0.2);
+            border-color: rgba(41,98,255,0.2);
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
         .stat-card:hover::before { height: 4px; }
@@ -390,7 +390,7 @@
             letter-spacing: 2px;
             margin-bottom: 16px;
             padding-bottom: 10px;
-            border-bottom: 1px solid rgba(0,230,118,0.15);
+            border-bottom: 1px solid rgba(41,98,255,0.15);
         }
 
         /* ===== BUTTONS ===== */
@@ -424,9 +424,9 @@
         .btn-outline {
             background: transparent;
             color: var(--green);
-            border: 2px solid rgba(0,230,118,0.3);
+            border: 2px solid rgba(41,98,255,0.3);
         }
-        .btn-outline:hover { background: rgba(0,230,118,0.1); border-color: var(--green); }
+        .btn-outline:hover { background: rgba(41,98,255,0.1); border-color: var(--green); }
         .btn-sm { padding: 5px 12px; font-size: 0.7rem; border-radius: 8px; }
 
         .toolbar {
@@ -504,7 +504,7 @@
         .modal-overlay.show { display: flex; }
         .modal {
             background: var(--bg-card);
-            border: 1px solid rgba(0,230,118,0.2);
+            border: 1px solid rgba(41,98,255,0.2);
             border-radius: 20px;
             padding: 30px;
             max-width: 520px;
@@ -545,7 +545,7 @@
         }
         .card-item:hover {
             transform: translateX(6px);
-            border-color: rgba(0,230,118,0.2);
+            border-color: rgba(41,98,255,0.2);
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
         .card-item h4 { font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
@@ -575,19 +575,19 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 120%, rgba(0,230,118,0.05) 0%, transparent 70%);
+            background: radial-gradient(circle at 50% 120%, rgba(41,98,255,0.05) 0%, transparent 70%);
             opacity: 0;
             transition: opacity 0.3s;
         }
         .cidade-tile:hover::before { opacity: 1; }
         .cidade-tile:hover {
             transform: translateY(-6px) scale(1.02);
-            border-color: rgba(0,230,118,0.3);
+            border-color: rgba(41,98,255,0.3);
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
         .cidade-tile.visitada {
             border-color: var(--green);
-            background: rgba(0,230,118,0.05);
+            background: rgba(41,98,255,0.05);
         }
         .cidade-tile .cidade-icon {
             font-size: 2.2rem;
@@ -642,7 +642,7 @@
         .mapa-svg { width: 100%; height: auto; display: block; }
         .mapa-vazio { padding: 40px; text-align: center; color: var(--text-dim); }
         .mapa-badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; margin-bottom: 12px; }
-        .mapa-badge.ok { background: rgba(0,230,118,0.15); color: var(--green); border: 1px solid rgba(0,230,118,0.4); }
+        .mapa-badge.ok { background: rgba(41,98,255,0.15); color: var(--green); border: 1px solid rgba(41,98,255,0.4); }
         .mapa-badge.no { background: rgba(68,138,255,0.12); color: var(--blue); border: 1px solid rgba(68,138,255,0.4); }
         .mapa-coords { max-height: 210px; overflow-y: auto; }
         .mapa-coords-titulo { font-size: 0.78rem; font-weight: 800; color: var(--gold); margin: 6px 0 8px; }
@@ -661,7 +661,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .tag-green { background: rgba(0,230,118,0.15); color: var(--green); }
+        .tag-green { background: rgba(41,98,255,0.15); color: var(--green); }
         .tag-gold { background: rgba(255,214,0,0.15); color: var(--gold); }
         .tag-blue { background: rgba(68,138,255,0.15); color: var(--blue); }
         .tag-purple { background: rgba(179,136,255,0.15); color: var(--purple); }
@@ -748,7 +748,7 @@
         }
         .agenda-item:hover {
             transform: translateX(6px);
-            border-color: rgba(0,230,118,0.2);
+            border-color: rgba(41,98,255,0.2);
         }
         .agenda-time {
             min-width: 65px;
@@ -762,7 +762,7 @@
         /* ===== TABLE ===== */
         .data-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
         .data-table thead th {
-            background: rgba(0,230,118,0.1);
+            background: rgba(41,98,255,0.1);
             color: var(--green);
             padding: 12px 14px;
             text-align: left;
@@ -770,7 +770,7 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             font-weight: 700;
-            border-bottom: 1px solid rgba(0,230,118,0.15);
+            border-bottom: 1px solid rgba(41,98,255,0.15);
         }
         .data-table tbody td {
             padding: 12px 14px;
@@ -778,7 +778,7 @@
             color: var(--text);
         }
         .data-table tbody tr { transition: background 0.2s; }
-        .data-table tbody tr:hover { background: rgba(0,230,118,0.03); }
+        .data-table tbody tr:hover { background: rgba(41,98,255,0.03); }
 
         /* ===== LEVEL BADGE ===== */
         .level-badge {
@@ -849,7 +849,7 @@
         }
         .tarefa-dia-card.concluida {
             border-color: var(--green);
-            background: rgba(0,230,118,0.03);
+            background: rgba(41,98,255,0.03);
         }
         .tarefa-dia-card.atrasada {
             border-color: var(--red);
@@ -912,7 +912,7 @@
             transition: all 0.3s;
         }
         .tarefa-progresso .pessoa-chip.done {
-            background: rgba(0,230,118,0.15);
+            background: rgba(41,98,255,0.15);
             border-color: var(--green);
             color: var(--green);
         }
@@ -1654,7 +1654,7 @@
 
         // ===== CONFETTI =====
         function triggerConfetti() {
-            const colors = ['#00e676','#ffd600','#448aff','#ff4081','#b388ff','#00e5ff','#ff9100'];
+            const colors = ['#2962ff','#ffd600','#448aff','#ff4081','#b388ff','#00e5ff','#ff9100'];
             for (let i = 0; i < 30; i++) {
                 setTimeout(() => {
                     const el = document.createElement('div');
@@ -1731,8 +1731,8 @@
             if (xp >= 1500) return { level: 7, nome: 'Senador', icon: '🏛️', next: 2000, cor: '#b388ff' };
             if (xp >= 1000) return { level: 6, nome: 'Deputado', icon: '🔥', next: 1500, cor: '#ff4081' };
             if (xp >= 600) return { level: 5, nome: 'Vereador', icon: '⚡', next: 1000, cor: '#00e5ff' };
-            if (xp >= 300) return { level: 4, nome: 'Cabo Eleitoral', icon: '💪', next: 600, cor: '#00e676' };
-            if (xp >= 100) return { level: 3, nome: 'Militante', icon: '✊', next: 300, cor: '#00e676' };
+            if (xp >= 300) return { level: 4, nome: 'Cabo Eleitoral', icon: '💪', next: 600, cor: '#2962ff' };
+            if (xp >= 100) return { level: 3, nome: 'Militante', icon: '✊', next: 300, cor: '#2962ff' };
             if (xp >= 30) return { level: 2, nome: 'Simpatizante', icon: '🤝', next: 100, cor: '#448aff' };
             return { level: 1, nome: 'Novato', icon: '🌱', next: 30, cor: '#888' };
         }
@@ -1918,7 +1918,7 @@
             const satGroup = L.layerGroup([sat, labels]);
             L.control.layers({ '🗺️ Ruas': ruas, '🛰️ Satélite': satGroup }, null, { position: 'topright', collapsed: false }).addTo(map);
 
-            const corBorda = visitada ? '#00e676' : '#448aff';
+            const corBorda = visitada ? '#ffd600' : '#448aff';
             let center = L.latLng(-15.793, -47.882);
             if(ring && ring.length >= 3){
                 const latlngs = ring.map(([x,y]) => [y, x]);

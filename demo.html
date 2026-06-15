@@ -1114,6 +1114,10 @@
                 <span class="nav-icon">🏆</span> Gamificação
                 <span class="nav-badge">Pontos</span>
             </div>
+            <div class="nav-item" onclick="showPage('recrutamento')" role="button" tabindex="0">
+                <span class="nav-icon">🚀</span> Recrutamento
+                <span class="nav-badge">Viral</span>
+            </div>
         </div>
         <div class="sidebar-footer">
             <span>@valdelino</span>
@@ -1267,6 +1271,35 @@
                     </thead>
                     <tbody id="materiaisBody"></tbody>
                 </table>
+            </div>
+        </div>
+
+        <div class="page" id="page-recrutamento">
+            <div class="toolbar">
+                <h2 style="flex:1;font-size:1.1rem;font-weight:800;color:var(--green);">🚀 Recrutamento Viral</h2>
+            </div>
+            <div class="stats-grid" id="recStats"></div>
+            <div class="panel" style="margin-bottom:16px;">
+                <div class="panel-title">📣 QR / Link oficial — divulgue para crescer o time</div>
+                <div id="recRaiz"></div>
+            </div>
+            <div class="panel" style="margin-bottom:16px;overflow-x:auto;">
+                <div class="panel-title">🏆 Ranking de Recrutadores — quem mais cadastrou</div>
+                <div id="recRanking"></div>
+            </div>
+            <div class="panel" style="margin-bottom:16px;">
+                <div class="panel-title">📨 Disparar mensagem para a base</div>
+                <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:8px;">Escreva a mensagem (use <strong>{nome}</strong> para personalizar) e gere os envios. Cada pessoa abre no WhatsApp com um clique.</p>
+                <textarea id="recMsg" rows="3" placeholder="Olá {nome}! Tudo bem? Temos novidades do Valdelino..." style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(41,98,255,0.3);background:#0d0d24;color:#fff;font-size:0.85rem;margin-bottom:8px;"></textarea>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="dispararWhatsApp()">Gerar envios</button>
+                    <button class="btn btn-outline" onclick="copiarTelefones()">Copiar telefones</button>
+                </div>
+                <div id="recEnvios" style="margin-top:12px;"></div>
+            </div>
+            <div class="panel" style="overflow-x:auto;">
+                <div class="panel-title">👥 Todos os apoiadores cadastrados</div>
+                <div id="recLista"></div>
             </div>
         </div>
 
@@ -1652,6 +1685,36 @@
         </div>
     </div>
 
+    <div id="cadastroFull" style="display:none;position:fixed;inset:0;z-index:3000;background:linear-gradient(180deg,#0d0d24,#141432);overflow-y:auto;padding:24px 16px;flex-direction:column;align-items:center;">
+        <div style="max-width:420px;width:100%;margin:auto;">
+            <div style="text-align:center;margin-bottom:18px;">
+                <img src="valdelinocaricatura.png" alt="Valdelino Barcelos" style="width:120px;height:120px;border-radius:14px;object-fit:cover;object-position:50% 20%;border:3px solid var(--green);">
+                <h1 style="color:var(--green);font-size:1.4rem;font-weight:900;margin-top:10px;">Time Valdelino Barcelos</h1>
+                <p id="cadConvite" style="color:var(--gold);font-size:0.85rem;font-weight:600;margin-top:4px;">Você foi convidado para o time!</p>
+            </div>
+            <div id="cadStep1" class="panel">
+                <div class="panel-title">✍️ Faça seu cadastro</div>
+                <div class="form-group"><label>Nome completo</label><input type="text" id="cadNome" placeholder="Seu nome"></div>
+                <div class="form-group"><label>WhatsApp (com DDD)</label><input type="tel" id="cadTel" placeholder="(61) 90000-0000"></div>
+                <div class="form-group"><label>Cidade / RA</label><select id="cadCidade"></select></div>
+                <button class="btn btn-primary" style="width:100%;font-size:1rem;padding:14px;" onclick="salvarApoiadorPublico()">🚀 Entrar para o time</button>
+                <p style="font-size:0.7rem;color:var(--text-dim);margin-top:10px;text-align:center;">Ao entrar, você recebe seu próprio link para convidar amigos.</p>
+            </div>
+            <div id="cadStep2" class="panel" style="display:none;text-align:center;">
+                <div style="font-size:2.4rem;">🎉</div>
+                <h2 style="color:var(--green);font-size:1.2rem;margin:6px 0;">Bem-vindo ao time!</h2>
+                <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:14px;">Agora é a sua vez. Convide seus amigos com o seu QR/link e suba no ranking de recrutadores!</p>
+                <img id="cadMeuQR" alt="Seu QR Code" style="width:200px;height:200px;border-radius:12px;background:#fff;padding:8px;">
+                <div style="display:flex;gap:8px;margin-top:14px;">
+                    <input type="text" id="cadMeuLink" readonly style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(41,98,255,0.3);background:#0d0d24;color:#fff;font-size:0.75rem;">
+                    <button class="btn btn-outline btn-sm" onclick="copiarMeuLink()">Copiar</button>
+                </div>
+                <button class="btn btn-primary" id="cadShareWpp" style="width:100%;margin-top:10px;padding:12px;">📲 Compartilhar no WhatsApp</button>
+                <button class="btn btn-outline" style="width:100%;margin-top:8px;" onclick="fecharCadastro()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ===== JAVASCRIPT ===== -->
     <script>
         const STORAGE_KEY = 'neto_campanha_2026_demo';
@@ -1674,7 +1737,15 @@
             const ha60 = new Date(Date.now() - 60*86400000).toISOString().split('T')[0];
 
             return {
-                nextId: 500,
+                nextId: 800,
+
+                apoiadores: [
+                    {id:701, nome:'Carlos Recrutador', tel:'61991110001', cidade:'Gama', refDe:'raiz', data:new Date(Date.now()-12*86400000).toISOString()},
+                    {id:702, nome:'Joana Lima', tel:'61991110002', cidade:'Gama', refDe:701, data:new Date(Date.now()-10*86400000).toISOString()},
+                    {id:703, nome:'Pedro Alves', tel:'61991110003', cidade:'Ceilândia', refDe:701, data:new Date(Date.now()-9*86400000).toISOString()},
+                    {id:704, nome:'Marta Souza', tel:'61991110004', cidade:'Taguatinga', refDe:702, data:new Date(Date.now()-7*86400000).toISOString()},
+                    {id:705, nome:'Rita Campos', tel:'61991110005', cidade:'Gama', refDe:'raiz', data:new Date(Date.now()-5*86400000).toISOString()}
+                ],
 
                 eventos: [
                     {id:1, data:hoje, hora:'09:00', titulo:'Reuniao com liderancas de Ceilandia', local:'Ceilandia Centro', tipo:'reuniao', obs:'Alinhar estrategia regional'},
@@ -1944,7 +2015,8 @@
             agenda:'📅 Agenda do Valdelino', pessoas:'👥 Time do Valdelino',
             lideres:'⭐ Líderes', quemequem:'🔍 Quem é Quem',
             demandas:'📋 Demandas', inteligencia:'🧠 Inteligência',
-            materiais:'📦 Materiais', gamificacao:'🏆 Gamificação'
+            materiais:'📦 Materiais', gamificacao:'🏆 Gamificação',
+            recrutamento:'🚀 Recrutamento Viral'
         };
 
         // ===== CONFETTI =====
@@ -1986,7 +2058,7 @@
                 dashboard:renderDashboard, cidades:renderCidades, agenda:renderAgenda,
                 pessoas:renderPessoas, lideres:renderLideres, quemequem:renderQuemEQuem,
                 demandas:renderDemandas, inteligencia:renderInteligencia, materiais:renderMateriais,
-                gamificacao:renderGamificacao
+                gamificacao:renderGamificacao, recrutamento:renderRecrutamento
             };
             if (fns[page]) fns[page]();
         }
@@ -2909,10 +2981,100 @@
         // ===== KEYBOARD =====
         document.querySelectorAll('.nav-item').forEach(i=>{i.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();i.click();}});});
 
+        // ===== RECRUTAMENTO VIRAL =====
+        function qrImg(texto, size){ size=size||220; return 'https://api.qrserver.com/v1/create-qr-code/?size='+size+'x'+size+'&margin=8&data='+encodeURIComponent(texto); }
+        function linkRef(id){ const base = (location.origin && location.origin!=='null') ? location.origin+location.pathname : location.href.split('?')[0].split('#')[0]; return base + '?ref=' + id; }
+        function nomeRecrutador(refDe){ if(refDe==='raiz'||refDe===0||refDe==='0'||!refDe) return 'Valdelino (direto)'; const a=(data.apoiadores||[]).find(x=>String(x.id)===String(refDe)); return a?a.nome:'—'; }
+
+        let refAtual = 'raiz';
+        function checarEntradaCadastro(){
+            const params = new URLSearchParams(location.search);
+            let ref = params.get('ref');
+            if((ref===null||ref==='') && location.hash.indexOf('ref=')>=0){ ref = location.hash.split('ref=')[1].split('&')[0]; }
+            if(ref!==null && ref!==''){ abrirCadastroPublico(ref); return true; }
+            return false;
+        }
+        function abrirCadastroPublico(ref){
+            refAtual = ref || 'raiz';
+            const sel = document.getElementById('cadCidade');
+            if(sel){ sel.innerHTML='<option value="">Selecione sua cidade</option>'+REGIOES_DF.slice().sort((a,b)=>a.localeCompare(b,'pt')).map(c=>'<option value="'+escapeHtml(c)+'">'+escapeHtml(c)+'</option>').join(''); }
+            document.getElementById('cadConvite').textContent = (refAtual==='raiz') ? 'Você foi convidado para o time!' : nomeRecrutador(refAtual)+' te convidou para o time!';
+            document.getElementById('cadStep1').style.display='block';
+            document.getElementById('cadStep2').style.display='none';
+            document.getElementById('cadastroFull').style.display='flex';
+        }
+        function salvarApoiadorPublico(){
+            const nome = document.getElementById('cadNome').value.trim();
+            let tel = document.getElementById('cadTel').value.replace(/\D/g,'');
+            const cidade = document.getElementById('cadCidade').value;
+            if(!nome) return alert('Digite seu nome.');
+            if(tel.length<10) return alert('Digite um WhatsApp válido com DDD.');
+            const novo = {id:gerarId(), nome:nome, tel:tel, cidade:cidade, refDe:refAtual, data:new Date().toISOString()};
+            (data.apoiadores||(data.apoiadores=[])).push(novo);
+            addAtividade('🚀 Novo apoiador: '+nome+' (por '+nomeRecrutador(refAtual)+')');
+            saveData();
+            const meuLink = linkRef(novo.id);
+            document.getElementById('cadMeuLink').value = meuLink;
+            document.getElementById('cadMeuQR').src = qrImg(meuLink, 220);
+            document.getElementById('cadShareWpp').onclick = function(){ window.open('https://wa.me/?text='+encodeURIComponent('Faça parte do Time Valdelino Barcelos! Cadastre-se aqui: '+meuLink),'_blank'); };
+            document.getElementById('cadStep1').style.display='none';
+            document.getElementById('cadStep2').style.display='block';
+        }
+        function copiarMeuLink(){ const i=document.getElementById('cadMeuLink'); i.select(); try{document.execCommand('copy');}catch(e){} if(navigator.clipboard)navigator.clipboard.writeText(i.value); alert('Link copiado! Mande para seus amigos.'); }
+        function fecharCadastro(){ document.getElementById('cadastroFull').style.display='none'; if(history.replaceState){ history.replaceState(null,'',location.pathname); } }
+
+        // ===== PAINEL DE RECRUTAMENTO (admin) =====
+        function renderRecrutamento(){
+            const A = data.apoiadores || (data.apoiadores=[]);
+            const total = A.length;
+            const diretos = A.filter(a=>a.refDe==='raiz'||a.refDe===0||a.refDe==='0'||!a.refDe).length;
+            const cont = {};
+            A.forEach(a=>{ const r=String(a.refDe||'raiz'); cont[r]=(cont[r]||0)+1; });
+            const ranking = Object.keys(cont).map(r=>({ref:r, nome:nomeRecrutador(r), qtd:cont[r]})).sort((a,b)=>b.qtd-a.qtd);
+            const recrutadoresAtivos = ranking.filter(r=>r.ref!=='raiz').length;
+
+            document.getElementById('recStats').innerHTML = `
+                <div class="stat-card"><div class="stat-icon">🚀</div><div class="stat-label">Apoiadores cadastrados</div><div class="stat-value">${total}</div></div>
+                <div class="stat-card blue"><div class="stat-icon">📲</div><div class="stat-label">Recrutadores ativos</div><div class="stat-value">${recrutadoresAtivos}</div></div>
+                <div class="stat-card gold"><div class="stat-icon">⭐</div><div class="stat-label">Cadastros diretos</div><div class="stat-value">${diretos}</div></div>
+            `;
+
+            const linkRaiz = linkRef('raiz');
+            document.getElementById('recRaiz').innerHTML = `
+                <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+                    <img src="${qrImg(linkRaiz,160)}" alt="QR" style="width:140px;height:140px;border-radius:12px;background:#fff;padding:6px;">
+                    <div style="flex:1;min-width:200px;">
+                        <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:8px;">Divulgue este QR/link nos seus canais. Quem se cadastrar entra como <strong>indicação direta do Valdelino</strong> e ganha o próprio link para chamar amigos.</p>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                            <input type="text" readonly value="${linkRaiz}" style="flex:1;min-width:160px;padding:8px;border-radius:8px;border:1px solid rgba(41,98,255,0.3);background:#0d0d24;color:#fff;font-size:0.78rem;">
+                            <button class="btn btn-primary btn-sm" onclick="if(navigator.clipboard)navigator.clipboard.writeText('${linkRaiz}');this.textContent='Copiado!'">Copiar link</button>
+                            <button class="btn btn-outline btn-sm" onclick="window.open('https://wa.me/?text='+encodeURIComponent('Faça parte do Time Valdelino Barcelos! ${linkRaiz}'),'_blank')">Enviar no WhatsApp</button>
+                        </div>
+                    </div>
+                </div>`;
+
+            document.getElementById('recRanking').innerHTML = ranking.length
+                ? '<table class="data-table"><thead><tr><th>#</th><th>Recrutador</th><th>Cadastrou</th><th>Link</th></tr></thead><tbody>'+ranking.map((r,i)=>`<tr><td>${i+1}º</td><td><strong style="color:#fff">${escapeHtml(r.nome)}</strong></td><td><strong style="color:var(--green)">${r.qtd}</strong></td><td>${r.ref!=='raiz'?'<button class="btn btn-outline btn-sm" onclick="verLinkApoiador('+r.ref+')">Ver QR</button>':'—'}</td></tr>`).join('')+'</tbody></table>'
+                : '<p style="color:var(--text-dim)">Ninguém cadastrado ainda. Divulgue o QR acima!</p>';
+
+            document.getElementById('recLista').innerHTML = A.length
+                ? '<table class="data-table"><thead><tr><th>Nome</th><th>WhatsApp</th><th>Cidade</th><th>Indicado por</th></tr></thead><tbody>'+A.slice().reverse().map(a=>`<tr><td><strong style="color:#fff">${escapeHtml(a.nome)}</strong></td><td>${escapeHtml(a.tel||'-')}</td><td>${escapeHtml(a.cidade||'-')}</td><td>${escapeHtml(nomeRecrutador(a.refDe))}</td></tr>`).join('')+'</tbody></table>'
+                : '';
+        }
+        function verLinkApoiador(id){ window.open(qrImg(linkRef(id),300),'_blank'); }
+        function dispararWhatsApp(){
+            const msg = document.getElementById('recMsg').value.trim();
+            if(!msg) return alert('Escreva a mensagem primeiro.');
+            const A = (data.apoiadores||[]).filter(a=>a.tel && a.tel.replace(/\D/g,'').length>=10);
+            if(!A.length) return alert('Nenhum apoiador com WhatsApp cadastrado.');
+            document.getElementById('recEnvios').innerHTML = '<div class="panel-title">Clique para enviar a cada um ('+A.length+'):</div>'+A.map(a=>{ const num=a.tel.replace(/\D/g,''); const full=num.length<=11?'55'+num:num; const link='https://wa.me/'+full+'?text='+encodeURIComponent(msg.replace('{nome}',a.nome)); return '<a href="'+link+'" target="_blank" class="btn btn-outline btn-sm" style="margin:4px;display:inline-block;">📲 '+escapeHtml(a.nome)+'</a>'; }).join('');
+        }
+        function copiarTelefones(){ const nums=(data.apoiadores||[]).map(a=>a.tel).filter(Boolean).join(', '); if(navigator.clipboard)navigator.clipboard.writeText(nums); alert('Telefones copiados!'); }
+
         // ===== INIT =====
         function popularSelectRegioes(){ const s=document.getElementById('peRegiao'); if(s){ s.innerHTML='<option value="">Selecione a cidade</option>'+REGIOES_DF.slice().sort((a,b)=>a.localeCompare(b,'pt')).map(c=>'<option value="'+escapeHtml(c)+'">'+escapeHtml(c)+'</option>').join(''); } }
         popularSelectRegioes();
-        renderDashboard();
+        if(!checarEntradaCadastro()){ renderDashboard(); }
     </script>
 </body>
 </html>

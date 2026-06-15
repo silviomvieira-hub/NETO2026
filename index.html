@@ -1553,6 +1553,23 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="modalMatDetalhe" onclick="closeModal('modalMatDetalhe')">
+        <div class="modal" onclick="event.stopPropagation()">
+            <h2 id="mdTitulo">📦 Material</h2>
+            <div id="mdInfo"></div>
+            <div class="panel" style="margin-top:14px;">
+                <div class="panel-title">➖ Registrar retirada</div>
+                <div class="form-group"><label>Quem pegou</label><input type="text" id="mdPessoa" placeholder="Nome da pessoa / responsável"></div>
+                <div class="form-group"><label>Quantidade que pegou</label><input type="number" id="mdQtd" min="1" placeholder="Ex: 100"></div>
+                <button class="btn btn-primary" style="width:100%;" onclick="registrarRetirada()">+ Registrar retirada</button>
+            </div>
+            <div id="mdHistorico" style="margin-top:16px;"></div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal('modalMatDetalhe')">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Missao do Dia -->
     <div class="modal-overlay" id="modalTarefa" onclick="closeModal('modalTarefa')">
         <div class="modal" onclick="event.stopPropagation()">
@@ -2263,7 +2280,8 @@
                     const pct=m.pedido>0?Math.round((m.estoque/m.pedido)*100):0;
                     const sc=pct>=80?'tag-green':pct>=40?'tag-orange':'tag-red';
                     const st=pct>=80?'OK':pct>=40?'Atenção':'Crítico';
-                    return `<tr><td><strong style="color:#fff">${escapeHtml(m.nome)}</strong>${m.fornecedor?'<br><small style="color:var(--text-dim)">'+escapeHtml(m.fornecedor)+'</small>':''}</td><td><span class="tag tag-blue">${escapeHtml(m.fase)}</span></td><td>${(parseInt(m.pedido)||0).toLocaleString('pt-BR')}</td><td>${(parseInt(m.estoque)||0).toLocaleString('pt-BR')}</td><td>${(parseInt(m.distribuido)||0).toLocaleString('pt-BR')}</td><td><span class="tag ${sc}">${st} (${pct}%)</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteMaterial(${m.id})">X</button></td></tr>`;
+                    const nret=(m.retiradas||[]).length;
+                    return `<tr><td><strong style="color:var(--green);cursor:pointer;" onclick="abrirMaterial(${m.id})" title="Ver observações e registrar retirada">${escapeHtml(m.nome)} 🔎</strong>${m.fornecedor?'<br><small style="color:var(--text-dim)">'+escapeHtml(m.fornecedor)+'</small>':''}${nret?'<br><small style="color:var(--text-dim)">'+nret+' retirada(s)</small>':''}</td><td><span class="tag tag-blue">${escapeHtml(m.fase)}</span></td><td>${(parseInt(m.pedido)||0).toLocaleString('pt-BR')}</td><td>${(parseInt(m.estoque)||0).toLocaleString('pt-BR')}</td><td>${(parseInt(m.distribuido)||0).toLocaleString('pt-BR')}</td><td><span class="tag ${sc}">${st} (${pct}%)</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteMaterial(${m.id})">X</button></td></tr>`;
                 }).join('')
                 : '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);padding:30px;">Nenhum material</td></tr>';
         }
@@ -2278,6 +2296,52 @@
         }
 
         function deleteMaterial(id) { if(!confirm('Excluir?'))return; data.materiais=data.materiais.filter(m=>m.id!==id); saveData(); renderMateriais(); }
+
+        let matAtual = null;
+        function abrirMaterial(id) {
+            const m = data.materiais.find(x=>x.id===id);
+            if(!m) return;
+            matAtual = id;
+            if(!m.retiradas) m.retiradas = [];
+            document.getElementById('mdTitulo').innerHTML = '📦 '+escapeHtml(m.nome);
+            document.getElementById('mdInfo').innerHTML =
+                `<div class="stats-grid" style="margin-bottom:12px;">
+                    <div class="stat-card"><div class="stat-label">Em estoque</div><div class="stat-value">${(parseInt(m.estoque)||0).toLocaleString('pt-BR')}</div></div>
+                    <div class="stat-card blue"><div class="stat-label">Distribuído</div><div class="stat-value">${(parseInt(m.distribuido)||0).toLocaleString('pt-BR')}</div></div>
+                    <div class="stat-card"><div class="stat-label">Pedido</div><div class="stat-value">${(parseInt(m.pedido)||0).toLocaleString('pt-BR')}</div></div>
+                </div>
+                <p style="font-size:0.8rem;color:var(--text-dim);"><strong>Fase:</strong> ${escapeHtml(m.fase||'-')}${m.fornecedor?' · <strong>Fornecedor:</strong> '+escapeHtml(m.fornecedor):''}</p>
+                ${m.obs?'<div class="panel" style="margin-top:10px;"><div class="panel-title">📝 Observações</div><p style="font-size:0.82rem;line-height:1.5;">'+escapeHtml(m.obs)+'</p></div>':'<p style="font-size:0.8rem;color:var(--text-dim);font-style:italic;margin-top:8px;">Sem observações.</p>'}`;
+            renderHistoricoRetiradas(m);
+            openModal('modalMatDetalhe');
+        }
+
+        function renderHistoricoRetiradas(m) {
+            const h = m.retiradas||[];
+            const total = h.reduce((s,r)=>s+(parseInt(r.qtd)||0),0);
+            document.getElementById('mdHistorico').innerHTML = h.length
+                ? '<div class="panel-title">📋 Quem pegou (total: '+total.toLocaleString('pt-BR')+')</div>'+h.slice().reverse().map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.82rem;"><span>👤 ${escapeHtml(r.nome)} <small style="color:var(--text-dim)">${r.data?'· '+formatDate(r.data):''}</small></span><strong style="color:var(--green)">${(parseInt(r.qtd)||0).toLocaleString('pt-BR')}</strong></div>`).join('')
+                : '<p style="font-size:0.8rem;color:var(--text-dim);font-style:italic;">Ninguém pegou este material ainda.</p>';
+        }
+
+        function registrarRetirada() {
+            const m = data.materiais.find(x=>x.id===matAtual);
+            if(!m) return;
+            const nome = document.getElementById('mdPessoa').value.trim();
+            const qtd = parseInt(document.getElementById('mdQtd').value)||0;
+            if(!nome) return alert('Informe quem pegou o material.');
+            if(qtd<=0) return alert('Informe uma quantidade válida.');
+            if(!m.retiradas) m.retiradas = [];
+            m.retiradas.push({nome:nome, qtd:qtd, data:new Date().toISOString()});
+            m.estoque = Math.max(0,(parseInt(m.estoque)||0)-qtd);
+            m.distribuido = (parseInt(m.distribuido)||0)+qtd;
+            addAtividade('📦 '+nome+' pegou '+qtd+' de '+m.nome);
+            saveData();
+            document.getElementById('mdPessoa').value='';
+            document.getElementById('mdQtd').value='';
+            abrirMaterial(matAtual);
+            renderMateriais();
+        }
 
         // ===== GAMIFICACAO =====
         function getMedalha(pontos){
